@@ -1,0 +1,45 @@
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+/* Keyframes for slide-in animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Animation classes */
+.header-item {
+  animation: slideIn 1s ease-out forwards;
+}
+
+.logo {
+  animation-delay: 0.2s;
+}
+
+.home {
+  animation-delay: 0.4s;
+}
+
+.about {
+  animation-delay: 0.6s;
+}
+
+.products {
+  animation-delay: 0.8s;
+}
+
+.blog {
+  animation-delay: 1s;
+}
+
+.contact {
+  animation-delay: 1.2s;
+}
