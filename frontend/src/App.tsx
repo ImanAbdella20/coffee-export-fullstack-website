@@ -1,13 +1,14 @@
+import React from 'react';
 import './index.css';
 import HomePage from './pages/HomePage';
+import BackgroundAnimation from './component/BackgroundAnimation';
 
 function App() {
-
   return (
-    < div className='bg-amber-800 min-h-screen'>
-        <HomePage/>     
+    <div className='min-h-screen relative'>
+      <HomePage />
     </div>
   )
 }
 
-export default App
+export default App;
