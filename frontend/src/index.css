@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tailwindcss/preflight";
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
 
 /* Keyframes for slide-in animation */
 @keyframes slideIn {
@@ -14,7 +20,7 @@
   }
 }
 
-/* Animation classes */
+/* Animation classes for header */
 .header-item {
   animation: slideIn 1s ease-out forwards;
 }
@@ -43,7 +49,7 @@
   animation-delay: 1.2s;
 }
 
-.user{
+.user {
   margin-top: -4px;
   margin-left: 5px;
 }
@@ -77,4 +83,48 @@
 
 .dropdown-menu li a:hover {
   color: #AD7C59;
+}
+
+
+/* hero section */
+.herocontainer {
+  position: relative;
+  display: flex;
+  margin-left: 30px;
+  align-items: center;
+  height: 100vh; /* Ensure the container takes up the full viewport height */
+}
+
+.herocontent {
+  text-align: center; /* Optional: Center text within the content */
+}
+
+
+.line {
+  width: 1px;
+  height: 70px; /* Adjust this based on the space you want the line to cover */
+  background-color: #AD7C59;
+  margin-left: 20px; /* Adjust this to add space between the icons and the line */
+  margin-top: 5px;
+}
+
+.herobutton{
+ padding: 4px 6px;
+}
+
+.icons{
+  position: absolute;
+  bottom: -10px;
+}
+
+.herohead{
+  font-size: 30px;
+}
+
+.heroet{
+  font-size: 10px;
+}
+
+.herodesc{
+  font-size: 17px;
 }
