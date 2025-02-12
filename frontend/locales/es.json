@@ -1,0 +1,28 @@
+{
+    "header": {
+      "home": "Inicio",
+      "about": "Nosotros",
+      "about.story": "Nuestra Historia",
+      "about.team": "Nuestro Equipo",
+      "about.missionVision": "Misión y Visión",
+      "products": "Productos",
+      "products.coffees": "Nuestros Cafés",
+      "products.specialEditions": "Ediciones Especiales",
+      "products.blends": "Mezclas",
+      "products.subscription": "Servicio de Suscripción",
+      "blog": "Blog",
+      "blog.recipes": "Recetas de Café",
+      "blog.tips": "Consejos para Preparar Café",
+      "blog.stories": "Historias de Clientes",
+      "contacts": "Contáctanos",
+      "cart": "Carrito",
+      "user": "Usuario"
+    },
+    "hero": {
+      "title": "Café en Polvo Empacado Premium",
+      "subtitle": "Desde la cuna del café, Etiopía, traemos un café rico y sabroso, empacado para comodidad y frescura.",
+      "description": "Descubre la esencia del café etíope en cada taza: una tradición de raíces profundas y sabores intensos.",
+      "button": "Descubre Nuestro Café"
+    }
+  }
+  

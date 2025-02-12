@@ -1,10 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 @import "tailwindcss";
 @import "tailwindcss/preflight";
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 
 body {
   font-family: 'Poppins', sans-serif;
+}
+
+/* Enables smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optional: Customize your scrollbars for better design */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #61300d;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ad7c59;
 }
 
 
@@ -59,6 +79,8 @@ body {
   background-color: white;
   border: 1px solid #ccc;
   padding: 10px;
+  width: 130px;
+  cursor: pointer;
   list-style: none;
   margin-top: 5px;
   z-index: 1000;
@@ -96,6 +118,7 @@ body {
 }
 
 .herocontent {
+  
   text-align: center; /* Optional: Center text within the content */
 }
 
@@ -106,15 +129,20 @@ body {
   background-color: #AD7C59;
   margin-left: 20px; /* Adjust this to add space between the icons and the line */
   margin-top: 5px;
+  position: absolute;
+  left: -13px;
 }
 
 .herobutton{
  padding: 4px 6px;
+ margin-top: 40px;
+ margin-left: 35px;
+ border-radius: 20px;
 }
 
 .icons{
   position: absolute;
-  bottom: -10px;
+ top: 60%;
 }
 
 .herohead{
@@ -127,4 +155,28 @@ body {
 
 .herodesc{
   font-size: 17px;
+}
+
+.arrow{
+  font-size: 25px;
+  position: absolute;
+  top: 120px;
+  left: 550px;
+  cursor: pointer;
+}
+
+.languages{
+  color: white;
+}
+
+.language-buttons {
+background: #61300D;
+border-radius: 2px;
+position: absolute;
+top: 109px;
+
+}
+
+.language-buttons :hover{
+  background: #AD7C59;
 }

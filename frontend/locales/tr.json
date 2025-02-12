@@ -1,0 +1,28 @@
+{
+    "header": {
+      "home": "Ana Sayfa",
+      "about": "Hakkımızda",
+      "about.story": "Hikayemiz",
+      "about.team": "Ekibimiz",
+      "about.missionVision": "Misyon ve Vizyon",
+      "products": "Ürünler",
+      "products.coffees": "Kahvelerimiz",
+      "products.specialEditions": "Özel Baskılar",
+      "products.blends": "Karışımlar",
+      "products.subscription": "Abonelik Servisi",
+      "blog": "Blog",
+      "blog.recipes": "Kahve Tarifleri",
+      "blog.tips": "Kahve Demleme İpuçları",
+      "blog.stories": "Müşteri Hikayeleri",
+      "contacts": "Bize Ulaşın",
+      "cart": "Sepet",
+      "user": "Kullanıcı"
+    },
+    "hero": {
+      "title": "Premium Paketlenmiş Toz Kahve",
+      "subtitle": "Kahvenin doğum yeri Etiyopya'dan, taze ve pratik ambalajlarda zengin ve lezzetli kahvemizi sunuyoruz.",
+      "description": "Her fincanda Etiyopya kahvesinin özünü keşfedin — derin kökler ve cesur tatlar geleneksinin bir parçası.",
+      "button": "Kahvemizi Keşfedin"
+    }
+  }
+  

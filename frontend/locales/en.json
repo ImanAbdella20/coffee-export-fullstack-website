@@ -1,0 +1,28 @@
+{
+    "header": {
+      "home": "Home",
+      "about": "About Us",
+      "about.story": "Our Story",
+      "about.team": "Our Team",
+      "about.missionVision": "Mission & Vision",
+      "products": "Products",
+      "products.coffees": "Our Coffees",
+      "products.specialEditions": "Special Editions",
+      "products.blends": "Blends",
+      "products.subscription": "Subscription Service",
+      "blog": "Blog",
+      "blog.recipes": "Coffee Recipes",
+      "blog.tips": "Brewing Tips",
+      "blog.stories": "Customer Stories",
+      "contacts": "Contact Us",
+      "cart": "Cart",
+      "user": "User"
+    },
+    "hero": {
+      "title": "Premium Packed Powdered Coffee",
+      "subtitle": "From the birthplace of coffee, Ethiopia, we bring you rich, flavorful coffee packed for convenience and freshness.",
+      "description": "Discover the essence of Ethiopian coffee with every cup — a tradition of deep roots and bold flavors.",
+      "button": "Discover Our Coffee"
+    }
+  }
+  

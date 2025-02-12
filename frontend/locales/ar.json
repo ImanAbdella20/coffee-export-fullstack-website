@@ -1,0 +1,28 @@
+{
+    "header": {
+      "home": "الرئيسية",
+      "about": "معلومات عنا",
+      "about.story": "قصتنا",
+      "about.team": "فريقنا",
+      "about.missionVision": "المهمة والرؤية",
+      "products": "المنتجات",
+      "products.coffees": "قهوينا",
+      "products.specialEditions": "الإصدارات الخاصة",
+      "products.blends": "الخلطات",
+      "products.subscription": "خدمة الاشتراك",
+      "blog": "المدونة",
+      "blog.recipes": "وصفات القهوة",
+      "blog.tips": "نصائح التحضير",
+      "blog.stories": "قصص العملاء",
+      "contacts": "اتصل بنا",
+      "cart": "عربة التسوق",
+      "user": "المستخدم"
+    },
+    "hero": {
+      "title": "قهوة مطحونة ومعبأة مميزة",
+      "subtitle": "من مهد القهوة، إثيوبيا، نعرض لكم قهوة غنية ولذيذة، معبأة للراحة والطزاجة.",
+      "description": "اكتشف جوهر القهوة الإثيوبية في كل فنجان — تقليد ذو جذور عميقة ونكهات قوية.",
+      "button": "اكتشف قهوتنا"
+    }
+  }
+  
