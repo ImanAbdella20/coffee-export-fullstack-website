@@ -12,11 +12,15 @@ const Header: React.FC = () => {
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
-  // Toggle Dropdown Logic
-  const toggleDropdown = (menu: string) => {
-    setDropdownOpen(prev => (prev === menu ? null : menu));
+  // Handle hover over dropdown items
+  const handleMouseEnter = (menu: string) => {
+    setDropdownOpen(menu);
+  };
+
+  const handleMouseLeave = () => {
+    setDropdownOpen(null);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -28,7 +32,7 @@ const Header: React.FC = () => {
   const handleItemClick = () => {
     setDropdownOpen(null);
     setIsOpen(false);
-  }
+  };
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -61,28 +65,38 @@ const Header: React.FC = () => {
             </li>
 
             {/* About Dropdown */}
-            <li className='relative'>
-              <button
-                className=" about  hover:text-[#AD7C59] cursor-pointer"
-                onClick={() => toggleDropdown('about')}
-              >
+            <li 
+              className='relative'
+              onMouseEnter={() => handleMouseEnter('about')}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Link to="/about">
+              
+              <button className="about hover:text-[#AD7C59] cursor-pointer">
                 {t('header.about')} <span>&#9662;</span>
               </button>
+
+              </Link>
               <ul className={`dropdown-menu ${dropdownOpen === 'about' ? 'show' : ''}`}>
-                <li><Link to="/about/story" className="text-white" onClick={handleItemClick}>{t('header.about.story')}</Link></li>
-                <li><Link to="/about/team" className="text-white" onClick={handleItemClick}>{t('header.about.team')}</Link></li>
-                <li><Link to="/about/mission" className="text-white" onClick={handleItemClick}>{t('header.about.missionVision')}</Link></li>
+                <li><Link to="/about/#our-story" className="text-white" onClick={handleItemClick}>{t('header.about.story')}</Link></li>
+                <li><Link to="/about/#our-team" className="text-white" onClick={handleItemClick}>{t('header.about.team')}</Link></li>
+                <li><Link to="/about/#our-mission" className="text-white" onClick={handleItemClick}>{t('header.about.missionVision')}</Link></li>
               </ul>
             </li>
 
             {/* Products Dropdown */}
-            <li className='relative'>
-              <button
-                className="products text-white hover:text-[#AD7C59] cursor-pointer"
-                onClick={() => toggleDropdown('products')}
-              >
+            <li 
+              className='relative'
+              onMouseEnter={() => handleMouseEnter('products')}
+              onMouseLeave={handleMouseLeave}
+            >
+
+              <Link to="/products">
+              <button className="products text-white hover:text-[#AD7C59] cursor-pointer">
                 {t('header.products')} <span>&#9662;</span>
               </button>
+              </Link>
+              
               <ul className={`dropdown-menu ${dropdownOpen === 'products' ? 'show' : ''}`}>
                 <li><Link to="/products/coffees" className="text-white" onClick={handleItemClick}>{t('header.products.coffees')}</Link></li>
                 <li><Link to="/products/special-editions" className="text-white" onClick={handleItemClick}>{t('header.products.specialEditions')}</Link></li>
@@ -92,13 +106,18 @@ const Header: React.FC = () => {
             </li>
 
             {/* Blog Dropdown */}
-            <li className='relative'>
-              <button
-                className=" blog text-white hover:text-[#AD7C59] cursor-pointer"
-                onClick={() => toggleDropdown('blog')}
-              >
+            <li 
+              className='relative'
+              onMouseEnter={() => handleMouseEnter('blog')}
+              onMouseLeave={handleMouseLeave}
+            >
+
+              <Link to="/blog">
+              <button className="blog text-white hover:text-[#AD7C59] cursor-pointer">
                 {t('header.blog')} <span>&#9662;</span>
               </button>
+              </Link>
+             
               <ul className={`dropdown-menu ${dropdownOpen === 'blog' ? 'show' : ''}`}>
                 <li><Link to="/blog/recipes" className="text-white" onClick={handleItemClick}>{t('header.blog.recipes')}</Link></li>
                 <li><Link to="/blog/tips" className="text-white" onClick={handleItemClick}>{t('header.blog.tips')}</Link></li>

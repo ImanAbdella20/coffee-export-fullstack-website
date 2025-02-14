@@ -1,15 +1,13 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import OurCoffees from './OurCoffees';
 
 const ProductPage = () => {
   return (
-    <Router>
-       <Routes>
-              <Route path="/coffees" element={<OurCoffees />} />
-             
-            </Routes>
-    </Router>
+    <>
+    <h1>product page</h1>
+    <Outlet/>
+    </>
   )
 }
 

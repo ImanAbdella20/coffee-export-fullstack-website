@@ -1,8 +1,13 @@
 import React from 'react'
+import { Outlet } from 'react-router'
 
 const Blog = () => {
   return (
-    <div>Blog</div>
+  <>
+  <p>blogs</p>
+  <Outlet/>
+  </>
+
   )
 }
 

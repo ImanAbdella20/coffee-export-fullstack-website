@@ -2,7 +2,7 @@ import React from 'react'
 
 const Mission = () => {
   return (
-    <div>Mission</div>
+    <div className='h-screen'>Mission</div>
   )
 }
 

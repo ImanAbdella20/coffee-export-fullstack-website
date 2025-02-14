@@ -3,7 +3,6 @@
 @import "tailwindcss/preflight";
 @tailwind utilities;
 
-
 body {
   font-family: 'Poppins', sans-serif;
 }
@@ -27,7 +26,6 @@ html {
   background: #ad7c59;
 }
 
-
 /* Keyframes for slide-in animation */
 @keyframes slideIn {
   from {
@@ -41,7 +39,6 @@ html {
 }
 
 /* Animation classes for header */
-
 .header-item {
   animation: slideIn 1s ease-out forwards;
 }
@@ -56,27 +53,28 @@ html {
 
 .about {
   animation-delay: 0.6s;
-  color:white
+  color: white;
 }
-.about:hover{
+
+.about:hover {
   color: #61300D;
 }
 
 .products {
   animation-delay: 0.8s;
-  color:white
+  color: white;
 }
 
-.products:hover{
+.products:hover {
   color: #61300D;
 }
 
 .blog {
   animation-delay: 1s;
-  color:white
+  color: white;
 }
 
-.blog:hover{
+.blog:hover {
   color: #61300D;
 }
 
@@ -122,8 +120,7 @@ html {
   color: #AD7C59;
 }
 
-
-/* hero section */
+/* Hero section */
 .herocontainer {
   position: relative;
   display: flex;
@@ -133,10 +130,8 @@ html {
 }
 
 .herocontent {
-  
   text-align: center; /* Optional: Center text within the content */
 }
-
 
 .line {
   width: 1px;
@@ -148,31 +143,31 @@ html {
   left: -13px;
 }
 
-.herobutton{
- padding: 4px 6px;
- margin-top: 40px;
- margin-left: 35px;
- border-radius: 20px;
+.herobutton {
+  padding: 4px 6px;
+  margin-top: 40px;
+  margin-left: 35px;
+  border-radius: 20px;
 }
 
-.icons{
+.icons {
   position: absolute;
- top: 60%;
+  top: 60%;
 }
 
-.herohead{
+.herohead {
   font-size: 30px;
 }
 
-.heroet{
+.heroet {
   font-size: 10px;
 }
 
-.herodesc{
+.herodesc {
   font-size: 17px;
 }
 
-.arrow{
+.arrow {
   font-size: 25px;
   position: absolute;
   top: 120px;
@@ -180,18 +175,24 @@ html {
   cursor: pointer;
 }
 
-.languages{
+.languages {
   color: white;
 }
 
 .language-buttons {
-background: #61300D;
-border-radius: 2px;
-position: absolute;
-top: 109px;
-
+  background: #61300D;
+  border-radius: 2px;
+  position: absolute;
+  top: 109px;
 }
 
-.language-buttons :hover{
+.language-buttons:hover {
   background: #AD7C59;
+}
+
+
+/* about us */
+
+.about-header{
+ 
 }

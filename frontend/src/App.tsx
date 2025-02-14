@@ -11,8 +11,8 @@ import BlogPage from './pages/blog/BlogPage';
 import OurStory from './pages/about/OurStory';
 import Team from './pages/about/Team';
 import Mission from './pages/about/Mission';
-import Contact from './pages/about/contact/contact';
-import SpecialEdition from './pages/products/specialedition';
+import Contact from './pages/contact/contact';
+import SpecialEdition from './pages/products/Specialedition';
 import Recipes from './pages/blog/Recipes';
 import BlogStories from './pages/blog/BlogStories';
 
@@ -40,11 +40,7 @@ function App() {
                 <Route path="/" element={<HomePage />} />
 
                 {/* About routes */}
-                <Route path="/about" element={<AboutPage />}>
-                  <Route path="story" element={<OurStory />} />
-                  <Route path="team" element={<Team />} />
-                  <Route path="mission" element={<Mission />} />
-                </Route>
+                <Route path="/about" element={<AboutPage />}/>   
 
                 {/* Products routes */}
                 <Route path="/products" element={<ProductPage />}>
