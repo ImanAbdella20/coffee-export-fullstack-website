@@ -38,9 +38,6 @@ const HomePage = () => {
       {/* Gradient overlay */}
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black via-transparent to-transparent z-0"></div>
 
-      {/* Content */}
-      <Header />
-      
       {/* HeroSection with the handleClickArrow prop */}
       <HeroSection handleClickArrow={handleClickArrow} />
     </div>
