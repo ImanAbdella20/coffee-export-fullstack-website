@@ -1,35 +1,56 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import OurStory from './OurStory';   // Import the components
+import coffeevideo from '../../assets/images/coffee.mp4';
+import Header from '../../component/Header';
+import OurStory from './OurStory';
 import Team from './Team';
-import Mission from './Mission';
-import Contact from '../contact/contact';
-import coffeevideo from '../../assets/images/coffee.mp4'
+import Mission from './Mission'; 
+import { useTranslation } from 'react-i18next'; 
 
 const AboutPage: React.FC = () => {
+    const { t } = useTranslation();
+
+
   return (
     <div>
 
-<section className="about-header ">
-        <video className="background-video w-full" autoPlay muted loop>
+      {/* About Header Section with the Video */}
+      <section className="about-header relative">
+        <video className="background-video" autoPlay muted loop>
           <source src={coffeevideo} type="video/mp4" />
           Your browser does not support the video tag.
-          <h1 className="aboutus">About Us</h1>
         </video>
-      
+        
+        {/* Dark Gradient Overlay */}
+        <div className="gradient-overlay absolute top-0 left-0 w-full  z-0"></div>
+        
+        {/* About Us Title */}
+        <h1 className="aboutus absolute text-white text-4xl  font-bold z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        {t('about.title')}
+        </h1>
+         
       </section>
+    
+
+
+
+
+
+
+
+
+
 
       {/* Sections for each part of the About Page */}
       <section id="our-story">
-        <OurStory />
+        <OurStory/>
       </section>
 
       <section id="our-team">
-        <Team />
+      <Team/>
       </section>
 
       <section id="our-mission">
-        <Mission />
+      <Mission/>
       </section>
     </div>
   );

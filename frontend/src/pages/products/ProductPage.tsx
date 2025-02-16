@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import OurCoffees from './OurCoffees';
+import Header from '../../component/Header';
 
 const ProductPage = () => {
   return (

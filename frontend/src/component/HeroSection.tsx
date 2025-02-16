@@ -94,7 +94,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ handleClickArrow }) => {
 
           {/* Language Selector */}
           <div className="language-buttons absolute lg:left-270 md:left-120 sm:left-120 transform -translate-x-1/2 mt-2  ">
-            <button onClick={toggleDropdown} className="languages bg-[#61300D] hover:bg-[#AD7C59] text-white rounded-lg px-4 py-2">
+            <button onClick={toggleDropdown} className="languages bg-[#61300D] hover:bg-[#AD7C59] text-white rounded-lg px-4 py-2 cursor-pointer">
               {selectedLanguage === 'en'
                 ? 'ENGLISH'
                 : selectedLanguage === 'es'
@@ -108,16 +108,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({ handleClickArrow }) => {
             {/* Dropdown */}
             {dropdownOpen && (
               <div className="absolute  mt-2 w-full bg-white rounded-lg shadow-lg ">
-                <button onClick={() => changeLanguage('en')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white">
+                <button onClick={() => changeLanguage('en')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
                   ENGLISH
                 </button>
-                <button onClick={() => changeLanguage('es')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white">
+                <button onClick={() => changeLanguage('es')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
                   SPANISH
                 </button>
-                <button onClick={() => changeLanguage('tr')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white">
+                <button onClick={() => changeLanguage('tr')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
                   TURKISH
                 </button>
-                <button onClick={() => changeLanguage('ar')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white">
+                <button onClick={() => changeLanguage('ar')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
                   ARABIC
                 </button>
               </div>

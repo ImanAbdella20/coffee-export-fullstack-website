@@ -34,7 +34,7 @@ function App() {
           <CoffeeLoading />
         ) : (
           <>
-            <Header />
+              <Header />
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<HomePage />} />

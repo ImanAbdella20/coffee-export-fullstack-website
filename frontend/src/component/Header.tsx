@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../index.css';
 import logo from '../assets/images/images-removebg-preview.png';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
   const { t } = useTranslation();
+
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -41,8 +43,9 @@ const Header: React.FC = () => {
     };
   }, []);
 
+
   return (
-    <div className='flex justify-center bg-[#AD7C59]'>
+    <div className='flex justify-center bg-[#AD7C59] '   >
       <header className='flex justify-between items-center max-w-[92%] w-full px-4 py-2 '>
         <img src={logo} alt="logo" className="header-item logo w-16 h-auto " />
         <button className="md:hidden block" onClick={toggleMenu}>
