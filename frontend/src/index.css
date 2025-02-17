@@ -230,15 +230,21 @@ html {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Optional: text shadow for better visibility */
 }
 
+/*our story */
+
 .story {
-  padding: 2rem;
+  padding: 1rem;
   background-color: #fff;
 }
 
-.story h2 {
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+.story2{
+  font-size: 1.5rem;
+  color: #61300d;
+}
+
+.storydiv{
+  margin-bottom: 3rem;
+  
 }
 
 .story p {
@@ -246,4 +252,12 @@ html {
   line-height: 1.6;
   margin-bottom: 1rem;
   color: #333;
+}
+.storyheader{
+  margin: 12px auto;
+  color: #61300d;
+}
+
+.icons{
+ 
 }

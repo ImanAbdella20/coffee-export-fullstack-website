@@ -27,6 +27,23 @@
 
     "about":{
 "title":"Nosotros"
-    }
+    },
+    
+      "ourstory1": {
+        "title": "Nuestra Historia",
+        "subtitle": "La Esencia del Café Etíope",
+        "description": "Como IFNA Coffee, estamos orgullosos de ofrecer al mundo el mejor café etíope, cultivado cuidadosamente en el corazón de África. Etiopía, el lugar de nacimiento del café, es hogar de algunos de los granos más únicos y aromáticos del mundo. Estamos comprometidos a traer esta rica herencia a cada paquete de café y llevar los sabores distintivos de Etiopía a tu puerta."
+      },
+      
+        "ourstory2": {
+          "subtitle": "Calidad en Cada Paso",
+          "description": "Trabajamos estrechamente con los agricultores locales, apoyando prácticas agrícolas sostenibles que protegen el medio ambiente mientras mejoran los medios de vida. A través de nuestras asociaciones de comercio directo, nos aseguramos de que cada grano se coseche en su punto máximo de madurez, se seleccione a mano con cuidado y se procese con precisión. Cada lote de café pasa por un minucioso proceso de control de calidad para garantizar su frescura, sabor y consistencia. Desde la granja hasta la taza, priorizamos la calidad en cada paso del camino."
+        },
+        
+          "ourstory3": {
+            "subtitle": "Alcance Global con un Toque Local",
+            "description": "Estamos orgullosos de compartir los ricos sabores de Etiopía con el mundo. Nuestro café se exporta a varios mercados internacionales, llevando el auténtico sabor del café etíope a los amantes del café en todas partes. Con un enfoque en la calidad y la autenticidad, nos dedicamos a hacer del café etíope una experiencia global. Ya sea que seas un conocedor de café o un bebedor ocasional, prometemos que cada taza entregará un sabor de la historia, la cultura y la pasión por la excelencia de Etiopía."
+          }   
+     
   }
   

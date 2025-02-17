@@ -28,15 +28,24 @@
     "about":{
 "title":"  About Us"
     },
+    
+      "ourstory1": {
+        "title": "Our Story",
+        "subtitle":"The Essence of Ethiopian Coffee",
+        "description": "As IFNA Coffee, we are proud to offer the world the finest Ethiopian coffee, carefully grown in the heart of Africa. Ethiopia, the birthplace of coffee, is home to some of the world's most unique and aromatic beans. We are committed to bringing this rich heritage to each coffee package and delivering the distinctive flavors of Ethiopia to your doorstep. "
+      },
 
-    "ourstory1":{
-      "description":"     At IFNA Coffee, we are proud to bring the world the finest Ethiopian coffee, meticulously grown in the heart of Africa.
-          Ethiopia, the birthplace of coffee, is home to some of the world’s most exceptional and aromatic beans, cultivated in the rich
-          volcanic soils and lush highlands of the region. Our commitment is to deliver this rich legacy in every pack of coffee, bringing
-          the unique flavors of Ethiopia to your doorstep.
-          For centuries, the Ethiopian highlands have been blessed with the perfect combination of altitude, climate, and fertile soils,
-          creating an ideal environment for coffee cultivation. Our farmers, guardians of this ancient tradition, practice sustainable farming
-          methods passed down through generations, ensuring that each bean is nurtured with care and expertise."
-    }
+      "ourstory2":{
+        "subtitle":" Quality at Every Step",
+        "description":"We work closely with local farmers, supporting sustainable agricultural practices that protect the environment while improving livelihoods. Through our direct trade partnerships, we ensure that every bean is harvested at its peak ripeness, handpicked with care, and processed with precision. Each batch of coffee undergoes a thorough quality control process to guarantee its freshness, flavor, and consistency.From farm to cup, we prioritize quality at every step of the journey."
+      },
+    
+        "ourstory3": {
+          "subtitle": "Global Reach with a Local Touch",
+          "description": "We are proud to share the rich flavors of Ethiopia with the world. Our coffee is exported to various international markets, bringing the authentic taste of Ethiopian coffee to coffee lovers everywhere. With a focus on quality and authenticity, we are dedicated to making Ethiopian coffee a global experience. Whether you are a coffee connoisseur or a casual drinker, we promise that every cup will deliver a taste of Ethiopia’s history, culture, and passion for excellence."
+        }
+      
+      
+    
   }
   

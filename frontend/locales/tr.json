@@ -27,10 +27,23 @@
 
     "about":{
 "title":" Hakkımızda"
-    },
-
-    "ourstory1":{
-   "description": "IFNA Coffee olarak, dünyaya Afrika'nın kalbinde özenle yetiştirilen en kaliteli Etiyopya kahvesini sunmaktan gurur duyuyoruz. Kahvenin doğum yeri olan Etiyopya, dünyanın en özel ve aromatik çekirdeklerinden bazılarına ev sahipliği yapmaktadır. Bu zengin mirası her kahve paketinde taşımaya ve Etiyopya'nın benzersiz tatlarını kapınıza getirmeye kararlıyız.\n\nYüzyıllar boyunca, Etiyopya yaylaları, kahve yetiştiriciliği için mükemmel bir ortam yaratan ideal bir yükseklik, iklim ve verimli toprak kombinasyonu ile kutsanmıştır. Bu antik geleneğin koruyucusu olan çiftçilerimiz, her çekirdeğin özenle ve uzmanlıkla yetiştirildiğinden emin olarak nesilden nesile aktarılan sürdürülebilir tarım yöntemlerini uygulamaktadır."
-    }
+    },  
+    
+      "ourstory1": {
+        "title": "Hikayemiz",
+        "subtitle": "Etiyopya Kahvesinin Özünü",
+        "description": "IFNA Coffee olarak, dünyaya Afrika'nın kalbinde özenle yetiştirilen en kaliteli Etiyopya kahvesini sunmaktan gurur duyuyoruz. Kahvenin doğum yeri olan Etiyopya, dünyanın en özel ve aromatik çekirdeklerinden bazılarına ev sahipliği yapmaktadır. Bu zengin mirası her kahve paketinde taşımaya ve Etiyopya'nın benzersiz tatlarını kapınıza getirmeye kararlıyız."
+      },
+      
+        "ourstory2": {
+          "subtitle": "Her Adımda Kalite",
+          "description": "Yerel çiftçilerle yakın işbirliği içinde çalışarak, geçim kaynaklarını iyileştirirken çevreyi koruyan sürdürülebilir tarım uygulamalarını destekliyoruz. Doğrudan ticaret ortaklıklarımız aracılığıyla, her çekirdeğin en olgun olduğu anda hasat edilmesini, özenle elle toplanmasını ve hassasiyetle işlenmesini sağlıyoruz. Her kahve partisi, tazeliğini, lezzetini ve tutarlılığını garanti altına almak için titiz bir kalite kontrol sürecinden geçer. Çiftlikten fincana kadar, yolculuğun her adımında kaliteyi önceliğimiz haline getiriyoruz."
+        },
+        
+          "ourstory3": {
+            "subtitle": "Yerel Dokunuşla Küresel Erişim",
+            "description": "Etiyopya'nın zengin tatlarını dünya ile paylaşmaktan gurur duyuyoruz. Kahvemiz, Etiyopya kahvesinin otantik tadını kahve severlere ulaştırarak çeşitli uluslararası pazarlara ihraç edilmektedir. Kalite ve otantiklik üzerine odaklanarak, Etiyopya kahvesini küresel bir deneyim haline getirmeye kararlıyız. İster bir kahve gurmesi olun, isterse sıradan bir içici, her fincanda Etiyopya'nın tarihini, kültürünü ve mükemmeliyet tutkusunu tadacağınızın sözünü veriyoruz."
+          }  
+    
   }
   
