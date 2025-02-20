@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import coffee1 from '../../assets/images/coffees.png';
 import { motion } from 'framer-motion';
 import useInView from '../useInView';
-import { FaLeaf, FaHandsHelping, FaGlobe, FaCoffee } from 'react-icons/fa'; // Importing FontAwesome icons
+import { FaCoffee, FaGlobe, FaHandsHelping } from 'react-icons/fa';
+
 
 const OurStory = () => {
   const { t } = useTranslation();

@@ -43,9 +43,23 @@ const Header: React.FC = () => {
     };
   }, []);
 
+  const handleSectionClick = (sectionId:string, pageUrl: string) =>{
+
+    if(location.pathname === pageUrl){
+      const section = document.getElementById(sectionId);
+
+      if(section){
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    }else {
+      // If not on the page, navigate to the page and append the section hash to the URL
+      window.location.href = `${pageUrl}#${sectionId}`;
+    }
+  }
+
 
   return (
-    <div className='flex justify-center bg-[#AD7C59] '   >
+    <div className='flex justify-center bg-[#AD7C59] fullheader'   >
       <header className='flex justify-between items-center max-w-[92%] w-full px-4 py-2 '>
         <img src={logo} alt="logo" className="header-item logo w-16 h-auto " />
         <button className="md:hidden block" onClick={toggleMenu}>
@@ -81,9 +95,30 @@ const Header: React.FC = () => {
 
               </Link>
               <ul className={`dropdown-menu ${dropdownOpen === 'about' ? 'show' : ''}`}>
-                <li><Link to="/about/#our-story" className="text-white" onClick={handleItemClick}>{t('header.about.story')}</Link></li>
-                <li><Link to="/about/#our-team" className="text-white" onClick={handleItemClick}>{t('header.about.team')}</Link></li>
-                <li><Link to="/about/#our-mission" className="text-white" onClick={handleItemClick}>{t('header.about.missionVision')}</Link></li>
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('our-story', '/about')}
+                  >
+                    {t('header.about.story')}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('our-team', '/about')}
+                  >
+                    {t('header.about.team')}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('our-mission', '/about')}
+                  >
+                    {t('header.about.missionVision')}
+                  </button>
+                </li>
               </ul>
             </li>
 
@@ -101,10 +136,41 @@ const Header: React.FC = () => {
               </Link>
               
               <ul className={`dropdown-menu ${dropdownOpen === 'products' ? 'show' : ''}`}>
-                <li><Link to="/products/coffees" className="text-white" onClick={handleItemClick}>{t('header.products.coffees')}</Link></li>
-                <li><Link to="/products/special-editions" className="text-white" onClick={handleItemClick}>{t('header.products.specialEditions')}</Link></li>
-                <li><Link to="/products/blends" className="text-white" onClick={handleItemClick}>{t('header.products.blends')}</Link></li>
-                <li><Link to="/products/subscription" className="text-white" onClick={handleItemClick}>{t('header.products.subscription')}</Link></li>
+              <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('coffees', '/products')}
+                  >
+                    {t('header.products.coffees')}
+                  </button>
+                </li>
+
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('special-editions', '/products')}
+                  >
+                {t('header.products.specialEditions')}
+                  </button>
+                </li>
+
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('blends', '/products')}
+                  >
+                   {t('header.products.blends')}
+                  </button>
+                </li>
+
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('subscription', '/products')}
+                  >
+                    {t('header.products.subscription')}
+                  </button>
+                </li>
               </ul>
             </li>
 
@@ -122,9 +188,34 @@ const Header: React.FC = () => {
               </Link>
              
               <ul className={`dropdown-menu ${dropdownOpen === 'blog' ? 'show' : ''}`}>
-                <li><Link to="/blog/recipes" className="text-white" onClick={handleItemClick}>{t('header.blog.recipes')}</Link></li>
-                <li><Link to="/blog/tips" className="text-white" onClick={handleItemClick}>{t('header.blog.tips')}</Link></li>
-                <li><Link to="/blog/stories" className="text-white" onClick={handleItemClick}>{t('header.blog.stories')}</Link></li>
+
+              <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('recipes', '/blog')}
+                  >
+                    {t('header.blog.recipes')}
+                  </button>
+                </li>
+
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('tips', '/blog')}
+                  >
+                  {t('header.blog.tips')}
+                  </button>
+                </li>
+
+                <li>
+                  <button
+                    className="dropdowns"
+                    onClick={() => handleSectionClick('stories', '/blog')}
+                  >
+               {t('header.blog.stories')}
+                  </button>
+                </li>
+            
               </ul>
             </li>
 
