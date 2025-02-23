@@ -280,10 +280,16 @@ html {
 }
 
 .meminfo{
-  margin-top: 30px;
- 
+  margin: 30px 300px;
+
 }
 
 .eachmem{
   margin: auto 30px;
+}
+
+.teamcontainer{
+
+ margin: 30px auto;
+padding-top: 30px;
 }

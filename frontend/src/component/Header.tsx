@@ -157,15 +157,6 @@ const Header: React.FC = () => {
                 <li>
                   <button
                     className="dropdowns"
-                    onClick={() => handleSectionClick('blends', '/products')}
-                  >
-                   {t('header.products.blends')}
-                  </button>
-                </li>
-
-                <li>
-                  <button
-                    className="dropdowns"
                     onClick={() => handleSectionClick('subscription', '/products')}
                   >
                     {t('header.products.subscription')}
