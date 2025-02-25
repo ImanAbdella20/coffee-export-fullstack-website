@@ -293,3 +293,21 @@ html {
  margin: 30px auto;
 padding-top: 30px;
 }
+
+/* products*/
+
+.search{
+  margin-top: 30px;
+}
+
+.productimg{
+  height: 250px;
+
+}
+.productsbtn{
+  color: white;
+  background-color: #AD7C59;
+}
+.product{
+margin-top: 50px;
+}

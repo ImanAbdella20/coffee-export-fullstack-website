@@ -6,17 +6,17 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
-  const dropdownRef = useRef<HTMLUListElement>(null);
   const { t } = useTranslation();
-
   const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Handle hover over dropdown items
+  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+
   const handleMouseEnter = (menu: string) => {
     setDropdownOpen(menu);
   };
@@ -43,25 +43,21 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  const handleSectionClick = (sectionId:string, pageUrl: string) =>{
-
-    if(location.pathname === pageUrl){
+  const handleSectionClick = (sectionId: string, pageUrl: string) => {
+    if (location.pathname === pageUrl) {
       const section = document.getElementById(sectionId);
-
-      if(section){
+      if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
       }
-    }else {
-      // If not on the page, navigate to the page and append the section hash to the URL
+    } else {
       window.location.href = `${pageUrl}#${sectionId}`;
     }
-  }
-
+  };
 
   return (
-    <div className='flex justify-center bg-[#AD7C59] fullheader'   >
-      <header className='flex justify-between items-center max-w-[92%] w-full px-4 py-2 '>
-        <img src={logo} alt="logo" className="header-item logo w-16 h-auto " />
+    <div className="flex justify-center bg-[#AD7C59] fullheader">
+      <header className="flex justify-between items-center max-w-[92%] w-full px-4 py-2">
+        <img src={logo} alt="logo" className="header-item logo w-16 h-auto" />
         <button className="md:hidden block" onClick={toggleMenu}>
           {isOpen ? (
             <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg ">
@@ -75,47 +71,39 @@ const Header: React.FC = () => {
         </button>
 
         <nav className={`${isOpen ? 'block' : 'hidden'} md:flex md:items-center md:space-x-8 absolute md:static top-16 left-0 w-full md:w-auto text-white`}>
-          <ul className='flex flex-col md:flex-row items-center gap-4 md:gap-8 p-4 md:p-0' ref={dropdownRef}>
+          <ul className="flex flex-col md:flex-row items-center gap-4 md:gap-8 p-4 md:p-0">
             {/* Home */}
-            <li className='text-white hover:text-[#61300d]'>
-              <Link to="/" className="header-item home" onClick={handleItemClick}>{t('header.home')}</Link>
+            <li className="text-white hover:text-[#61300d]">
+              <Link to="/" className="header-item home" onClick={handleItemClick}>
+                {t('header.home')}
+              </Link>
             </li>
 
             {/* About Dropdown */}
-            <li 
-              className='relative'
+            <li
+              className="relative"
               onMouseEnter={() => handleMouseEnter('about')}
               onMouseLeave={handleMouseLeave}
             >
               <Link to="/about">
-              
-              <button className="about hover:text-[#AD7C59] cursor-pointer">
-                {t('header.about')} <span>&#9662;</span>
-              </button>
-
+                <button className="about hover:text-[#AD7C59] cursor-pointer">
+                  {t('header.about')} <span>&#9662;</span>
+                </button>
               </Link>
-              <ul className={`dropdown-menu ${dropdownOpen === 'about' ? 'show' : ''}`}>
+              {/* Dropdown Menu */}
+              <ul ref={dropdownRef} className={`dropdown-menu ${dropdownOpen === 'about' ? 'show' : ''}`}>
                 <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('our-story', '/about')}
-                  >
+                  <button className="dropdowns" onClick={() => handleSectionClick('our-story', '/about')}>
                     {t('header.about.story')}
                   </button>
                 </li>
                 <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('our-team', '/about')}
-                  >
+                  <button className="dropdowns" onClick={() => handleSectionClick('our-team', '/about')}>
                     {t('header.about.team')}
                   </button>
                 </li>
                 <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('our-mission', '/about')}
-                  >
+                  <button className="dropdowns" onClick={() => handleSectionClick('our-mission', '/about')}>
                     {t('header.about.missionVision')}
                   </button>
                 </li>
@@ -123,42 +111,30 @@ const Header: React.FC = () => {
             </li>
 
             {/* Products Dropdown */}
-            <li 
-              className='relative'
+            <li
+              className="relative"
               onMouseEnter={() => handleMouseEnter('products')}
               onMouseLeave={handleMouseLeave}
             >
-
               <Link to="/products">
-              <button className="products text-white hover:text-[#AD7C59] cursor-pointer">
-                {t('header.products')} <span>&#9662;</span>
-              </button>
+                <button className="products text-white hover:text-[#AD7C59] cursor-pointer">
+                  {t('header.products')} <span>&#9662;</span>
+                </button>
               </Link>
-              
-              <ul className={`dropdown-menu ${dropdownOpen === 'products' ? 'show' : ''}`}>
-              <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('coffees', '/products')}
-                  >
+              {/* Dropdown Menu */}
+              <ul ref={dropdownRef} className={`dropdown-menu ${dropdownOpen === 'products' ? 'show' : ''}`}>
+                <li>
+                  <button className="dropdowns" onClick={() => handleSectionClick('coffees', '/products')}>
                     {t('header.products.coffees')}
                   </button>
                 </li>
-
                 <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('special-editions', '/products')}
-                  >
-                {t('header.products.specialEditions')}
+                  <button className="dropdowns" onClick={() => handleSectionClick('special-editions', '/products')}>
+                    {t('header.products.specialEditions')}
                   </button>
                 </li>
-
                 <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('subscription', '/products')}
-                  >
+                  <button className="dropdowns" onClick={() => handleSectionClick('subscription', '/products')}>
                     {t('header.products.subscription')}
                   </button>
                 </li>
@@ -166,59 +142,46 @@ const Header: React.FC = () => {
             </li>
 
             {/* Blog Dropdown */}
-            <li 
-              className='relative'
+            <li
+              className="relative"
               onMouseEnter={() => handleMouseEnter('blog')}
               onMouseLeave={handleMouseLeave}
             >
-
               <Link to="/blog">
-              <button className="blog text-white hover:text-[#AD7C59] cursor-pointer">
-                {t('header.blog')} <span>&#9662;</span>
-              </button>
+                <button className="blog text-white hover:text-[#AD7C59] cursor-pointer">
+                  {t('header.blog')} <span>&#9662;</span>
+                </button>
               </Link>
-             
-              <ul className={`dropdown-menu ${dropdownOpen === 'blog' ? 'show' : ''}`}>
-
-              <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('recipes', '/blog')}
-                  >
+              {/* Dropdown Menu */}
+              <ul ref={dropdownRef} className={`dropdown-menu ${dropdownOpen === 'blog' ? 'show' : ''}`}>
+                <li>
+                  <button className="dropdowns" onClick={() => handleSectionClick('recipes', '/blog')}>
                     {t('header.blog.recipes')}
                   </button>
                 </li>
-
                 <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('tips', '/blog')}
-                  >
-                  {t('header.blog.tips')}
+                  <button className="dropdowns" onClick={() => handleSectionClick('tips', '/blog')}>
+                    {t('header.blog.tips')}
                   </button>
                 </li>
-
                 <li>
-                  <button
-                    className="dropdowns"
-                    onClick={() => handleSectionClick('stories', '/blog')}
-                  >
-               {t('header.blog.stories')}
+                  <button className="dropdowns" onClick={() => handleSectionClick('stories', '/blog')}>
+                    {t('header.blog.stories')}
                   </button>
                 </li>
-            
               </ul>
             </li>
 
             {/* Contacts */}
-            <li className='text-white hover:text-[#61300d]'>
-              <Link to="/contacts" className="header-item contacts" onClick={handleItemClick}>{t('header.contacts')}</Link>
+            <li className="text-white hover:text-[#61300d]">
+              <Link to="/contacts" className="header-item contacts" onClick={handleItemClick}>
+                {t('header.contacts')}
+              </Link>
             </li>
-
           </ul>
         </nav>
 
-        <div className='hidden md:flex space-x-4 text-white'>
+        <div className="hidden md:flex space-x-4 text-white">
           <Link to="/cart" className="header-item cart" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H7M9 18c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
@@ -233,6 +196,6 @@ const Header: React.FC = () => {
       </header>
     </div>
   );
-}
+};
 
 export default Header;
