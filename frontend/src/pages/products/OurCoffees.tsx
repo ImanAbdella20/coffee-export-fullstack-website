@@ -1,57 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import product1 from '../../assets/images/4.png'
+import axios from 'axios';
+import ReactLoading from 'react-loading'; // Optional for improved loading UI
+import product1 from '../../assets/images/4.png';
+
+// Define product type
+interface Product {
+  id: number;
+  name: string;
+  image: string;
+  weight: string;
+  price: string;
+}
 
 const OurCoffees = () => {
-  // Mock coffee products data for demonstration
-  const coffeeProducts = [
-    {
-      id: 1,
-      image: product1, 
-      name: 'Espresso Blend',
-      weight: '250g',
-      price: '$15.99',
-    },
-    {
-      id: 2,
-      image: 'https://via.placeholder.com/150',
-      name: 'Colombian Roast',
-      weight: '500g',
-      price: '$18.99',
-    },
-    {
-      id: 3,
-      image: 'https://via.placeholder.com/150',
-      name: 'French Vanilla',
-      weight: '200g',
-      price: '$12.99',
-    },
-    {
-      id: 4,
-      image: 'https://via.placeholder.com/150',
-      name: 'Hazelnut Decaf',
-      weight: '300g',
-      price: '$14.49',
-    },
-    {
-      id: 4,
-      image: 'https://via.placeholder.com/150',
-      name: 'Hazelnut Decaf',
-      weight: '300g',
-      price: '$14.49',
-    },
-    {
-      id: 4,
-      image: 'https://via.placeholder.com/150',
-      name: 'Hazelnut Decaf',
-      weight: '300g',
-      price: '$14.49',
-    },
-  ];
+  const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true); // State to manage loading state
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCoffeeProducts = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`);
+        setCoffeeProducts(response.data);
+        setLoading(false); // Set loading to false after data is fetched
+      } catch (err: any) {
+        setError('Failed to load products');
+        setLoading(false); // Set loading to false even if there is an error
+      }
+    };
+  
+    fetchCoffeeProducts(); // Call the async function to fetch data
+  }, []);
+  
+
+  // Handle loading state
+  if (loading) {
+    return <ReactLoading type="spin" color="#000" height={50} width={50} />;
+  }
+
+  // Handle error state
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
-      <div className=" search flex justify-between ">
+      <div className="search flex justify-between">
         {/* Search Coffee */}
         <div className="flex border border-gray-300 rounded-lg">
           <input
@@ -77,8 +72,8 @@ const OurCoffees = () => {
           </select>
           <select className="border border-gray-300 rounded p-2">
             <option value="">Select Coffee Origin</option>
-            <option value="colombia">Colombia</option>
-            <option value="ethiopia">Ethiopia</option>
+            <option value="colombia">Yergachefe</option>
+            <option value="ethiopia">Jimma</option>
           </select>
           <select className="border border-gray-300 rounded p-2">
             <option value="">Select Flavour</option>
@@ -90,7 +85,7 @@ const OurCoffees = () => {
       </div>
 
       {/* Products */}
-      <div className="product grid grid-cols-4 gap-4 ">
+      <div className="product grid grid-cols-4 gap-4">
         {coffeeProducts.map((product) => (
           <div key={product.id} className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <img
@@ -103,7 +98,7 @@ const OurCoffees = () => {
             <p className="text-xl font-bold mt-2">{product.price}</p>
 
             <div className="mt-4 flex justify-between gap-2">
-              <button className=" productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] transition-colors">
+              <button className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] transition-colors">
                 Add to Cart
               </button>
               <button className="productsbtn bg-[#61300d] text-white py-2 px-4 rounded hover:bg-[#AD7C59] transition-colors">

@@ -35,3 +35,18 @@ return res.json({
     
 }
 }
+
+export const getProduct = async(req,res) => {
+
+    try {
+       
+        const products = await Product.find();
+
+        if(products){
+            res.status(200).json(products); 
+        }
+        res.status(400).json({message:'Products not found!'}); 
+    } catch (error) {
+        res.status(500).json({message:'Failed to fetch products.'})
+    }
+}

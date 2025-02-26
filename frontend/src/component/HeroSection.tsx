@@ -46,7 +46,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ handleClickArrow }) => {
             </p>
 
             <Link
-  to="/coffees"
+  to="/products"
   className="herobutton bg-[#61300D] hover:bg-[#AD7C59] text-white rounded-lg text-lg transform transition-all duration-300 hover:translate-x-4 w-50 block"
 >
   {t('hero.button')}
