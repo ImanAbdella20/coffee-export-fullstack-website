@@ -6,7 +6,7 @@ import product1 from '../../assets/images/4.png';
 
 // Define product type
 interface Product {
-  id: number;
+  _id: string;
   name: string;
   image: string;
   weight: string;
@@ -17,6 +17,7 @@ const OurCoffees = () => {
   const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [error, setError] = useState<string | null>(null);
+  const [cart , setCart] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchCoffeeProducts = async () => {
@@ -42,6 +43,17 @@ const OurCoffees = () => {
   // Handle error state
   if (error) {
     return <div>{error}</div>;
+  }
+
+  const addToCart = (product:Product) => {
+ setCart((prevCart) => {
+  const productInCart = prevCart.find((item => item._id === product._id));
+  if (productInCart) {
+    // If product already exists in cart, return cart without adding again
+    return prevCart;
+  }
+  return [...prevCart, product];
+ })
   }
 
   return (
@@ -87,7 +99,7 @@ const OurCoffees = () => {
       {/* Products */}
       <div className="product grid grid-cols-4 gap-4">
         {coffeeProducts.map((product) => (
-          <div key={product.id} className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div key={product._id} className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <img
               src={product.image}
               alt={product.name}
@@ -98,10 +110,13 @@ const OurCoffees = () => {
             <p className="text-xl font-bold mt-2">{product.price}</p>
 
             <div className="mt-4 flex justify-between gap-2">
-              <button className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] transition-colors">
+              <button 
+              className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
+              onClick = {() => addToCart(product)}
+              >
                 Add to Cart
               </button>
-              <button className="productsbtn bg-[#61300d] text-white py-2 px-4 rounded hover:bg-[#AD7C59] transition-colors">
+              <button className="productsbtn bg-[#61300d] text-white py-2 px-4 rounded hover:bg-[#AD7C59] cursor-pointer">
                 Buy Now
               </button>
             </div>

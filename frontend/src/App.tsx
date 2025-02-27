@@ -15,6 +15,7 @@ import Contact from './pages/contact/contact';
 import SpecialEdition from './pages/products/Specialedition';
 import Recipes from './pages/blog/Recipes';
 import BlogStories from './pages/blog/BlogStories';
+import CartsPage from './pages/cartsPage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -53,6 +54,7 @@ function App() {
 
                 {/* Contact route */}
                 <Route path="/contacts" element={<Contact />} />
+                <Route path="/cart" element={<CartsPage />} />
               </Routes>
               <section id="contact" className="scroll-section">
                 <Contact />
