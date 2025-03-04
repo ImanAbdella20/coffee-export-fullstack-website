@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import productRoute from './routes/productRoute.js';
+import cartRoute from './routes/cartRoute.js';
+import authRoute from './routes/authRoute.js';
 
 
 dotenv.config();
@@ -15,7 +17,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
 app.use('/products', productRoute)
-
+app.use('/cart', cartRoute);
+app.use('/auth', authRoute)
 
 
 

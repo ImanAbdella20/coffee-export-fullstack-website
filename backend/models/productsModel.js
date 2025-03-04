@@ -28,10 +28,6 @@ const productModel = mongoose.Schema({
       origin: {
         type: String, 
         required: true,
-      },
-      flavour: {
-        type: String,  // 'fruity', 'nutty', 'chocolatey', etc.
-        required: true,
       }
 })
 

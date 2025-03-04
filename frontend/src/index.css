@@ -1,3 +1,6 @@
+/* index.css */
+
+/* Importing Tailwind and Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 @import "tailwindcss";
 @import "tailwindcss/preflight";
@@ -87,7 +90,7 @@ html {
   margin-left: 5px;
 }
 
-
+/* Dropdown Menu */
 .dropdown-menu {
   position: absolute;
   background-color: white;
@@ -101,14 +104,17 @@ html {
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
+  display: none; /* Hidden by default */
 }
 
-.dropdown-menu.show {
+/* Make the dropdown visible when hovering over the parent item or the dropdown itself */
+li:hover .dropdown-menu {
+  display: block;
   opacity: 1;
   transform: translateY(0);
 }
 
-.dropdowns{
+.dropdowns {
   color: black;
   cursor: pointer;
 }
@@ -126,24 +132,24 @@ html {
   color: #AD7C59;
 }
 
-/* Hero section */
+/* Hero Section */
 .herocontainer {
   position: relative;
   display: flex;
   margin-left: 30px;
   align-items: center;
-  height: 100vh; /* Ensure the container takes up the full viewport height */
+  height: 100vh;
 }
 
 .herocontent {
-  text-align: center; /* Optional: Center text within the content */
+  text-align: center;
 }
 
 .line {
   width: 1px;
-  height: 70px; /* Adjust this based on the space you want the line to cover */
+  height: 70px;
   background-color: #AD7C59;
-  margin-left: 20px; /* Adjust this to add space between the icons and the line */
+  margin-left: 20px;
   margin-top: 5px;
   position: absolute;
   left: -13px;
@@ -196,13 +202,11 @@ html {
   background: #AD7C59;
 }
 
-
-/* about us */
-/* About Header Section with Video */
+/* About Us Section */
 .about-header {
   position: relative;
   width: 100%;
-  height: 50vh; /* Full viewport height */
+  height: 50vh;
 }
 
 .background-video {
@@ -211,8 +215,8 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the video covers the area */
-  z-index: -1; /* Ensure the video stays below content */
+  object-fit: cover;
+  z-index: -1;
 }
 
 .gradient-overlay {
@@ -221,8 +225,8 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)); /* Darker gradient */
-  z-index: 0; /* Gradient overlay on top of the video */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
+  z-index: 0;
 }
 
 .aboutus {
@@ -233,24 +237,22 @@ html {
   font-size: 3rem;
   font-weight: bold;
   color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Optional: text shadow for better visibility */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
-/*our story */
-
+/* Our Story Section */
 .story {
   padding: 1rem;
   background-color: #fff;
 }
 
-.story2{
+.story2 {
   font-size: 1.5rem;
   color: #61300d;
 }
 
-.storydiv{
+.storydiv {
   margin-bottom: 3rem;
-  
 }
 
 .story p {
@@ -259,18 +261,14 @@ html {
   margin-bottom: 1rem;
   color: #333;
 }
-.storyheader{
+
+.storyheader {
   margin: 12px auto;
   color: #61300d;
 }
 
-.icons{
- 
-}
-
-/* team*/
-
-.buttons{
+/* Team Section */
+.buttons {
   padding: 4px 20px;
   background: #61300d;
   border-radius: 100%;
@@ -279,35 +277,33 @@ html {
   font-size: 40px;
 }
 
-.meminfo{
+.meminfo {
   margin: 30px 300px;
-
 }
 
-.eachmem{
+.eachmem {
   margin: auto 30px;
 }
 
-.teamcontainer{
-
- margin: 30px auto;
-padding-top: 30px;
+.teamcontainer {
+  margin: 30px auto;
+  padding-top: 30px;
 }
 
-/* products*/
-
-.search{
+/* Products Section */
+.search {
   margin-top: 30px;
 }
 
-.productimg{
+.productimg {
   height: 250px;
-
 }
-.productsbtn{
+
+.productsbtn {
   color: white;
   background-color: #AD7C59;
 }
-.product{
-margin-top: 50px;
+
+.product {
+  margin-top: 50px;
 }

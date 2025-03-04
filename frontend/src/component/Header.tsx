@@ -14,6 +14,7 @@ const Header: React.FC = () => {
   };
 
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+  const [isHovering, setIsHovering] = useState<boolean>(false);  // Track hover state for dropdown
 
   const dropdownRef = useRef<HTMLUListElement | null>(null);
 
@@ -22,8 +23,13 @@ const Header: React.FC = () => {
   };
 
   const handleMouseLeave = () => {
-    setDropdownOpen(null);
+    if (!isHovering) {
+      setDropdownOpen(null);
+    }
   };
+
+  const handleItemMouseEnter = () => setIsHovering(true);
+  const handleItemMouseLeave = () => setIsHovering(false);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -86,7 +92,9 @@ const Header: React.FC = () => {
               onMouseLeave={handleMouseLeave}
             >
               <Link to="/about">
-                <button className="about hover:text-[#AD7C59] cursor-pointer">
+                <button className="about hover:text-[#AD7C59] cursor-pointer"
+                  onMouseEnter={handleItemMouseEnter}
+                  onMouseLeave={handleItemMouseLeave}>
                   {t('header.about')} <span>&#9662;</span>
                 </button>
               </Link>
@@ -117,7 +125,9 @@ const Header: React.FC = () => {
               onMouseLeave={handleMouseLeave}
             >
               <Link to="/products">
-                <button className="products text-white hover:text-[#AD7C59] cursor-pointer">
+                <button className="products text-white hover:text-[#AD7C59] cursor-pointer"
+                  onMouseEnter={handleItemMouseEnter}
+                  onMouseLeave={handleItemMouseLeave}>
                   {t('header.products')} <span>&#9662;</span>
                 </button>
               </Link>
@@ -148,7 +158,9 @@ const Header: React.FC = () => {
               onMouseLeave={handleMouseLeave}
             >
               <Link to="/blog">
-                <button className="blog text-white hover:text-[#AD7C59] cursor-pointer">
+                <button className="blog text-white hover:text-[#AD7C59] cursor-pointer"
+                  onMouseEnter={handleItemMouseEnter}
+                  onMouseLeave={handleItemMouseLeave}>
                   {t('header.blog')} <span>&#9662;</span>
                 </button>
               </Link>
@@ -187,7 +199,7 @@ const Header: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H7M9 18c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
             </svg>
           </Link>
-          <Link to="/user" className="header-item user move-up" onClick={handleItemClick}>
+          <Link to="/login" className="header-item user move-up" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/>
             </svg>
