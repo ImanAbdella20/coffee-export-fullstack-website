@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword, doSignInWithGoogle } from '../../../lib/auth';
+import axios from 'axios';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState(''); // Adding username
   const [signingUp, setSigningUp] = useState(false);
   const [error, setError] = useState('');
 
@@ -16,9 +18,26 @@ const Signup = () => {
     setError('');
 
     try {
-      await doCreateUserWithEmailAndPassword(email, password);
-      navigate('/'); 
+      // Create the user using Firebase Authentication
+      const userCredential = await doCreateUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+
+      // Get the user ID token (to be used for other authenticated requests, if needed)
+      const idToken = await user.getIdToken();
+
+      // Store the user info in MongoDB via backend (API)
+      await axios.post(`${import.meta.env.REACT_APP_API_URL}/auth/signup`, {
+        username: userName,
+        email: email,
+        uid: user.uid,
+      });
+
+      // Store the ID token in localStorage
+      localStorage.setItem('authToken', idToken);
+      navigate('/');
+
     } catch (err: any) {
+  
       setError(err.message);
     } finally {
       setSigningUp(false);
@@ -28,8 +47,10 @@ const Signup = () => {
   const handleGoogleSignup = async () => {
     setSigningUp(true);
     try {
+      // Sign in the user with Google
       await doSignInWithGoogle();
-      navigate('/'); // Redirect to dashboard
+
+      navigate('/');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -38,12 +59,22 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col gap-3 max-w-[70%] items-center bg-gray-200 p-5 rounded-md">
+    < div className='h-screen'>
+
+    <div className="flex flex-col gap-3 items-center  bg-gray-200 p-5 rounded-md max-w-[40%] h-[70%] ">
       <h1 className="text-2xl font-bold">Sign Up</h1>
 
       {error && <p className="text-red-500">{error}</p>}
 
       <form className="flex flex-col gap-4 w-full" onSubmit={handleSignup}>
+        <input
+          type="text"
+          placeholder="Enter your username"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          required
+          className="p-2 border border-gray-400 rounded-md"
+        />
         <input
           type="email"
           placeholder="Enter your email"
@@ -63,7 +94,7 @@ const Signup = () => {
         <button
           type="submit"
           disabled={signingUp}
-          className="bg-slate-700 w-full h-10 rounded-md text-white border border-black"
+          className="bg-amber-600"
         >
           {signingUp ? 'Signing up...' : 'Sign up'}
         </button>
@@ -84,6 +115,7 @@ const Signup = () => {
       >
         <i className="fab fa-google"></i> Sign up with Google
       </button>
+    </div>
     </div>
   );
 };

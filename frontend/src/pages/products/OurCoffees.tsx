@@ -5,13 +5,14 @@ import ReactLoading from 'react-loading';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Product {
+  quantity: number;
   _id: string;
   name: string;
   image: string;
   weight: string;
   price: string;
-  roastLevel: string;  // Added roastLevel field
-  origin: string;      // Added origin field
+  roastLevel: string;
+  origin: string;
 }
 
 const OurCoffees = () => {
@@ -45,6 +46,14 @@ const OurCoffees = () => {
     fetchCoffeeProducts();
   }, []);
 
+  useEffect(() => {
+    // Load cart from localStorage when component mounts
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, search: e.target.value });
   };
@@ -73,32 +82,58 @@ const OurCoffees = () => {
     return isNameMatch && isRoastLevelMatch && isOriginMatch;
   });
 
+ // Handle adding to cart with default quantity 1
+const handleAddToCartDirectly = (product: Product) => {
+  setSelectedProduct(product);
+
+  // Create a cart item with quantity 1 by default
+  const cartItem = { ...product, quantity: 1 };
+
+  // Update cart in state
+  setCart((prevCart) => {
+    // Check if the product is already in the cart
+    const existingProductIndex = prevCart.findIndex(item => item._id === cartItem._id);
+    if (existingProductIndex > -1) {
+      // If the product exists, do not modify quantity since default is 1
+      return [...prevCart];
+    }
+    // Otherwise, add the product to the cart
+    return [...prevCart, cartItem];
+  });
+
+  // Store cart in localStorage
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  setShowQuantityPopup(false); // Close popup after adding
+};
+
+
   // Handle opening quantity selection popup
   const openQuantityPopup = (product: Product) => {
     setSelectedProduct(product);
     setShowQuantityPopup(true);
-    setQuantity(1);
+    setQuantity(1); // Reset to 1 by default
   };
 
-  // Handle adding to cart
-  const addToCart = async () => {
+  // Handle adding to cart with user-selected quantity
+  const addToCart = () => {
     if (!selectedProduct) return;
 
-    const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/cart/add`, {
-      productId: selectedProduct._id,
-      quantity,
+    const cartItem = { ...selectedProduct, quantity };
+
+    setCart((prevCart) => {
+      const existingProductIndex = prevCart.findIndex(item => item._id === cartItem._id);
+      if (existingProductIndex > -1) {
+        prevCart[existingProductIndex].quantity += quantity;
+        return [...prevCart];
+      }
+      return [...prevCart, cartItem];
     });
 
-    if (response.status === 200) {
-      setCart((prevCart) => {
-        const productInCart = prevCart.find((item) => item._id === selectedProduct._id);
-        if (productInCart) {
-          return prevCart;
-        }
-        return [...prevCart, selectedProduct];
-      });
-      setShowQuantityPopup(false); // Close popup after adding
-    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    setShowQuantityPopup(false); // Close popup after adding
+    setQuantity(1); // Reset quantity to 1 after adding
   };
 
   return (
@@ -141,35 +176,7 @@ const OurCoffees = () => {
             <option value="Ethiopia">Jimma</option>
             <option value="Colombia">Colombia</option>
             <option value="Brazil">Brazil</option>
-            {/* Add more origins as needed */}
           </select>
-
-          {/* Origin Filter */}
-          <select
-            value={filters.origin}
-            onChange={handleOriginChange}
-            className="border px-4 py-2 rounded"
-          >
-            <option value="">Origin</option>
-            <option value="Ethiopia">Jimma</option>
-            <option value="Colombia">Colombia</option>
-            <option value="Brazil">Brazil</option>
-            {/* Add more origins as needed */}
-          </select>
-
-          {/* grind type Filter */}
-          <select
-            value={filters.origin}
-            onChange={handleOriginChange}
-            className="border px-4 py-2 rounded"
-          >
-            <option value="">Grind Type</option>
-            <option value="Ethiopia">Whole Grinded</option>
-            <option value="Colombia">Colombia</option>
-            <option value="Brazil">Brazil</option>
-            {/* Add more origins as needed */}
-          </select>
-        
         </div>
 
         {/* Product List */}
@@ -184,12 +191,13 @@ const OurCoffees = () => {
               <div className="mt-4 flex justify-between gap-2">
                 <button
                   className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
-                  onClick={() => openQuantityPopup(product)}
+                  onClick={() => openQuantityPopup(product)} // Optional popup for quantity
                 >
                   Add to Cart
                 </button>
                 <button
                   className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
+                  onClick={() => handleAddToCartDirectly(product)} // Direct add to cart with default quantity
                 >
                  Buy Now
                 </button>
@@ -199,11 +207,11 @@ const OurCoffees = () => {
         </div>
       </div>
 
-      {/* Smooth Popup */}
+      {/* Smooth Popup for Quantity */}
       <AnimatePresence>
         {showQuantityPopup && (
           <>
-            {/* Blurred background (without darkening) */}
+            {/* Blurred background */}
             <motion.div
               className="fixed inset-0 backdrop-blur-md z-40"
               initial={{ opacity: 0 }}
@@ -212,7 +220,7 @@ const OurCoffees = () => {
               onClick={() => setShowQuantityPopup(false)}
             />
 
-            {/* Popup (remains sharp & clear) */}
+            {/* Popup Content */}
             <motion.div
               className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white p-6 shadow-xl border-t rounded-t-lg z-50"
               initial={{ y: 100, opacity: 0 }}

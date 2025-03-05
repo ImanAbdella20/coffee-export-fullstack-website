@@ -2,6 +2,7 @@ import admin from '../config/fireBaseAdmin.js';
 import {User} from '../models/authModel.js'
 import jwt from 'jsonwebtoken';
 
+
 // Sign Up Function
 export const signUp = async (req, res) => {
     const { username, email, uid } = req.body;
@@ -28,7 +29,6 @@ export const signUp = async (req, res) => {
       return res.status(500).json({ message: "An error occurred" });
     }
   }
-
 
   // Login Function
 export const login = async (req, res) => {
