@@ -103,7 +103,7 @@ const CartsPage = () => {
       )}
 
       <div className="bg-gray-200 absolute bottom-0 h-[150px] flex w-[80%] fixed items-center mx-auto justify-around">
-        <h3>Total: ${calculateTotal()}</h3>
+        <h3>Total: br{calculateTotal()}</h3>
         <h4>Items in Cart: {cartCount}</h4> {/* Displaying the item count */}
         <button className="checkout-btn bg-[#61300d] text-white px-4 py-2 rounded cursor-pointer">
             Proceed to Checkout

@@ -47,18 +47,47 @@ export const addProduct = async (req, res) => {
 };
 
 
-export const getProduct = async (req, res) => {
-  try {
-    const product = await Product.find();
-    if (!product|| product.length === 0) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-    return res.status(200).json({ product });
 
-  } catch (error) {
-    return res.status(500).json({ message: "Failed to get product", error: error.message });
+export const getProduct = async (req, res) => {
+  const { search, roastLevel, origin, coffeeType, page = 1, limit = 8 } = req.query;
+
+  const filters = {};
+
+  if (search) {
+    filters.name = { $regex: search, $options: 'i' }; // case-insensitive search
+  }
+  if (roastLevel) {
+    filters.roastLevel = roastLevel;
+  }
+  if (origin) {
+    filters.origin = origin;
+  }
+  if (coffeeType) {
+    filters.coffeeType = coffeeType;
+  }
+
+  try {
+    const productsQuery = Product.find(filters).limit(Number(limit));
+
+    // Apply random selection if no filters are applied and it's the first request
+    if (!search && !roastLevel && !origin && !coffeeType) {
+      const randomProducts = await Product.aggregate([{ $sample: { size: Number(limit) } }]);
+      return res.json({
+        products: randomProducts,
+        totalProducts: await Product.countDocuments(filters),
+      });
+    }
+
+    // Regular filtered query
+    const products = await productsQuery.skip((page - 1) * limit);
+    const totalProducts = await Product.countDocuments(filters);
+    
+    res.json({ products, totalProducts });
+  } catch (err) {
+    res.status(500).send('Error retrieving products');
   }
 };
+
 
 export const updateProduct = async (req, res) => {
   try {
