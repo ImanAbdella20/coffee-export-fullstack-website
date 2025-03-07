@@ -36,8 +36,8 @@ const CartsPage = () => {
     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Save updated cart to localStorage
   };
 
-  // Update item quantity
-  const updateQuantity = (productId: string, quantity: number) => {
+   // Update item quantity
+   const updateQuantity = (productId: string, quantity: number) => {
     const updatedCart = cart.map(item =>
       item._id === productId ? { ...item, quantity } : item
     );
@@ -49,12 +49,21 @@ const CartsPage = () => {
   // Toggle the selection of an item
   const toggleItemSelection = (productId: string) => {
     const updatedSelectedItems = new Set(selectedItems);
+    
     if (updatedSelectedItems.has(productId)) {
+      // If item is already selected, unselect it and remove from cart and localStorage
       updatedSelectedItems.delete(productId);
+
+      // Remove item from cart
+      const updatedCart = cart.filter(item => item._id !== productId);
+      setCart(updatedCart);
+      setCartCount(updatedCart.reduce((total: number, item: CartItem) => total + item.quantity, 0)); // Update cart count
+      localStorage.setItem('cart', JSON.stringify(updatedCart)); // Save updated cart to localStorage
     } else {
+      // If item is not selected, add it to the selection
       updatedSelectedItems.add(productId);
+      setSelectedItems(updatedSelectedItems);
     }
-    setSelectedItems(updatedSelectedItems);
   };
 
   // Calculate total price
@@ -62,20 +71,6 @@ const CartsPage = () => {
     return cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
   };
 
-  // Add product to cart and set it as selected by default
-  const addToCart = (product: CartItem) => {
-    const updatedCart = [...cart, product];
-    setCart(updatedCart);
-    setCartCount(updatedCart.reduce((total: number, item) => total + item.quantity, 0)); // Update cart count
-
-    // Add the new product to the selectedItems set
-    const updatedSelectedItems = new Set(selectedItems);
-    updatedSelectedItems.add(product._id);
-    setSelectedItems(updatedSelectedItems);
-
-    // Save updated cart to localStorage
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-  };
 
   return (
     <div className="cart-page h-screen">
