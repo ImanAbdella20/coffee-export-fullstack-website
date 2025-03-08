@@ -18,16 +18,52 @@ import BlogStories from './pages/blog/BlogStories';
 import CartsPage from './pages/cart/cartsPage';
 import Signup from './pages/Auth/Signup';
 import Login from './pages/Auth/Login';
+import CheckoutPage from './pages/checkout/ShippingForm';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from '../lib/fireBaseConfig';
+import ShippingForm from './pages/checkout/ShippingForm';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
+  // First useEffect for authentication state change
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+        localStorage.removeItem("authToken");
+      }
+    });
+
+    // Cleanup on unmount
+    return () => unsubscribe();
+  }, []);  // Empty dependency array ensures this only runs once on mount
+
+  // Second useEffect for loading simulation
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2500); // Simulating a 2.5-second loading delay
+      setLoading(false); // Simulating a loading delay
+    }, 2500); // 2.5 second delay
+
+    // Cleanup on unmount
     return () => clearTimeout(timer);
-  }, []);
+  }, []); // Empty dependency array ensures this only runs once on mount
+
+  // Define an onSubmit handler for the ShippingForm component
+  const handleShippingFormSubmit = (shippingDetails: {
+    fullName: string;
+    address: string;
+    city: string;
+    postalCode: string;
+    country: string;
+    phoneNumber: string;
+  }) => {
+    console.log('Shipping details submitted:', shippingDetails);
+    // Here you can process the shipping details, e.g., save them to a database
+  };
 
   return (
     <Router>
@@ -37,13 +73,13 @@ function App() {
           <CoffeeLoading />
         ) : (
           <>
-              <Header />
+            <Header />
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<HomePage />} />
 
                 {/* About routes */}
-                <Route path="/about" element={<AboutPage />}/>   
+                <Route path="/about" element={<AboutPage />}/>
 
                 {/* Products routes */}
                 <Route path="/products" element={<ProductPage />}/>
@@ -59,6 +95,8 @@ function App() {
                 <Route path="/cart" element={<CartsPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                {/* Pass the onSubmit function to ShippingForm */}
+                <Route path="/shippingform" element={<ShippingForm onSubmit={handleShippingFormSubmit} />} />
               </Routes>
               <section id="contact" className="scroll-section">
                 <Contact />

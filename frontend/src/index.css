@@ -308,8 +308,17 @@ li:hover .dropdown-menu {
   margin-top: 50px;
 }
 
-/* auth */
+/* cart */
+.check-outbtn{
+  background-color: #AD7C59;
+  color: white;
+  height: 50px;
+  width: 200px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-.signup{
- 
+.cartcount{
+  top: -10px;
+  right: -5px;
 }

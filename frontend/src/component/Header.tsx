@@ -6,12 +6,21 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { t } = useTranslation();
   const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      const parsedCart = JSON.parse(storedCart);
+      setCartCount(parsedCart.reduce((total: number, item: { quantity: number }) => total + item.quantity, 0)); // Update cart count
+    }
+  }, []); 
 
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [isHovering, setIsHovering] = useState<boolean>(false);  // Track hover state for dropdown
@@ -194,10 +203,15 @@ const Header: React.FC = () => {
         </nav>
 
         <div className="hidden md:flex space-x-4 text-white">
-          <Link to="/cart" className="header-item cart" onClick={handleItemClick}>
+          <Link to="/cart" className="header-item cart relative" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H7M9 18c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
             </svg>
+            {cartCount > 0 && (
+              <span className=" cartcount absolute text-xs font-bold text-white bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </Link>
           <Link to="/login" className="header-item user move-up" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

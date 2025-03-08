@@ -26,7 +26,7 @@ const Login = () => {
       localStorage.setItem('authToken', idToken);
 
       // Redirect after login
-      navigate('/');
+      navigate('/shippingform');
     } catch (err: any) {
       handleFirebaseError(err, setError);
     } finally {

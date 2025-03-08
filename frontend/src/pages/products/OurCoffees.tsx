@@ -4,6 +4,7 @@ import axios from 'axios';
 import ReactLoading from 'react-loading';
 import { motion, AnimatePresence } from 'framer-motion';
 import debounce from 'lodash.debounce';
+import { Link, useNavigate } from 'react-router';
 
 interface Product {
   quantity: number;
@@ -30,6 +31,8 @@ const OurCoffees = () => {
   const [coffeeTypeFilter, setCoffeeTypeFilter] = useState('');
   const [page, setPage] = useState(1); // Track the current page
   const [totalProducts, setTotalProducts] = useState(0); // Total number of products for pagination
+
+  const navigate = useNavigate();
 
   // Debounced search function (1 second delay for search)
   const debouncedSearch = debounce(async () => {
@@ -189,6 +192,15 @@ const OurCoffees = () => {
                   >
                     Add to Cart
                   </button>
+
+                  <Link to='/shippingform'>
+                  <button
+                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
+                  >
+                    Buy Now
+                  </button>
+                  </Link>
+                 
                 </div>
               </div>
             ))

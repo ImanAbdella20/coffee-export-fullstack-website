@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 
 interface CartItem {
   _id: string;
@@ -6,6 +7,10 @@ interface CartItem {
   image: string;
   price: string;
   quantity: number;
+}
+
+interface CartsPageProps {
+  setCartCount: React.Dispatch<React.SetStateAction<number>>; // Add setCartCount prop
 }
 
 const CartsPage = () => {
@@ -105,9 +110,12 @@ const CartsPage = () => {
       <div className="bg-gray-200 absolute bottom-0 h-[150px] flex w-[80%] fixed items-center mx-auto justify-around">
         <h3>Total: br{calculateTotal()}</h3>
         <h4>Items in Cart: {cartCount}</h4> {/* Displaying the item count */}
-        <button className="checkout-btn bg-[#61300d] text-white px-4 py-2 rounded cursor-pointer">
+        <Link to='/login'>
+
+        <button className="check-outbtn">
             Proceed to Checkout
           </button>
+        </Link>
       </div>
     </div>
   );
