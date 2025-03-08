@@ -3,6 +3,7 @@ import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
 import { motion, AnimatePresence } from 'framer-motion';
+import debounce from 'lodash.debounce';
 
 interface Product {
   quantity: number;
@@ -30,14 +31,14 @@ const OurCoffees = () => {
   const [page, setPage] = useState(1); // Track the current page
   const [totalProducts, setTotalProducts] = useState(0); // Total number of products for pagination
 
-  // Fetch products from the backend
-  const fetchCoffeeProducts = async () => {
+  // Debounced search function (1 second delay for search)
+  const debouncedSearch = debounce(async () => {
     setLoading(true);
     try {
       const params = search || roastLevelFilter || originFilter || coffeeTypeFilter
         ? { search, roastLevel: roastLevelFilter, origin: originFilter, coffeeType: coffeeTypeFilter, page, limit: 8 }
         : { limit: 8 };  // Fetch 8 random products if no filters are applied
-    
+
       const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`, { params });
 
       setCoffeeProducts(response.data.products);
@@ -47,11 +48,36 @@ const OurCoffees = () => {
       setError('Failed to load products');
       setLoading(false);
     }
-  };
+  }, 1000); // Delay of 1000ms after the user stops typing
 
+  // Debounced filters function (2 second delay for filters)
+  const debouncedFilters = debounce(async () => {
+    setLoading(true);
+    try {
+      const params = search || roastLevelFilter || originFilter || coffeeTypeFilter
+        ? { search, roastLevel: roastLevelFilter, origin: originFilter, coffeeType: coffeeTypeFilter, page, limit: 8 }
+        : { limit: 8 };
+
+      const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`, { params });
+
+      setCoffeeProducts(response.data.products);
+      setTotalProducts(response.data.totalProducts); // Total count for pagination
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to load products');
+      setLoading(false);
+    }
+  }, 4000); // Delay of 2000ms for filters
+
+  // Trigger debounced search whenever search changes
   useEffect(() => {
-    fetchCoffeeProducts();
-  }, [search, roastLevelFilter, originFilter, coffeeTypeFilter, page]); // Re-fetch when search or filters change
+    debouncedSearch();
+  }, [search]); // Only re-fetch on search change
+
+  // Trigger debounced filters whenever filters change
+  useEffect(() => {
+    debouncedFilters();
+  }, [roastLevelFilter, originFilter, coffeeTypeFilter, page]); // Re-fetch on filter changes
 
   const handleAddToCartDirectly = (product: Product) => {
     setSelectedProduct(product);
