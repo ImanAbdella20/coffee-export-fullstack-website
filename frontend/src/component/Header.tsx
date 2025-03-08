@@ -4,11 +4,18 @@ import '../index.css';
 import logo from '../assets/images/images-removebg-preview.png';
 import { Link, useLocation } from 'react-router-dom';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  user: any; 
+}
+
+const Header = ({ user }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+
   const { t } = useTranslation();
   const location = useLocation();
+
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -68,6 +75,8 @@ const Header: React.FC = () => {
       window.location.href = `${pageUrl}#${sectionId}`;
     }
   };
+
+
 
   return (
     <div className="flex justify-center bg-[#AD7C59] fullheader">
@@ -213,11 +222,11 @@ const Header: React.FC = () => {
               </span>
             )}
           </Link>
-          <Link to="/login" className="header-item user move-up" onClick={handleItemClick}>
+          <button className="header-item user move-up cursor-pointer" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z"/>
             </svg>
-          </Link>
+          </button>
         </div>
       </header>
     </div>

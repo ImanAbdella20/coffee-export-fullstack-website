@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 interface CartItem {
   _id: string;
@@ -11,13 +11,16 @@ interface CartItem {
 
 interface CartsPageProps {
   setCartCount: React.Dispatch<React.SetStateAction<number>>; // Add setCartCount prop
+  user: any; 
 }
 
-const CartsPage = () => {
+
+const CartsPage = ({ user }: CartsPageProps) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartCount, setCartCount] = useState<number>(0); // State for the total count of items in the cart
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set()); // Track selected items
-
+  const navigate = useNavigate(); 
+  
   // Retrieve cart from localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
@@ -76,6 +79,14 @@ const CartsPage = () => {
     return cart.reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0).toFixed(2);
   };
 
+  const handleCheckOut = () => {
+    if(user){
+      navigate('/shippingform')
+    } else{
+      navigate('/login')
+    }
+  }
+
 
   return (
     <div className="cart-page h-screen">
@@ -110,12 +121,12 @@ const CartsPage = () => {
       <div className="bg-gray-200 absolute bottom-0 h-[150px] flex w-[80%] fixed items-center mx-auto justify-around">
         <h3>Total: br{calculateTotal()}</h3>
         <h4>Items in Cart: {cartCount}</h4> {/* Displaying the item count */}
-        <Link to='/login'>
 
-        <button className="check-outbtn">
+        <button className="check-outbtn"
+        onClick={handleCheckOut}
+        >
             Proceed to Checkout
           </button>
-        </Link>
       </div>
     </div>
   );

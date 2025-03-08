@@ -322,3 +322,27 @@ li:hover .dropdown-menu {
   top: -10px;
   right: -5px;
 }
+
+
+.shipformheader{
+  margin: 20px auto;
+font-weight: bold;
+font-size: 25px;
+}
+.shipform{
+  padding: 20px;
+  border-radius: 2px;
+}
+
+.shipformbtn{
+  background-color: #AD7C59;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.shipformbtn:hover{
+  background-color:#7b563b;
+  cursor: pointer;
+
+}

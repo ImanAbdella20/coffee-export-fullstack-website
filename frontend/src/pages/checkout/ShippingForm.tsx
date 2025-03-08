@@ -1,77 +1,67 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Select from 'react-select';
+import Flag from 'react-world-flags';
 
-interface ShippingFormProps {
-  onSubmit: (shippingDetails: {
-    fullName: string;
-    address: string;
-    city: string;
-    postalCode: string;
-    country: string;
-    phoneNumber: string;
-  }) => void;
-}
+const countryOptions = [
+  { value: 'ET', label: 'Ethiopia' },
+  { value: 'US', label: 'United States' },
+  { value: 'IN', label: 'India' },
+  { value: 'CN', label: 'China' },
+  { value: 'GB', label: 'United Kingdom' },
+  { value: 'FR', label: 'France' },
+  { value: 'TR', label: 'Turkey' },
+  { value: 'SA', label: 'Saudi Arabia' },
+  { value: 'ES', label: 'Spain' },
+];
 
-const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
-  const [shippingDetails, setShippingDetails] = useState({
-    fullName: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
-    phoneNumber: '',
-  });
+const ShippingForm = () => {
+  const [selectedCountry, setSelectedCountry] = useState<{ value: string; label: string } | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setShippingDetails(prev => ({
-      ...prev,
-      [name]: value,
-    }));
+  // Handle country change
+  const handleCountryChange = (newValue: { value: string; label: string } | null) => {
+    setSelectedCountry(newValue);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      // Send the shipping details to the backend
-      const response = await axios.post('http://localhost:5000/shipping', shippingDetails);
-      
-      // If needed, you can call the onSubmit prop passed down to handle further actions
-      onSubmit(shippingDetails);
-
-      // Handle response from the server (e.g., success or error messages)
-      console.log('Shipping details saved:', response.data);
-      
-      // Optionally reset the form after successful submission
-      setShippingDetails({
-        fullName: '',
-        address: '',
-        city: '',
-        postalCode: '',
-        country: '',
-        phoneNumber: '',
-      });
-    } catch (error) {
-      console.error('Error saving shipping details:', error);
-      alert('There was an error saving your shipping details');
-    }
+    // Handle the form submission here (send data to the server)
   };
 
   return (
-    <div className='h-screen'>
-    <h1 className='text-center'>Fill the Form Below</h1>
-       <form onSubmit={handleSubmit} className='flex flex-col gap-6 bg-gray-100 max-w-[60%] h-[70%]'>
-     <input type="text" name="fullName" placeholder="Full Name" value={shippingDetails.fullName} onChange={handleChange} required />
-     <input type="text" name="address" placeholder="Address" value={shippingDetails.address} onChange={handleChange} required />
-     <input type="text" name="city" placeholder="City" value={shippingDetails.city} onChange={handleChange} required />
-     <input type="text" name="postalCode" placeholder="Postal Code" value={shippingDetails.postalCode} onChange={handleChange} required />
-     <input type="text" name="country" placeholder="Country" value={shippingDetails.country} onChange={handleChange} required />
-     <input type="tel" name="phoneNumber" placeholder="Phone Number" value={shippingDetails.phoneNumber} onChange={handleChange} required />
-     <button type="submit">Save Shipping Details</button>
-   </form>
+    <div className="h-screen">
+      <h1 className="text-center shipformheader">Fill Out The Form Below</h1>
+      <form className="shipform flex flex-col gap-6 bg-gray-100 max-w-[50%] h-[70%]" onSubmit={handleSubmit}>
+        <input type="text" name="fullName" placeholder="Full Name" required />
+        <input type="text" name="address" placeholder="Address" required />
+        <input type="text" name="city" placeholder="City" required />
+        <input type="text" name="postalCode" placeholder="Postal Code" required />
+        
+        {/* Country Dropdown */}
+        <div className="flex items-center gap-3">
+          <label htmlFor="country">Country</label>
+          <Select
+            id="country"
+            value={selectedCountry}
+            onChange={handleCountryChange}
+            options={countryOptions}
+            formatOptionLabel={(data) => (
+              <div className="flex items-center gap-2">
+                {/* Render flag and country name */}
+                <Flag code={data.value} style={{ width: 20, height: 15 }} />
+                <span>{data.label}</span>
+              </div>
+            )}
+            placeholder="Select your country"
+            className="w-full"
+          />
+        </div>
+
+        <input type="tel" name="phoneNumber" placeholder="Phone Number" required />
+        <button type="submit" className='shipformbtn'>Save Shipping Details</button>
+      </form>
     </div>
- 
   );
 };
 

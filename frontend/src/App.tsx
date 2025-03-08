@@ -22,6 +22,7 @@ import CheckoutPage from './pages/checkout/ShippingForm';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../lib/fireBaseConfig';
 import ShippingForm from './pages/checkout/ShippingForm';
+import OrderHistory from './pages/account/OrderHistory';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -52,18 +53,6 @@ function App() {
     return () => clearTimeout(timer);
   }, []); // Empty dependency array ensures this only runs once on mount
 
-  // Define an onSubmit handler for the ShippingForm component
-  const handleShippingFormSubmit = (shippingDetails: {
-    fullName: string;
-    address: string;
-    city: string;
-    postalCode: string;
-    country: string;
-    phoneNumber: string;
-  }) => {
-    console.log('Shipping details submitted:', shippingDetails);
-    // Here you can process the shipping details, e.g., save them to a database
-  };
 
   return (
     <Router>
@@ -73,7 +62,7 @@ function App() {
           <CoffeeLoading />
         ) : (
           <>
-            <Header />
+            <Header user={user} />
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -92,11 +81,14 @@ function App() {
 
                 {/* Contact route */}
                 <Route path="/contacts" element={<Contact />} />
-                <Route path="/cart" element={<CartsPage />} />
+                <Route path="/cart" element={<CartsPage  user={user} setCartCount={function (value: React.SetStateAction<number>): void {
+                    throw new Error('Function not implemented.');
+                  } } />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/cart-history" element={< OrderHistory/>} />
                 {/* Pass the onSubmit function to ShippingForm */}
-                <Route path="/shippingform" element={<ShippingForm onSubmit={handleShippingFormSubmit} />} />
+                <Route path="/shippingform" element={<ShippingForm />} />
               </Routes>
               <section id="contact" className="scroll-section">
                 <Contact />
