@@ -5,6 +5,7 @@ import cors from 'cors';
 import productRoute from './routes/productRoute.js';
 import cartRoute from './routes/cartRoute.js';
 import authRoute from './routes/authRoute.js';
+import shipRoute from './routes/shippingRoute.js';
 
 
 dotenv.config();
@@ -18,7 +19,9 @@ app.use(cors());
 
 app.use('/products', productRoute)
 app.use('/cart', cartRoute);
-app.use('/auth', authRoute)
+app.use('/auth', authRoute);
+app.use('/shipitems', shipRoute);
+app.use('/paymentprocess', );
 
 
 
