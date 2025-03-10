@@ -347,3 +347,14 @@ font-size: 25px;
   cursor: pointer;
 
 }
+
+.usericon{
+  top: 60px;
+  z-index: 1000;
+  background-color: white;
+  height: 100px;
+}
+
+.dropdown-item{
+  margin: 6px 10px;
+}

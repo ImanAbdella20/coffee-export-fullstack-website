@@ -2,7 +2,9 @@ import React from 'react'
 
 const PaymentForm = () => {
   return (
-    <div>PaymentForm</div>
+    <div>
+      order detail form editing
+      PaymentForm</div>
   )
 }
 

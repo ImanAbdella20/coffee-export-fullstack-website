@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import '../index.css';
 import logo from '../assets/images/images-removebg-preview.png';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { doSignOut } from '../../lib/auth';
 
 interface HeaderProps {
   user: any;
@@ -12,7 +11,9 @@ interface HeaderProps {
 const Header = ({ user }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [userIconOpen , setUserIconOpen] = useState(false);
   const [signedIn, setSignedIn] = useState(!!user);
+  const userIconRef = useRef<HTMLDivElement>(null); 
 
   const { t } = useTranslation();
   const location = useLocation();
@@ -57,8 +58,7 @@ const Header = ({ user }: HeaderProps) => {
   };
 
   const handleItemClick = () => {
-    setDropdownOpen(null);
-    setIsOpen(false);
+    setUserIconOpen(!userIconOpen);
   };
 
   useEffect(() => {
@@ -80,11 +80,11 @@ const Header = ({ user }: HeaderProps) => {
   };
 
 
-  const handleSignOut = async () => {
-    await doSignOut();
-    setSignedIn(false);
-    navigate('/');
-  }
+
+  const handleNavigate = (path: string) => {
+    setIsOpen(false); // Close dropdown
+    navigate(path); // Navigate to the selected path
+  };
 
   return (
     <div className="flex justify-center bg-[#AD7C59] fullheader">
@@ -110,7 +110,7 @@ const Header = ({ user }: HeaderProps) => {
                 {t('header.home')}
               </Link>
             </li>
-
+            
             {/* About Dropdown */}
             <li
               className="relative"
@@ -230,6 +230,32 @@ const Header = ({ user }: HeaderProps) => {
               </span>
             )}
           </Link>
+
+{ userIconOpen ? (
+              <div className="usericon absolute right-0  mt-2 bg-white text-black rounded shadow-lg w-40">
+                <ul>
+                  <li>
+                    <button className="dropdown-item cursor-pointer" onClick={() => handleNavigate('/orderhistory')}>
+                      order history
+                    </button>
+                  </li>
+                  <li>
+                    <Link to='/settings'>
+                    <button className="dropdown-item cursor-pointer" >
+                      Setting
+                    </button>
+                    </Link>
+                
+                  </li>
+                </ul>
+              </div>
+            ) : (
+<div>
+
+</div>
+            )
+
+}
           <button className="header-item user move-up cursor-pointer" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" />
@@ -238,6 +264,7 @@ const Header = ({ user }: HeaderProps) => {
         </div>
       </header>
     </div>
+
   );
 };
 

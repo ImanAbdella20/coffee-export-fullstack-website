@@ -22,8 +22,9 @@ import CheckoutPage from './pages/checkout/ShippingForm';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../lib/fireBaseConfig';
 import ShippingForm from './pages/checkout/ShippingForm';
-import OrderHistory from './pages/account/OrderHistory';
+import OrderHistory from './pages/orderhistory/OrderHistory';
 import PaymentForm from './pages/payment/PaymentForm';
+import Setting from './pages/setting/Setting';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -91,6 +92,8 @@ function App() {
                 {/* Pass the onSubmit function to ShippingForm */}
                 <Route path="/shippingform" element={<ShippingForm />} />
                 <Route path="/payment" element={<PaymentForm />} />
+                <Route path="/orderhistory" element={<OrderHistory />} />
+                <Route path="/settings" element={<Setting user={user} />} />
               </Routes>
               <section id="contact" className="scroll-section">
                 <Contact />
