@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router';
 
 const PaymentForm = () => {
   const [cardNumber, setCardNumber] = useState('');
@@ -9,46 +10,58 @@ const PaymentForm = () => {
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
 
   // Handle form submission
-   const handleSubmit = async (e: React.FormEvent) => {
-     e.preventDefault();
- 
-     const form = e.target as HTMLFormElement;  // Cast to HTMLFormElement
- 
-     // Collect form data using form elements
-     const cardNumber = (form.elements.namedItem('cardNumber') as HTMLInputElement).value;
-     const expiryDate = (form.elements.namedItem('expiryDate') as HTMLInputElement).value;
-     const cvv = (form.elements.namedItem('cvv') as HTMLInputElement).value;
- 
-     if (!cardNumber) {
-       alert('Card number is required');
-       return;
-     }
- 
-     if (!cardNumber || !expiryDate || !cvv ) {
-       alert('All fields are required');
-       return;
-     }
- 
-     const paymentData = {
-       cardNumber,
-       expiryDate,
-       cvv,
-     };
- 
-     try {
-       const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}//add`, paymentData);
-       if (response.status === 200) {
-         alert('Payment done successfully!');
-       }
-     } catch (error) {
-       console.error('Error in payment process:', error);
-       alert('There was an error in payment process.');
-     }
-   };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const form = e.target as HTMLFormElement;  // Cast to HTMLFormElement
+    
+    // Collect form data using form elements
+    const cardNumber = (form.elements.namedItem('cardNumber') as HTMLInputElement).value;
+    const expiryDate = (form.elements.namedItem('expiryDate') as HTMLInputElement).value;
+    const cvv = (form.elements.namedItem('cvv') as HTMLInputElement).value;
+  
+    if (!cardNumber || !expiryDate || !cvv) {
+      alert('All fields are required');
+      return;
+    }
+
+    const paymentData = {
+      cardNumber,
+      expiryDate,
+      cvv,
+    };
+
+    try {
+      const token = localStorage.getItem('authToken');  // Assuming token is stored in localStorage
+      
+      if (!token) {
+        alert('You need to be logged in to make a payment.');
+        return;
+      }
+
+      const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/paymentprocess/add`, paymentData, {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Sending the token in the Authorization header
+        },
+      });
+
+      if (response.status === 200) {
+        alert('Payment done successfully!');
+        setIsPaymentSuccessful(true);
+      }
+    } catch (error) {
+      console.error('Error in payment process:', error);
+      alert('There was an error in payment process.');
+    }
+  };
 
   return (
     <div className="h-screen">
       <h2 className="text-center">Payment Form</h2>
+
+      <Link to='/shippingform'>
+      <button className='absolute right-0 cursor-pointer'> Update Shipping Detail</button>
+      </Link>
 
       {isPaymentSuccessful ? (
         <div className="payment-success">

@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const paymentSchema = new mongoose.Schema({
+    user: {
+        type: String,
+        ref: "User",
+        required: true,
+      },
     cardNumber: { 
         type: String, 
         required: true 
@@ -18,4 +23,4 @@ const paymentSchema = new mongoose.Schema({
 });
   
   // Create a model based on the schema
- export  const ShippingDetails = mongoose.model('ShippingDetails', shippingSchema);
+ export  const PaymentDetail = mongoose.model('PaymentDetail', paymentSchema);

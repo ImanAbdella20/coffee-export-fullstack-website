@@ -75,7 +75,7 @@ function App() {
                 {/* Cart */}
                 <Route
                   path="/cart"
-                  element={<CartsPage user={user} setCartCount={setCartCount} />} // Pass setCartCount
+                  element={<CartsPage user={user} setCartCount={setCartCount} />} 
                 />
 
                 {/* Authentication */}

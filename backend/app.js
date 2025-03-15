@@ -6,6 +6,7 @@ import productRoute from './routes/productRoute.js';
 import cartRoute from './routes/cartRoute.js';
 import authRoute from './routes/authRoute.js';
 import shipRoute from './routes/shippingRoute.js';
+import paymentRoute from './routes/paymentRoute.js';
 
 
 dotenv.config();
@@ -21,6 +22,8 @@ app.use('/products', productRoute)
 app.use('/cart', cartRoute);
 app.use('/auth', authRoute);
 app.use('/shipitems', shipRoute);
+app.use('/paymentprocess', paymentRoute);
+app.use('/orderhistory', paymentRoute);
 
 
 

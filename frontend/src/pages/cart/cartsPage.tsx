@@ -80,22 +80,38 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
 
   // Checkout handler
   const handleCheckOut = async () => {
+    // Check if the user is logged in
     if (!user) {
       navigate('/login');
       return;
     }
 
     try {
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) {
+        throw new Error('No auth token found');
+      }
+
+      // Fetch shipping details from API
       const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details`, {
         headers: {
-          Authorization: `Bearer ${user.token}`, // Ensure the user is authenticated
+          Authorization: `Bearer ${authToken}`, // Ensure the user is authenticated
         },
       });
 
-      if (response.data.shippingdetails?.length > 0) {
+      const hasShippingDetails = response.data.shippingdetails?.length > 0;
+
+      if (hasShippingDetails) {
+        // If user has shipping form filled, proceed to payment
         navigate('/paymentprocess');
       } else {
-        navigate('/shippingform');
+        if (user) {
+          // If user is logged in but has no shipping form, go to shipping form
+          navigate('/shippingform');
+        } else {
+          // If user is not logged in, first navigate to login, then to shipping form
+          navigate('/login', { state: { redirectTo: '/shippingform' } });
+        }
       }
     } catch (error) {
       console.error('Error checking shipping details:', error);
@@ -139,7 +155,6 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
 
       <div className="bg-gray-200 absolute bottom-0 h-[150px] flex w-[80%] fixed items-center mx-auto justify-around">
         <h3>Total: br {calculateTotal()}</h3>
-       
         <button className="check-outbtn" onClick={handleCheckOut}>
           Proceed to Checkout
         </button>

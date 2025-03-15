@@ -55,3 +55,27 @@ export const getShippingDetailByUserId = async (req, res) => {
     res.status(500).json({ message: 'There was an error retrieving the shipping details.' });
   }
 };
+
+export const updateShippingDetail = async(req,res) => {
+    const { fullName, address, city, postalCode, country, phoneNumber } = req.body;
+
+    const  updateDetail   = await ShippingDetails.findByIdAndUpdate({
+      fullName,
+      address,
+      city,
+      postalCode,
+      country,
+      phoneNumber,
+    })
+
+    try {
+if(!updateDetail){
+    return res.status(400).json({message:"No details found !"})
+}
+
+        return res.status(200).json(updatedTask)
+        
+    } catch (error) {
+        return res.status(400).json({message:error.message})
+    }
+}
