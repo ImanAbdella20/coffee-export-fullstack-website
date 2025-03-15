@@ -24,6 +24,7 @@ const Login = () => {
 
       // Store token securely (consider using cookies in production)
       localStorage.setItem('authToken', idToken);
+      console.log('Generated id token' , idToken)
 
       // Redirect after login
       navigate('/shippingform');

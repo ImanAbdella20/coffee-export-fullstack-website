@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doCreateUserWithEmailAndPassword, doSignInWithGoogle } from '../../../lib/auth';
 import axios from 'axios';
+import { log } from 'console';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -25,6 +26,9 @@ const Signup = () => {
       // Get the user ID token (to be used for other authenticated requests, if needed)
       const idToken = await user.getIdToken();
 
+      localStorage.setItem('authToken', idToken);
+      console.log('Generated id token' , idToken)
+
       // Store the user info in MongoDB via backend (API)
       await axios.post(`${import.meta.env.REACT_APP_API_URL}/auth/signup`, {
         username: userName,
@@ -32,9 +36,7 @@ const Signup = () => {
         uid: user.uid,
       });
 
-      // Store the ID token in localStorage
-      localStorage.setItem('authToken', idToken);
-      navigate('/');
+      navigate('/shippingform');
 
     } catch (err: any) {
   

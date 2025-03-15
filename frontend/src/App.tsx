@@ -6,60 +6,48 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/about/AboutPage';
 import ProductPage from './pages/products/ProductPage';
 import CoffeeLoading from './component/coffeloading/CoffeeLoading';
-import OurCoffees from './pages/products/OurCoffees';
 import BlogPage from './pages/blog/BlogPage';
-import OurStory from './pages/about/OurStory';
-import Team from './pages/about/Team';
-import Mission from './pages/about/Mission';
-import Contact from './pages/contact/contact';
-import SpecialEdition from './pages/products/Specialedition';
 import Recipes from './pages/blog/Recipes';
 import BlogStories from './pages/blog/BlogStories';
+import Contact from './pages/contact/contact';
 import CartsPage from './pages/cart/cartsPage';
 import Signup from './pages/Auth/Signup';
 import Login from './pages/Auth/Login';
-import CheckoutPage from './pages/checkout/ShippingForm';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '../lib/fireBaseConfig';
 import ShippingForm from './pages/checkout/ShippingForm';
 import OrderHistory from './pages/orderhistory/OrderHistory';
-import PaymentForm from './pages/payment/PaymentForm';
+import PaymentProcess from './pages/payment/PaymentProcess';
 import Setting from './pages/setting/Setting';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from '../lib/fireBaseConfig';
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const [cartCount, setCartCount] = useState<number>(0); // Define cartCount state
 
-  // First useEffect for authentication state change
+  // Handle user authentication state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       } else {
         setUser(null);
-        localStorage.removeItem("authToken");
+        localStorage.removeItem('authToken');
       }
     });
 
-    // Cleanup on unmount
-    return () => unsubscribe();
-  }, []);  // Empty dependency array ensures this only runs once on mount
+    return () => unsubscribe(); // Cleanup on unmount
+  }, []);
 
-  // Second useEffect for loading simulation
+  // Simulate loading
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); // Simulating a loading delay
-    }, 2500); // 2.5 second delay
-
-    // Cleanup on unmount
+    const timer = setTimeout(() => setLoading(false), 2500);
     return () => clearTimeout(timer);
-  }, []); // Empty dependency array ensures this only runs once on mount
-
+  }, []);
 
   return (
     <Router>
       <div className="min-h-screen flex flex-col">
-        {/* Show loading screen */}
         {loading ? (
           <CoffeeLoading />
         ) : (
@@ -69,30 +57,39 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
 
-                {/* About routes */}
-                <Route path="/about" element={<AboutPage />}/>
+                {/* About Section */}
+                <Route path="/about" element={<AboutPage />} />
 
-                {/* Products routes */}
-                <Route path="/products" element={<ProductPage />}/>
-                 
-                {/* Blog routes */}
+                {/* Products Section */}
+                <Route path="/products" element={<ProductPage />} />
+
+                {/* Blog Section */}
                 <Route path="/blog" element={<BlogPage />}>
                   <Route path="recipes" element={<Recipes />} />
                   <Route path="stories" element={<BlogStories />} />
                 </Route>
 
-                {/* Contact route */}
-                <Route path="/contacts" element={<Contact />} />
-                <Route path="/cart" element={<CartsPage  user={user} setCartCount={function (value: React.SetStateAction<number>): void {
-                    throw new Error('Function not implemented.');
-                  } } />} />
+                {/* Contact Section */}
+                <Route path="/contact" element={<Contact />} />
+
+                {/* Cart */}
+                <Route
+                  path="/cart"
+                  element={<CartsPage user={user} setCartCount={setCartCount} />} // Pass setCartCount
+                />
+
+                {/* Authentication */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/cart-history" element={< OrderHistory/>} />
-                {/* Pass the onSubmit function to ShippingForm */}
+
+                {/* Checkout */}
                 <Route path="/shippingform" element={<ShippingForm />} />
-                <Route path="/payment" element={<PaymentForm />} />
+                <Route path="/paymentprocess" element={<PaymentProcess />} />
+
+                {/* Order History */}
                 <Route path="/orderhistory" element={<OrderHistory />} />
+
+                {/* Settings */}
                 <Route path="/settings" element={<Setting user={user} />} />
               </Routes>
               <section id="contact" className="scroll-section">

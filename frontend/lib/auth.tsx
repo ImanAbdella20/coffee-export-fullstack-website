@@ -22,15 +22,16 @@ export const doSignInUserWithEmailAndPassword = async (email: string, password: 
   return signInWithEmailAndPassword(auth, email, password);
 };
 
+// Sign In with Google
 export const doSignInWithGoogle = async (): Promise<UserCredential | void> => {
-    const provider = new GoogleAuthProvider();
-    if (window.innerWidth <= 768) {
-      await signInWithRedirect(auth, provider); // No return value here
-      return; // Explicitly return undefined to match the return type
-    } else {
-      return await signInWithPopup(auth, provider);
-    }
-  };
+  const provider = new GoogleAuthProvider();
+  if (window.innerWidth <= 768) {
+    await signInWithRedirect(auth, provider); // No return value here
+    return; // Explicitly return undefined to match the return type
+  } else {
+    return await signInWithPopup(auth, provider);
+  }
+};
 
 // Sign Out
 export const doSignOut = async (): Promise<void> => {

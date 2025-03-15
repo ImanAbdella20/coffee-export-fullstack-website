@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const shippingSchema = new mongoose.Schema({
+    user: {
+        type: String,
+        ref: "User",
+        required: true,
+      },
     fullName: { 
         type: String, 
         required: true 
