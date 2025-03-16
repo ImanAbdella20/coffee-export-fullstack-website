@@ -48,44 +48,44 @@ const ShippingForm = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const form = e.target as HTMLFormElement;  // Cast to HTMLFormElement
-
+  
     // Collect form data using form elements
     const fullName = (form.elements.namedItem('fullName') as HTMLInputElement).value;
     const address = (form.elements.namedItem('address') as HTMLInputElement).value;
     const city = (form.elements.namedItem('city') as HTMLInputElement).value;
     const postalCode = (form.elements.namedItem('postalCode') as HTMLInputElement).value;
     const phoneNumber = (form.elements.namedItem('phoneNumber') as HTMLInputElement).value;
-
+  
     if (!selectedCountry) {
       alert('Country is required');
       return;
     }
-
+  
     if (!fullName || !address || !city || !postalCode || !phoneNumber) {
       alert('All fields are required');
       return;
     }
-
+  
     if (!isPhoneValid) {
       alert('Invalid phone number');
       return;
     }
-
+  
     // Get the Firebase Auth ID token
     const user = getAuth().currentUser;
     if (!user) {
       alert("User is not logged in");
       return;
     }
-
+  
     const idToken = await user.getIdToken();
     if (!idToken) {
       alert("ID token is missing");
       return;
     }
-
+  
     const shippingData = {
       fullName,
       address,
@@ -94,7 +94,7 @@ const ShippingForm = () => {
       country: selectedCountry?.value,
       phoneNumber,
     };
-
+  
     try {
       // Include the ID token in the Authorization header
       const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/shipitems/add`, shippingData, {
@@ -102,17 +102,32 @@ const ShippingForm = () => {
           Authorization: `Bearer ${idToken}`, // Send token here
         }
       });
-
+  
       if (response.status === 200) {
         alert('Shipping details saved successfully!');
-        navigate('/paymentprocess');
         
+        // After saving shipping info, send order details (cart items + shipping) to order history
+        const orderDetails = {
+          userId: user.uid,  // User ID from Firebase auth
+          shippingDetails: shippingData,
+          cartItems: JSON.parse(localStorage.getItem('cart') || '[]'),  // Cart data from localStorage
+      
+        };
+  
+        await axios.post(`${import.meta.env.REACT_APP_API_URL}/orderhistory/create`, orderDetails, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          }
+        });
+  
+        navigate('/paymentprocess');
       }
     } catch (error) {
       console.error('Error saving shipping details:', error);
       alert('There was an error saving your shipping details.');
     }
   };
+  
 
   
 

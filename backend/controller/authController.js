@@ -67,3 +67,17 @@ export const login = async (req, res) => {
       return res.status(500).json({ message: "Error verifying ID token" });
     }
   }
+
+  export const getUsersData = async(req,res) =>{
+
+    const userId = req.user._id; // Assume the user is authenticated and UID is passed from the middleware
+
+    const user = await User.findOne({ uid: userId });
+    if (!user) 
+      return res.status(404).json({ error: 'User not found' });
+  
+    res.json({
+      username: user.username,
+      email: user.email,
+    });
+  }

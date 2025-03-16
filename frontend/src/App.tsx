@@ -19,6 +19,8 @@ import PaymentProcess from './pages/payment/PaymentProcess';
 import Setting from './pages/setting/Setting';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../lib/fireBaseConfig';
+import Profile from './pages/setting/Profile';
+import ShippingAddress from './pages/setting/ShippingAddress';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -91,6 +93,8 @@ function App() {
 
                 {/* Settings */}
                 <Route path="/settings" element={<Setting user={user} />} />
+                <Route path="/profile" element={<Profile/>} />
+                <Route path="/settingshipaddress" element={<ShippingAddress/>} />
               </Routes>
               <section id="contact" className="scroll-section">
                 <Contact />

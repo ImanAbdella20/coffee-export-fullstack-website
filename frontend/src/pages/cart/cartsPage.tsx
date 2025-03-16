@@ -113,10 +113,27 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
           navigate('/login', { state: { redirectTo: '/shippingform' } });
         }
       }
+
+      // Save order details (cart and shipping info) to order history API
+      const orderDetails = {
+        userId: user.uid,  // Using user ID
+        cartItems: cart,    // Send cart items
+        shippingDetails: response.data.shippingdetails[0], // Get the first shipping detail
+        totalPrice: calculateTotal(), // Get the total price
+      };
+
+      // Send the order data to the order history API
+      await axios.post(`${import.meta.env.REACT_APP_API_URL}/orderhistory/create`, orderDetails, {
+        headers: {
+          Authorization: `Bearer ${authToken}`, // Send token here
+        },
+      });
+
     } catch (error) {
       console.error('Error checking shipping details:', error);
     }
-  };
+};
+
 
   return (
     <div className="cart-page h-screen">

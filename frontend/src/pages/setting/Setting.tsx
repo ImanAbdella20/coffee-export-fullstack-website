@@ -17,11 +17,12 @@ const Setting = ({ user }: HeaderProps) => {
     setSignedIn(false);
     navigate('/');
   }
+
   return (
     <div className='h-screen'>
         <div className='flex flex-col bg-gray-50 gap-4 '>
-            <button className='cursor-pointer'>Profile</button>
-            <button className='cursor-pointer'>Shipping Address</button>
+            <button className='cursor-pointer' onClick={() =>navigate('/profile')}>Profile</button>
+            <button className='cursor-pointer' onClick={() => navigate('/settingshipaddress')}>Shipping Address</button>
         </div>
 
         <div className='flex flex-col bg-gray-100 cursor-pointer gap-4 '>
