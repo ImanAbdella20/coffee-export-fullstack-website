@@ -8,6 +8,7 @@ import authRoute from './routes/authRoute.js';
 import shipRoute from './routes/shippingRoute.js';
 import paymentRoute from './routes/paymentRoute.js';
 import orderhistoryRoute from './routes/orderHistoryRoute.js';
+import contactRoute from './routes/contactRoute.js';
 
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use('/auth', authRoute);
 app.use('/shipitems', shipRoute);
 app.use('/paymentprocess', paymentRoute);
 app.use('/orderhistory', orderhistoryRoute);
+app.use('/contact', contactRoute);
 
 
 

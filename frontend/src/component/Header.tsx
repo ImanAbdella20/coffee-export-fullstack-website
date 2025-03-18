@@ -176,40 +176,6 @@ const Header = ({ user }: HeaderProps) => {
                 </li>
               </ul>
             </li>
-
-            {/* Blog Dropdown */}
-            <li
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('blog')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link to="/blog">
-                <button className="blog text-white hover:text-[#AD7C59] cursor-pointer"
-                  onMouseEnter={handleItemMouseEnter}
-                  onMouseLeave={handleItemMouseLeave}>
-                  {t('header.blog')} <span>&#9662;</span>
-                </button>
-              </Link>
-              {/* Dropdown Menu */}
-              <ul ref={dropdownRef} className={`dropdown-menu ${dropdownOpen === 'blog' ? 'show' : ''}`}>
-                <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('recipes', '/blog')}>
-                    {t('header.blog.recipes')}
-                  </button>
-                </li>
-                <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('tips', '/blog')}>
-                    {t('header.blog.tips')}
-                  </button>
-                </li>
-                <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('stories', '/blog')}>
-                    {t('header.blog.stories')}
-                  </button>
-                </li>
-              </ul>
-            </li>
-
             {/* Contacts */}
             <li className="text-white hover:text-[#61300d]">
               <Link to="/contacts" className="header-item contacts" onClick={handleItemClick}>

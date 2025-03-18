@@ -2,15 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
-// Define the structure of the shipping details
-interface ShippingDetails {
-  city: string;
-  address: string;
-  postalCode: string;
-}
-
 const ShippingAddress = () => {
-  const [shippingDetails, setShippingDetails] = useState<ShippingDetails | null>(null);
+  const [shippingDetails, setShippingDetails] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -34,7 +27,7 @@ const ShippingAddress = () => {
         });
 
         // Set the shipping details from the response
-        setShippingDetails(response.data);
+        setShippingDetails(response.data.shippingdetails[0]); // Accessing the first item of the array
       } catch (err) {
         console.error('Error fetching shipping details:', err);
         setError('There was an error fetching your shipping details.');
@@ -55,13 +48,15 @@ const ShippingAddress = () => {
   }
 
   return (
-    <div>
+    <div className='h-screen'>
       <h1>Shipping Address</h1>
       {shippingDetails ? (
         <div>
           <p><strong>City:</strong> {shippingDetails.city}</p>
           <p><strong>Address:</strong> {shippingDetails.address}</p>
           <p><strong>Postal Code:</strong> {shippingDetails.postalCode}</p>
+          <p><strong>Phone Number:</strong> {shippingDetails.phoneNumber}</p>
+          <button>Edit Address</button>
         </div>
       ) : (
         <p>No shipping details available</p>
