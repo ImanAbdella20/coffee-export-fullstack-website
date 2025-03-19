@@ -122,7 +122,7 @@ const OurCoffees = () => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {/* Blurred Background when popup is open */}
       <div className={`transition-all duration-300 ${showQuantityPopup ? 'blur-sm' : ''}`}>
         {/* Search & Filters */}

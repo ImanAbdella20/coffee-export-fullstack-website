@@ -13,11 +13,11 @@ const ProductPage = () => {
         <OurCoffees/>
       </section>
 
-      <section id="our-team">
+      <section id="special-editions">
       <Specialedition/>
       </section>
 
-      <section id="our-team">
+      <section id="subscription">
       <Subscription/>
       </section>
 

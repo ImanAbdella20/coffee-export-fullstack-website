@@ -9,6 +9,7 @@ import shipRoute from './routes/shippingRoute.js';
 import paymentRoute from './routes/paymentRoute.js';
 import orderhistoryRoute from './routes/orderHistoryRoute.js';
 import contactRoute from './routes/contactRoute.js';
+import specialEditionRoute from './routes/specialEditionRoute.js';
 
 
 dotenv.config();
@@ -27,6 +28,7 @@ app.use('/shipitems', shipRoute);
 app.use('/paymentprocess', paymentRoute);
 app.use('/orderhistory', orderhistoryRoute);
 app.use('/contact', contactRoute);
+app.use('/specialedition', specialEditionRoute);
 
 
 

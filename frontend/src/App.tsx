@@ -65,12 +65,6 @@ function App() {
                 {/* Products Section */}
                 <Route path="/products" element={<ProductPage />} />
 
-                {/* Blog Section */}
-                <Route path="/blog" element={<BlogPage />}>
-                  <Route path="recipes" element={<Recipes />} />
-                  <Route path="stories" element={<BlogStories />} />
-                </Route>
-
                 {/* Contact Section */}
                 <Route path="/contact" element={<Contact />} />
 
@@ -95,10 +89,8 @@ function App() {
                 <Route path="/settings" element={<Setting user={user} />} />
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/settingshipaddress" element={<ShippingAddress/>} />
+                <Route path="/contacts" element={<Contact/>} />
               </Routes>
-              <section id="contact" className="scroll-section">
-                <Contact />
-              </section>
             </main>
             <Footer />
           </>

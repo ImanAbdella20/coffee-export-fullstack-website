@@ -5,7 +5,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -18,14 +18,21 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Check for empty fields before submitting
+    if (!formData.name || !formData.email || !formData.message) {
+      setError('All fields are required.');
+      return;
+    }
+
     setIsSubmitting(true);
     setError('');
 
     try {
-     const response =  await axios.post(`${import.meta.env.REACT_APP_API_URL}/contact/message`, {
-       
-      });
-      if (!response) {
+      const response = await axios.post(
+        `${import.meta.env.REACT_APP_API_URL}/contact/message`,
+        formData // Send form data in the request
+      );
+      if (!response || response.status !== 200) {
         throw new Error('Failed to send the message.');
       }
 
@@ -39,7 +46,7 @@ const Contact = () => {
   };
 
   return (
-    <div className='h-screen'>
+    <div className="h-screen">
       <div className="container mx-auto p-4">
         <h1 className="text-center text-3xl font-bold my-4">Contact Us</h1>
         <div className="flex justify-around">
@@ -50,7 +57,6 @@ const Contact = () => {
             <p><strong>Phone:</strong> +251178456789</p>
             <p><strong>Address:</strong> 123 Coffee St, A.A, Ethiopia</p>
             <div className="mt-4">
-              {/* Embed Map (Google Maps or other) */}
               <iframe
                 src="https://www.google.com/maps/embed?pb=..."
                 width="100%"
