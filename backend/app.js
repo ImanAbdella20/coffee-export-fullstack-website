@@ -10,6 +10,7 @@ import paymentRoute from './routes/paymentRoute.js';
 import orderhistoryRoute from './routes/orderHistoryRoute.js';
 import contactRoute from './routes/contactRoute.js';
 import specialEditionRoute from './routes/specialEditionRoute.js';
+import subscriptionRoute from './routes/subscriptionRoute.js';
 
 
 dotenv.config();
@@ -29,6 +30,8 @@ app.use('/paymentprocess', paymentRoute);
 app.use('/orderhistory', orderhistoryRoute);
 app.use('/contact', contactRoute);
 app.use('/specialedition', specialEditionRoute);
+app.use('/subscription', subscriptionRoute );
+
 
 
 

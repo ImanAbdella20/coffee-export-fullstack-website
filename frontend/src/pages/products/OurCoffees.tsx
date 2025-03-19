@@ -4,7 +4,7 @@ import axios from 'axios';
 import ReactLoading from 'react-loading';
 import { motion, AnimatePresence } from 'framer-motion';
 import debounce from 'lodash.debounce';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Product {
   quantity: number;
@@ -18,7 +18,7 @@ interface Product {
 }
 
 const OurCoffees = () => {
-  const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]); // Store the products to be displayed
+  const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]); // Store products to display
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [cart, setCart] = useState<Product[]>([]);
@@ -34,18 +34,23 @@ const OurCoffees = () => {
 
   const navigate = useNavigate();
 
-  // Debounced search function (1 second delay for search)
+  // Debounced search function (1-second delay)
   const debouncedSearch = debounce(async () => {
     setLoading(true);
     try {
-      const params = search || roastLevelFilter || originFilter || coffeeTypeFilter
-        ? { search, roastLevel: roastLevelFilter, origin: originFilter, coffeeType: coffeeTypeFilter, page, limit: 8 }
-        : { limit: 8 };  // Fetch 8 random products if no filters are applied
+      const params = {
+        search,
+        roastLevel: roastLevelFilter,
+        origin: originFilter,
+        coffeeType: coffeeTypeFilter,
+        page,
+        limit: 8,
+      };
 
       const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`, { params });
 
       setCoffeeProducts(response.data.products);
-      setTotalProducts(response.data.totalProducts); // Total count for pagination
+      setTotalProducts(response.data.totalProducts);
       setLoading(false);
     } catch (err) {
       setError('Failed to load products');
@@ -53,38 +58,43 @@ const OurCoffees = () => {
     }
   }, 1000); // Delay of 1000ms after the user stops typing
 
-  // Debounced filters function (2 second delay for filters)
+  // Debounced filters function (2-second delay)
   const debouncedFilters = debounce(async () => {
     setLoading(true);
     try {
-      const params = search || roastLevelFilter || originFilter || coffeeTypeFilter
-        ? { search, roastLevel: roastLevelFilter, origin: originFilter, coffeeType: coffeeTypeFilter, page, limit: 8 }
-        : { limit: 8 };
+      const params = {
+        search,
+        roastLevel: roastLevelFilter,
+        origin: originFilter,
+        coffeeType: coffeeTypeFilter,
+        page,
+        limit: 8,
+      };
 
       const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`, { params });
 
       setCoffeeProducts(response.data.products);
-      setTotalProducts(response.data.totalProducts); // Total count for pagination
+      setTotalProducts(response.data.totalProducts);
       setLoading(false);
     } catch (err) {
       setError('Failed to load products');
       setLoading(false);
     }
-  }, 4000); // Delay of 2000ms for filters
+  }, 2000); // Delay of 2000ms for filters
 
   // Trigger debounced search whenever search changes
   useEffect(() => {
     debouncedSearch();
-  }, [search]); // Only re-fetch on search change
+  }, [search]);
 
   // Trigger debounced filters whenever filters change
   useEffect(() => {
     debouncedFilters();
-  }, [roastLevelFilter, originFilter, coffeeTypeFilter, page]); // Re-fetch on filter changes
+  }, [roastLevelFilter, originFilter, coffeeTypeFilter, page]);
 
   const handleAddToCartDirectly = (product: Product) => {
     setSelectedProduct(product);
-    setShowQuantityPopup(true); // Show the quantity popup when a product is selected
+    setShowQuantityPopup(true);
   };
 
   const handleAddToCartWithQuantity = (product: Product, quantity: number) => {
@@ -94,7 +104,7 @@ const OurCoffees = () => {
 
       if (existingProductIndex > -1) {
         updatedCart = [...prevCart];
-        updatedCart[existingProductIndex].quantity += quantity; // Increment by the selected quantity
+        updatedCart[existingProductIndex].quantity += quantity;
       } else {
         updatedCart = [...prevCart, { ...product, quantity }];
       }
@@ -103,13 +113,13 @@ const OurCoffees = () => {
       return updatedCart;
     });
 
-    setShowQuantityPopup(false);  // Close the popup after adding to the cart
-    setQuantity(1);  // Reset quantity to 1 after adding
+    setShowQuantityPopup(false);
+    setQuantity(1);
   };
 
   const loadMoreProducts = () => {
     if (coffeeProducts.length < totalProducts) {
-      setPage((prevPage) => prevPage + 1); // Load next page
+      setPage(prevPage => prevPage + 1);
     }
   };
 
@@ -121,8 +131,37 @@ const OurCoffees = () => {
     return <div>{error}</div>;
   }
 
+  const handleBuyNow = async () => {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) {
+        throw new Error('No auth token found');
+      }
+
+      const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+
+      const hasShippingDetails = response.data.shippingdetails?.length > 0;
+
+      if (hasShippingDetails) {
+        navigate('/paymentprocess');
+      } else {
+        navigate(user ? '/shippingform' : '/login', { state: { redirectTo: '/shippingform' } });
+      }
+    } catch (err) {
+      console.error('Error during buy now process', err);
+    }
+  };
+
   return (
-    <div className="relative ">
+    <div className="relative bg-gray-50">
       {/* Blurred Background when popup is open */}
       <div className={`transition-all duration-300 ${showQuantityPopup ? 'blur-sm' : ''}`}>
         {/* Search & Filters */}
@@ -194,13 +233,13 @@ const OurCoffees = () => {
                   </button>
 
                   <Link to='/shippingform'>
-                  <button
-                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
-                  >
-                    Buy Now
-                  </button>
+                    <button
+                      className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
+                      onClick={handleBuyNow}
+                    >
+                      Buy Now
+                    </button>
                   </Link>
-                 
                 </div>
               </div>
             ))

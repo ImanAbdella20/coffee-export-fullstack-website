@@ -4,6 +4,7 @@ import HeroSection from '../component/HeroSection';
 import backgroundImage from '../assets/images/1.jpg';
 import backgroundImage2 from '../assets/images/4.png';
 import backgroundImage3 from '../assets/images/3.jpg';
+import FeaturedCoffee from './featuredcoffee/featuredCoffee';
 
 const HomePage = () => {
   // Initializing state to track the background index
@@ -28,7 +29,8 @@ const HomePage = () => {
   };
 
   return (
-    <div
+  <>
+<div
       className="relative z-10 min-h-screen bg-cover bg-center"
       style={{
         // Set the background image dynamically based on the index
@@ -41,6 +43,9 @@ const HomePage = () => {
       <HeroSection handleClickArrow={handleClickArrow} />
       
     </div>
+    <FeaturedCoffee/>
+  </>
+    
   );
 };
 

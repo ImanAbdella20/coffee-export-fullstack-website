@@ -21,6 +21,8 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../lib/fireBaseConfig';
 import Profile from './pages/setting/Profile';
 import ShippingAddress from './pages/setting/ShippingAddress';
+import Subscription from './pages/products/Subscription';
+import FeaturedCoffee from './pages/featuredcoffee/featuredCoffee';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -90,6 +92,8 @@ function App() {
                 <Route path="/profile" element={<Profile/>} />
                 <Route path="/settingshipaddress" element={<ShippingAddress/>} />
                 <Route path="/contacts" element={<Contact/>} />
+                <Route path="/subscription" element={<Subscription user={user}/>} />
+                <Route path="/featuredcoffee" element={<FeaturedCoffee/>} />
               </Routes>
             </main>
             <Footer />

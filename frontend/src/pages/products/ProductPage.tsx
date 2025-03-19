@@ -18,7 +18,7 @@ const ProductPage = () => {
       </section>
 
       <section id="subscription">
-      <Subscription/>
+      <Subscription user={null} />
       </section>
 
     </>
