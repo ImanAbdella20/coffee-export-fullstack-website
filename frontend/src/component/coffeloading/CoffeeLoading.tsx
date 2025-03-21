@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './CoffeeLoading.css'; // Make sure you import the CSS
+import './CoffeeLoading.css';
 
 const CoffeeLoading = () => {
   const [showTick, setShowTick] = useState(false);
 
   useEffect(() => {
-    // After animation ends, show the tick
     const timer = setTimeout(() => {
       setShowTick(true);
-    }, 2500); // Adjust based on animation duration
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -22,9 +21,7 @@ const CoffeeLoading = () => {
         <div className="steam-line steam-line2"></div>
         <div className="steam-line steam-line3"></div>
       </div>
-      {/* Add the hand element here */}
       <div className="hand"></div>
-
       {showTick && <div className="tick">✔</div>}
     </div>
   );

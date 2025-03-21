@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
+import { Link } from 'react-router';
 
 const ShippingAddress = () => {
   const [shippingDetails, setShippingDetails] = useState<any>(null);
@@ -56,7 +57,11 @@ const ShippingAddress = () => {
           <p><strong>Address:</strong> {shippingDetails.address}</p>
           <p><strong>Postal Code:</strong> {shippingDetails.postalCode}</p>
           <p><strong>Phone Number:</strong> {shippingDetails.phoneNumber}</p>
-          <button>Edit Address</button>
+          <Link to='/shippingform' state={{ isUpdate: !!shippingDetails }}>
+            <button className='absolute right-0 cursor-pointer'>
+              Edit Shipping Detail
+            </button>
+          </Link>
         </div>
       ) : (
         <p>No shipping details available</p>

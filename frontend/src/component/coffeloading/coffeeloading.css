@@ -1,147 +1,178 @@
 /* Fullscreen loading animation */
 .coffee-loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
+  flex-direction: column;
+}
+
+/* U-shaped coffee cup */
+.coffee-cup {
+  position: relative;
+  width: 30vw;
+  max-width: 150px;
+  height: 24vw;
+  max-height: 120px;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border: 0.5vw solid #3e2723;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+/* Coffee filling animation */
+.coffee-fill {
+  position: absolute;
+  bottom: -50%;
+  width: 100%;
+  height: 50%;
+  background-color: #6f4f28;
+  animation: fillAnimation 2s ease-in-out forwards;
+}
+
+@keyframes fillAnimation {
+  0% {
+    bottom: -50%;
+  }
+  100% {
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
   }
-  
-  /* U-shaped coffee cup */
-  .coffee-cup {
-    position: relative;
-    width: 150px;
-    height: 120px;
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 50%;
-    border: 5px solid #3e2723; /* Coffee cup border */
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end; /* Align the fill to the bottom */
-    overflow: hidden;
-  }
-  
-  /* Coffee filling animation */
-  .coffee-fill {
-    position: absolute;
-    bottom: -50px;
-    width: 100%;
-    height: 50%;
-    background-color: #6f4f28; /* Coffee color */
-    animation: fillAnimation 2s ease-in-out forwards;
-  }
-  
-  @keyframes fillAnimation {
-    0% {
-      bottom: -50px;
-    }
-    100% {
-      bottom: 0;
-    }
-  }
-  
-  /* Steam rising from the top of the cup */
-  .steam {
-    position: absolute;
-    top: -40px; /* Adjust position to ensure steam is visible above the cup */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 1;
-    opacity: 1; /* Set opacity to 1, so it becomes visible */
-    animation: steamAnimation 2s ease-in-out forwards; /* Steam fades in and animates */
-  }
-  
-  .steam-line {
-    width: 6px;
-    height: 12px;
-    background-color: rgba(255, 255, 255, 0.7);
-    margin: 4px;
-    border-radius: 50%;
+}
+
+/* Steam rising */
+.steam {
+  position: absolute;
+  top: -10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  animation: steamAnimation 2s ease-in-out forwards;
+}
+
+.steam-line {
+  width: 0.6vw;
+  height: 2vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  margin: 0.5vh;
+  border-radius: 50%;
+  opacity: 0;
+  animation: steamLineAnimation 2s ease-in-out forwards;
+}
+
+.steam-line1 {
+  animation-delay: 0s;
+}
+.steam-line2 {
+  animation-delay: 0.2s;
+}
+.steam-line3 {
+  animation-delay: 0.4s;
+}
+
+@keyframes steamAnimation {
+  0% {
     opacity: 0;
-    animation: steamLineAnimation 2s ease-in-out forwards; /* Not infinite, run animation once */
+    transform: translateY(0) scale(0);
   }
-  
-  .steam-line1 {
-    animation-delay: 0s;
+  50% {
+    opacity: 1;
+    transform: translateY(-3vh) scale(1);
   }
-  
-  .steam-line2 {
-    animation-delay: 0.2s;
+  100% {
+    opacity: 0;
+    transform: translateY(-6vh) scale(0);
   }
-  
-  .steam-line3 {
-    animation-delay: 0.4s;
+}
+
+@keyframes steamLineAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
   }
-  
-  @keyframes steamAnimation {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(0);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-30px) scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-60px) scale(0);
-    }
+  50% {
+    opacity: 1;
+    transform: translateY(-3vh) scale(1);
   }
-  
-  @keyframes steamLineAnimation {
-    0% {
-      opacity: 0;
-      transform: translateY(0) scale(0);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-30px) scale(1);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-60px) scale(0);
-    }
+  100% {
+    opacity: 0;
+    transform: translateY(-6vh) scale(0);
   }
-  
-  /* Hand (inverted "C" shape) */
+}
+
+/* Hand (curved arc shape) */
+.hand {
+  position: absolute;
+  left: 52%;
+  width: 14vw;
+  max-width: 70px;
+  height: 14vw;
+  max-height: 70px;
+  border-radius: 50%;
+  border: 1vw solid #3e2723;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 100%, 0% 10%);
+  transform: rotate(120deg);
+}
+
+/* Tick animation */
+.tick {
+  position: absolute;
+  font-size: 3rem;
+  color: white;
+  opacity: 0;
+  animation: tickAnimation 0.5s ease-in-out forwards;
+  animation-delay: 2.5s;
+}
+
+@keyframes tickAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+
   .hand {
-    position: absolute;
-    left: 54%;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%; /* Circular shape */
-    border: 10px solid #3e2723; /* Hand color */
-    clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 100%, 0% 10%); /* Added a slight bend at the top */
-    transform: rotate(120deg); /* Rotate the hand 180 degrees from -90deg to 90deg */
+    width: 18vw;
+    height: 18vw;
+    border-width: 1.5vw;
+    left: 59%;
+    transform: rotate(125deg);
   }
-   
-  
-  /* Tick animation */
+
   .tick {
-    position: absolute;
-    font-size: 3rem;
-    color: white;
-    opacity: 0;
-    animation: tickAnimation 0.5s ease-in-out forwards;
-    animation-delay: 2.5s; /* Wait until the fill and steam animation end */
+    font-size: 2.5rem;
   }
-  
-  @keyframes tickAnimation {
-    0% {
-      opacity: 0;
-      transform: scale(0);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+
+  .hand {
+    width: 18vw;
+    height: 18vw;
+    border-width: 1.5vw;
+    left: 57%;
+    transform: rotate(125deg);
   }
-  
+
+  .tick {
+    font-size: 2.5rem;
+  }
+}

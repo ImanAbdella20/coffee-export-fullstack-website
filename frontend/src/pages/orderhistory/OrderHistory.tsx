@@ -5,11 +5,11 @@ const OrderHistory = () => {
     {
       id: '12345',
       date: '2025-03-15',
-      total: '$120.50',
+      total: '120.50 br',
       status: 'Delivered',
       items: [
-        { name: 'Ethiopian Coffee Beans', quantity: 2, price: '$20.00' },
-        { name: 'Espresso Machine', quantity: 1, price: '$80.50' },
+        { name: 'Ethiopian Coffee Beans', quantity: 2, price: '20.00 br' },
+        { name: 'Espresso Machine', quantity: 1, price: '80.50 br' },
       ],
       shippingAddress: '123 Coffee Lane, Addis Ababa, Ethiopia',
     },

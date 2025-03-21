@@ -11,27 +11,43 @@ interface HeaderProps {
 const Header = ({ user }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [userIconOpen , setUserIconOpen] = useState(false);
+  const [userIconOpen, setUserIconOpen] = useState(false);
   const [signedIn, setSignedIn] = useState(!!user);
-  const userIconRef = useRef<HTMLDivElement>(null); 
+  const userIconRef = useRef<HTMLDivElement>(null);
 
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
 
-
-
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
+  // Function to update the cart count from localStorage
+  const updateCartCount = () => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       const parsedCart = JSON.parse(storedCart);
       setCartCount(parsedCart.reduce((total: number, item: { quantity: number }) => total + item.quantity, 0)); // Update cart count
+    } else {
+      setCartCount(0); // If cart is empty, set count to 0
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    updateCartCount(); // Update cart count on initial mount
+
+    // Listen for changes to the cart in localStorage
+    const handleStorageChange = () => {
+      updateCartCount();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []); // Empty array ensures this runs only on mount and unmount
 
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [isHovering, setIsHovering] = useState<boolean>(false);  // Track hover state for dropdown
@@ -61,13 +77,6 @@ const Header = ({ user }: HeaderProps) => {
     setUserIconOpen(!userIconOpen);
   };
 
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const handleSectionClick = (sectionId: string, pageUrl: string) => {
     if (location.pathname === pageUrl) {
       const section = document.getElementById(sectionId);
@@ -79,12 +88,18 @@ const Header = ({ user }: HeaderProps) => {
     }
   };
 
-
-
   const handleNavigate = (path: string) => {
     setIsOpen(false); // Close dropdown
     navigate(path); // Navigate to the selected path
+    setUserIconOpen(false); // Close the user icon dropdown after navigation
   };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex justify-center bg-[#AD7C59] fullheader">
@@ -110,7 +125,7 @@ const Header = ({ user }: HeaderProps) => {
                 {t('header.home')}
               </Link>
             </li>
-            
+
             {/* About Dropdown */}
             <li
               className="relative"
@@ -197,31 +212,27 @@ const Header = ({ user }: HeaderProps) => {
             )}
           </Link>
 
-{ userIconOpen ? (
-              <div className="usericon absolute right-0  mt-2 bg-white text-black rounded shadow-lg w-40">
-                <ul>
-                  <li>
-                    <button className="dropdown-item cursor-pointer" onClick={() => handleNavigate('/orderhistory')}>
-                      order history
-                    </button>
-                  </li>
-                  <li>
-                    <Link to='/settings'>
-                    <button className="dropdown-item cursor-pointer" >
+          {userIconOpen ? (
+            <div className="usericon absolute right-0  mt-2 bg-white text-black rounded shadow-lg w-40">
+              <ul>
+                <li>
+                  <button className="dropdown-item cursor-pointer" onClick={() => { handleNavigate('/orderhistory'); setUserIconOpen(false); }}>
+                    order history
+                  </button>
+                </li>
+                <li>
+                  <Link to='/settings'>
+                    <button className="dropdown-item cursor-pointer" onClick={() => setUserIconOpen(false)}>
                       Setting
                     </button>
-                    </Link>
-                
-                  </li>
-                </ul>
-              </div>
-            ) : (
-<div>
-
-</div>
-            )
-
-}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <div></div>
+          )}
+          
           <button className="header-item user move-up cursor-pointer" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" />
@@ -230,7 +241,6 @@ const Header = ({ user }: HeaderProps) => {
         </div>
       </header>
     </div>
-
   );
 };
 

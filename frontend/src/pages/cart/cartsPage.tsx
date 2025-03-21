@@ -18,13 +18,14 @@ interface CartsPageProps {
 const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const [selectAll, setSelectAll] = useState(false); // To handle select all checkbox
   const navigate = useNavigate();
 
   // Retrieve cart from localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
-      const parsedCart = JSON.parse(storedCart);
+      const parsedCart: CartItem[] = JSON.parse(storedCart); // Explicitly typed as CartItem[]
       setCart(parsedCart);
 
       // Update cart count
@@ -33,12 +34,15 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       // Automatically select all items in the cart
       const selectedSet: Set<string> = new Set(parsedCart.map((item: CartItem) => item._id));
       setSelectedItems(selectedSet);
+
+      // Check if all items are selected to set "select all" checkbox state
+      setSelectAll(parsedCart.length > 0 && parsedCart.every(item => selectedSet.has(item._id)));
     }
   }, [setCartCount]);
 
   // Remove selected items from cart
   const removeSelectedItems = () => {
-    const updatedCart = cart.filter(item => !selectedItems.has(item._id));
+    const updatedCart = cart.filter((item: CartItem) => !selectedItems.has(item._id));
     setCart(updatedCart);
     setSelectedItems(new Set()); // Clear selected items
     localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
@@ -50,7 +54,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   // Update item quantity
   const updateQuantity = (productId: string, quantity: number) => {
     if (quantity < 1) return; // Ensure quantity is not less than 1
-    const updatedCart = cart.map(item =>
+    const updatedCart = cart.map((item: CartItem) =>
       item._id === productId ? { ...item, quantity } : item
     );
     setCart(updatedCart);
@@ -64,23 +68,58 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   const toggleItemSelection = (productId: string) => {
     const updatedSelectedItems = new Set(selectedItems);
     if (updatedSelectedItems.has(productId)) {
-      updatedSelectedItems.delete(productId);
+      updatedSelectedItems.delete(productId); // Deselect item
     } else {
-      updatedSelectedItems.add(productId);
+      updatedSelectedItems.add(productId); // Select item
     }
+
     setSelectedItems(updatedSelectedItems);
+
+    // Update the localStorage based on the selection
+    const updatedCart = cart.filter((item: CartItem) =>
+      updatedSelectedItems.has(item._id)
+    );
+    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+  };
+
+  // Handle select all toggle
+  const handleSelectAll = () => {
+    const newSelectAll = !selectAll;
+    setSelectAll(newSelectAll);
+
+    if (newSelectAll) {
+      const newSelectedItems = new Set(cart.map((item: CartItem) => item._id));
+      setSelectedItems(newSelectedItems);
+      updateLocalStorage(newSelectedItems); // Update localStorage
+    } else {
+      setSelectedItems(new Set());
+      updateLocalStorage(new Set()); // Clear localStorage
+    }
+  };
+
+  // Helper to update localStorage when selecting/unselecting items
+  const updateLocalStorage = (updatedSelectedItems: Set<string>) => {
+    const updatedCart = cart.filter((item: CartItem) => updatedSelectedItems.has(item._id));
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
   };
 
   // Calculate total price
   const calculateTotal = () => {
     return cart
-      .reduce((total, item) => total + parseFloat(item.price) * item.quantity, 0)
+      .filter((item: CartItem) => selectedItems.has(item._id))
+      .reduce((total, item: CartItem) => total + parseFloat(item.price) * item.quantity, 0)
       .toFixed(2);
   };
 
   // Checkout handler
   const handleCheckOut = async () => {
-    // Check if the user is logged in
+
+    if (selectedItems.size === 0) {
+      alert('Please select the items you want to checkout!');
+      return; // Prevent checkout if no items are selected
+    }
+    
     if (!user) {
       navigate('/login');
       return;
@@ -92,40 +131,34 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
         throw new Error('No auth token found');
       }
 
-      // Fetch shipping details from API
       const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details`, {
         headers: {
-          Authorization: `Bearer ${authToken}`, // Ensure the user is authenticated
+          Authorization: `Bearer ${authToken}`,
         },
       });
 
       const hasShippingDetails = response.data.shippingdetails?.length > 0;
 
       if (hasShippingDetails) {
-        // If user has shipping form filled, proceed to payment
         navigate('/paymentprocess');
       } else {
         if (user) {
-          // If user is logged in but has no shipping form, go to shipping form
           navigate('/shippingform');
         } else {
-          // If user is not logged in, first navigate to login, then to shipping form
           navigate('/login', { state: { redirectTo: '/shippingform' } });
         }
       }
 
-      // Save order details (cart and shipping info) to order history API
       const orderDetails = {
-        userId: user.uid,  // Using user ID
-        cartItems: cart,    // Send cart items
-        shippingDetails: response.data.shippingdetails[0], // Get the first shipping detail
-        totalPrice: calculateTotal(), // Get the total price
+        userId: user.uid,
+        cartItems: cart,
+        shippingDetails: response.data.shippingdetails[0],
+        totalPrice: calculateTotal(),
       };
 
-      // Send the order data to the order history API
       await axios.post(`${import.meta.env.REACT_APP_API_URL}/orderhistory/create`, orderDetails, {
         headers: {
-          Authorization: `Bearer ${authToken}`, // Send token here
+          Authorization: `Bearer ${authToken}`,
         },
       });
 
@@ -134,13 +167,12 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
     }
   };
 
-
   return (
     <div className="cart-page h-screen">
       <h2>Your Cart</h2>
       {cart.length > 0 ? (
         <div>
-          {cart.map(item => (
+          {cart.map((item: CartItem) => (
             <div key={item._id} className="flex items-center gap-5 bg-gray-100 border-2 max-w-[60%]">
               <input
                 type="checkbox"
@@ -171,11 +203,20 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       )}
 
       <div className="bg-gray-200 absolute bottom-0 h-[150px] flex w-[80%] fixed items-center mx-auto justify-around">
-        <div className='flex '>
-          <input 
-          type="checkbox" 
+        <div className="flex">
+          <input
+            type="checkbox"
+            checked={selectAll}
+            onChange={handleSelectAll}
           />
-          <h3>Remove all</h3>
+          <h3>Select All</h3>
+        </div>
+        <div className="flex">
+          <input
+            type="checkbox"
+            onChange={removeSelectedItems}
+          />
+          <h3>Remove selected</h3>
         </div>
         <h3>Total: br {calculateTotal()}</h3>
         <button className="check-outbtn" onClick={handleCheckOut}>
