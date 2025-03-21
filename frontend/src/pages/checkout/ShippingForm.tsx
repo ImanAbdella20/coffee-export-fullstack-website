@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 import Flag from 'react-world-flags';
 import { parsePhoneNumberFromString, CountryCode } from 'libphonenumber-js';
-import { getAuth } from 'firebase/auth'; // Import Firebase auth
-import { useNavigate } from 'react-router';
+import { getAuth } from 'firebase/auth';
+import { useNavigate, useLocation } from 'react-router';
 
 const countryOptions = [
   { value: 'ET', label: 'Ethiopia' },
@@ -22,10 +22,17 @@ const ShippingForm = () => {
   const [selectedCountry, setSelectedCountry] = useState<{ value: string; label: string } | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isPhoneValid, setIsPhoneValid] = useState(true);
-  const [orderStatus, setOrderStatus] = useState('');
-
+  const [fullName, setFullName] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false); // Flag to check if it's an update mode
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const isUpdate = location.state?.isUpdate;
+
+  // Handle country change
   const handleCountryChange = (newValue: { value: string; label: string } | null) => {
     setSelectedCountry(newValue);
   };
@@ -45,47 +52,83 @@ const ShippingForm = () => {
     }
   };
 
-  // Handle form submission
+  // Fetch existing shipping details if we're in update mode
+  useEffect(() => {
+    if (isUpdate) {
+      const fetchShippingDetails = async () => {
+        const user = getAuth().currentUser;
+        if (!user) {
+          alert('You need to be logged in.');
+          navigate('/login');
+          return;
+        }
+
+        const idToken = await user.getIdToken();
+        if (!idToken) {
+          alert('ID token is missing');
+          return;
+        }
+
+        try {
+          const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details/`, {
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+            },
+          });
+
+          const shippingData = response.data;
+          setFullName(shippingData.fullName);
+          setAddress(shippingData.address);
+          setCity(shippingData.city);
+          setPostalCode(shippingData.postalCode);
+          setPhoneNumber(shippingData.phoneNumber);
+
+          const countryOption = countryOptions.find(option => option.value === shippingData.country);
+          setSelectedCountry(countryOption || null);
+
+          setIsUpdating(true); // Set flag for updating
+        } catch (error) {
+          console.error('Error fetching shipping details:', error);
+          alert('Failed to fetch shipping details.');
+        }
+      };
+
+      fetchShippingDetails();
+    }
+  }, [isUpdate, navigate]); // Ensure it re-runs when needed (e.g., navigate changes)
+
+  // Handle form submission (Add or Update)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    const form = e.target as HTMLFormElement;  // Cast to HTMLFormElement
-  
-    // Collect form data using form elements
-    const fullName = (form.elements.namedItem('fullName') as HTMLInputElement).value;
-    const address = (form.elements.namedItem('address') as HTMLInputElement).value;
-    const city = (form.elements.namedItem('city') as HTMLInputElement).value;
-    const postalCode = (form.elements.namedItem('postalCode') as HTMLInputElement).value;
-    const phoneNumber = (form.elements.namedItem('phoneNumber') as HTMLInputElement).value;
-  
+
     if (!selectedCountry) {
       alert('Country is required');
       return;
     }
-  
+
     if (!fullName || !address || !city || !postalCode || !phoneNumber) {
       alert('All fields are required');
       return;
     }
-  
+
     if (!isPhoneValid) {
       alert('Invalid phone number');
       return;
     }
-  
-    // Get the Firebase Auth ID token
+
+    // Get Firebase auth token
     const user = getAuth().currentUser;
     if (!user) {
-      alert("User is not logged in");
+      alert('User is not logged in');
       return;
     }
-  
+
     const idToken = await user.getIdToken();
     if (!idToken) {
-      alert("ID token is missing");
+      alert('ID token is missing');
       return;
     }
-  
+
     const shippingData = {
       fullName,
       address,
@@ -94,32 +137,27 @@ const ShippingForm = () => {
       country: selectedCountry?.value,
       phoneNumber,
     };
-  
+
     try {
-      // Include the ID token in the Authorization header
-      const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/shipitems/add`, shippingData, {
-        headers: {
-          Authorization: `Bearer ${idToken}`, // Send token here
-        }
-      });
-  
-      if (response.status === 200) {
-        alert('Shipping details saved successfully!');
-        
-        // After saving shipping info, send order details (cart items + shipping) to order history
-        const orderDetails = {
-          userId: user.uid,  // User ID from Firebase auth
-          shippingDetails: shippingData,
-          cartItems: JSON.parse(localStorage.getItem('cart') || '[]'),  // Cart data from localStorage
-      
-        };
-  
-        await axios.post(`${import.meta.env.REACT_APP_API_URL}/orderhistory/create`, orderDetails, {
+      let response;
+      if (isUpdating) {
+        // Update existing shipping data
+        response = await axios.put(`${import.meta.env.REACT_APP_API_URL}/shipitems/update/`, shippingData, {
           headers: {
             Authorization: `Bearer ${idToken}`,
-          }
+          },
         });
-  
+      } else {
+        // Add new shipping data
+        response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/shipitems/add`, shippingData, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        });
+      }
+
+      if (response.status === 200) {
+        alert(isUpdating ? 'Shipping details updated successfully!' : 'Shipping details saved successfully!');
         navigate('/paymentprocess');
       }
     } catch (error) {
@@ -127,27 +165,23 @@ const ShippingForm = () => {
       alert('There was an error saving your shipping details.');
     }
   };
-  
-
-  
 
   return (
     <div className="h-screen">
-      <h1 className="text-center shipformheader">Fill Out The Form Below</h1>
+      <h1 className="text-center shipformheader">{isUpdating ? 'Update Shipping Details' : 'Fill Out The Form Below'}</h1>
       <form className="shipform flex flex-col gap-4 bg-gray-100 max-w-[60%] h-[90%] absolute left-[35%]" onSubmit={handleSubmit}>
         <label htmlFor="fullName">Full Name: <span className="text-red-500">*</span></label>
-        <input type="text" name="fullName" placeholder="Full Name" required />
+        <input type="text" name="fullName" placeholder="Full Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
         
         <label htmlFor="address">Address: <span className="text-red-500">*</span></label>
-        <input type="text" name="address" placeholder="Address" required />
+        <input type="text" name="address" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} required />
         
         <label htmlFor="city">City: <span className="text-red-500">*</span></label>
-        <input type="text" name="city" placeholder="City" required />
+        <input type="text" name="city" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} required />
         
         <label htmlFor="postalCode">Postal Code: <span className="text-red-500">*</span></label>
-        <input type="text" name="postalCode" placeholder="Postal Code" required />
+        <input type="text" name="postalCode" placeholder="Postal Code" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required />
         
-        {/* Country Dropdown */}
         <div className="flex items-center gap-3">
           <label htmlFor="country">Country: <span className="text-red-500">*</span></label>
           <Select
@@ -166,10 +200,7 @@ const ShippingForm = () => {
           />
         </div>
 
-        {/* Phone Number */}
-        <label htmlFor="phoneNumber">
-          Phone Number: <span className="text-red-500">*</span>
-        </label>
+        <label htmlFor="phoneNumber">Phone Number: <span className="text-red-500">*</span></label>
         <input
           type="tel"
           name="phoneNumber"
@@ -182,7 +213,7 @@ const ShippingForm = () => {
           <span className="text-red-500">Invalid phone number for the selected country</span>
         )}
 
-        <button type="submit" className="shipformbtn">Proceed to payment</button>
+        <button type="submit" className="shipformbtn">{isUpdating ? 'Update Shipping' : 'Proceed to payment'}</button>
       </form>
     </div>
   );

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 
 const PaymentForm = () => {
   const [cardNumber, setCardNumber] = useState('');
@@ -8,18 +8,44 @@ const PaymentForm = () => {
   const [cvv, setCvv] = useState('');
   const [isCardValid, setIsCardValid] = useState(true);
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+  const [shippingDetails, setShippingDetails] = useState(null);  // Track existing shipping details
+  const navigate = useNavigate();
 
-  // Handle form submission
+  // Fetch existing shipping details (if any)
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      alert('You need to be logged in to make a payment.');
+      navigate('/login');  // Redirect to login if no token
+      return;
+    }
+
+    const fetchShippingDetails = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setShippingDetails(response.data);
+        } else {
+          alert('Shipping details not found. Please update your shipping information.');
+        }
+      } catch (error) {
+        console.error('Error fetching shipping details:', error);
+        alert('Failed to fetch shipping details.');
+      }
+    };
+
+    fetchShippingDetails();
+  }, [navigate]);
+
+  // Handle form submission for payment
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const form = e.target as HTMLFormElement;  // Cast to HTMLFormElement
-    
-    // Collect form data using form elements
-    const cardNumber = (form.elements.namedItem('cardNumber') as HTMLInputElement).value;
-    const expiryDate = (form.elements.namedItem('expiryDate') as HTMLInputElement).value;
-    const cvv = (form.elements.namedItem('cvv') as HTMLInputElement).value;
-  
+
     if (!cardNumber || !expiryDate || !cvv) {
       alert('All fields are required');
       return;
@@ -29,11 +55,11 @@ const PaymentForm = () => {
       cardNumber,
       expiryDate,
       cvv,
+      shippingDetails, // Attach shipping details to payment
     };
 
     try {
       const token = localStorage.getItem('authToken');  // Assuming token is stored in localStorage
-      
       if (!token) {
         alert('You need to be logged in to make a payment.');
         return;
@@ -41,7 +67,7 @@ const PaymentForm = () => {
 
       const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/paymentprocess/add`, paymentData, {
         headers: {
-          Authorization: `Bearer ${token}`,  // Sending the token in the Authorization header
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -51,7 +77,7 @@ const PaymentForm = () => {
       }
     } catch (error) {
       console.error('Error in payment process:', error);
-      alert('There was an error in payment process.');
+      alert('There was an error in the payment process.');
     }
   };
 
@@ -59,10 +85,14 @@ const PaymentForm = () => {
     <div className="h-screen">
       <h2 className="text-center">Payment Form</h2>
 
-      <Link to='/shippingform'>
-      <button className='absolute right-0 cursor-pointer'> Update Shipping Detail</button>
+      {/* Update Shipping Details Button */}
+      <Link to='/shippingform' state={{ isUpdate: !!shippingDetails }}>
+        <button className='absolute right-0 cursor-pointer'>
+          {shippingDetails ? 'Update Shipping Detail' : 'Add Shipping Detail'}
+        </button>
       </Link>
 
+      {/* Payment form */}
       {isPaymentSuccessful ? (
         <div className="payment-success">
           <h3>Payment Successful!</h3>

@@ -56,26 +56,32 @@ export const getShippingDetailByUserId = async (req, res) => {
   }
 };
 
-export const updateShippingDetail = async(req,res) => {
-    const { fullName, address, city, postalCode, country, phoneNumber } = req.body;
+export const updateShippingDetail = async (req, res) => {
+  const { fullName, address, city, postalCode, country, phoneNumber } = req.body;
+  const { userId } = req;  // Assuming userId is attached to the request object after validation
 
-    const  updateDetail   = await ShippingDetails.findByIdAndUpdate({
-      fullName,
-      address,
-      city,
-      postalCode,
-      country,
-      phoneNumber,
-    })
+  try {
+      // Find the shipping detail by userId (or another identifier if needed)
+      const updatedDetail = await ShippingDetails.findOneAndUpdate(
+          { userId: userId },  // Find the user's shipping details using userId
+          {
+              fullName,
+              address,
+              city,
+              postalCode,
+              country,
+              phoneNumber
+          },
+          { new: true }  // Return the updated document
+      );
 
-    try {
-if(!updateDetail){
-    return res.status(400).json({message:"No details found !"})
-}
+      if (!updatedDetail) {
+          return res.status(400).json({ message: "No details found to update!" });
+      }
 
-        return res.status(200).json(updatedTask)
-        
-    } catch (error) {
-        return res.status(400).json({message:error.message})
-    }
-}
+      // Send back the updated shipping details
+      return res.status(200).json(updatedDetail);
+  } catch (error) {
+      return res.status(400).json({ message: error.message });
+  }
+};
