@@ -12,7 +12,7 @@ const Login = () => {
   const location = useLocation();  // Used for accessing location state (i.e., redirectTo)
 
   // Get the redirect URL from the state, or default to '/profile'
-  const redirectTo = (location.state as { redirectTo?: string })?.redirectTo || '/profile';
+  const redirectTo = (location.state as { redirectTo?: string })?.redirectTo || '/paymentprocess' ;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

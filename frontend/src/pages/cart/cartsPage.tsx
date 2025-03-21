@@ -132,7 +132,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
     } catch (error) {
       console.error('Error checking shipping details:', error);
     }
-};
+  };
 
 
   return (
@@ -171,6 +171,12 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       )}
 
       <div className="bg-gray-200 absolute bottom-0 h-[150px] flex w-[80%] fixed items-center mx-auto justify-around">
+        <div className='flex '>
+          <input 
+          type="checkbox" 
+          />
+          <h3>Remove all</h3>
+        </div>
         <h3>Total: br {calculateTotal()}</h3>
         <button className="check-outbtn" onClick={handleCheckOut}>
           Proceed to Checkout

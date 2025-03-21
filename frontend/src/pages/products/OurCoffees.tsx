@@ -17,7 +17,12 @@ interface Product {
   origin: string;
 }
 
-const OurCoffees = () => {
+interface CoffeesProp{
+  user: any
+  setCartCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
   const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]); // Store products to display
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +38,16 @@ const OurCoffees = () => {
   const [totalProducts, setTotalProducts] = useState(0); // Total number of products for pagination
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load cart data from localStorage and sync with the state
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      const parsedCart = JSON.parse(storedCart);
+      setCart(parsedCart);
+      setCartCount(parsedCart.reduce((total: number, item: Product) => total + item.quantity, 0));
+    }
+  }, [setCartCount]);
 
   // Debounced search function (1-second delay)
   const debouncedSearch = debounce(async () => {
@@ -98,7 +113,7 @@ const OurCoffees = () => {
   };
 
   const handleAddToCartWithQuantity = (product: Product, quantity: number) => {
-    setCart((prevCart) => {
+    setCart(prevCart => {
       const existingProductIndex = prevCart.findIndex(item => item._id === product._id);
       let updatedCart;
 
@@ -110,6 +125,7 @@ const OurCoffees = () => {
       }
 
       localStorage.setItem('cart', JSON.stringify(updatedCart));
+      setCartCount(updatedCart.reduce((total: number, item: Product) => total + item.quantity, 0));
       return updatedCart;
     });
 
@@ -132,7 +148,7 @@ const OurCoffees = () => {
   }
 
   const handleBuyNow = async () => {
-    const user = localStorage.getItem('user');
+
     if (!user) {
       navigate('/login');
       return;
@@ -232,14 +248,13 @@ const OurCoffees = () => {
                     Add to Cart
                   </button>
 
-                  <Link to='/shippingform'>
                     <button
                       className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
                       onClick={handleBuyNow}
                     >
                       Buy Now
                     </button>
-                  </Link>
+          
                 </div>
               </div>
             ))

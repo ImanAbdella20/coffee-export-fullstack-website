@@ -23,6 +23,7 @@ import Profile from './pages/setting/Profile';
 import ShippingAddress from './pages/setting/ShippingAddress';
 import Subscription from './pages/products/Subscription';
 import FeaturedCoffee from './pages/featuredcoffee/featuredCoffee';
+import OurCoffees from './pages/products/OurCoffees';
 
 function App() {
   const [loading, setLoading] = useState(true);
