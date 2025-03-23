@@ -7,21 +7,15 @@ import backgroundImage3 from '../assets/images/3.jpg';
 import FeaturedCoffee from './featuredcoffee/featuredCoffee';
 
 const HomePage = () => {
-  // Initializing state to track the background index
   const [backgroundIndex, setBackgroundIndex] = useState<number>(0);
-  
-  // Array of background images
+
   const backgroundImages = [backgroundImage, backgroundImage2, backgroundImage3];
 
-  // Function to handle the arrow clicks
   const handleClickArrow = (direction: string) => {
     setBackgroundIndex((prevIndex) => {
-      // If direction is 'prev', go to the previous image
       if (direction === 'prev') {
         return prevIndex === 0 ? backgroundImages.length - 1 : prevIndex - 1;
-      }
-      // If direction is 'next', go to the next image
-      else if (direction === 'next') {
+      } else if (direction === 'next') {
         return prevIndex === backgroundImages.length - 1 ? 0 : prevIndex + 1;
       }
       return prevIndex;
@@ -29,23 +23,25 @@ const HomePage = () => {
   };
 
   return (
-  <>
-<div
-      className="relative z-10 min-h-screen bg-cover bg-center"
-      style={{
-        // Set the background image dynamically based on the index
-        backgroundImage: `url(${backgroundImages[backgroundIndex]})`,
-      }}
-    >
-      {/* Gradient overlay */}
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black via-transparent to-transparent z-0"></div>
-      {/* HeroSection with the handleClickArrow prop */}
-      <HeroSection handleClickArrow={handleClickArrow} />
-      
-    </div>
-    <FeaturedCoffee/>
-  </>
-    
+    <>
+      <div
+        className={`relative z-10 bg-cover bg-center transition-all duration-500 ${
+          backgroundIndex === 1 ? 'min-h-[50vh]' : 'min-h-screen'
+        }`}
+        style={{
+          backgroundImage: `url(${backgroundImages[backgroundIndex]})`,
+        }}
+      >
+        {/* Gradient Overlay */}
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black via-transparent to-transparent z-0"></div>
+
+        {/* Hero Section */}
+        <HeroSection handleClickArrow={handleClickArrow} />
+      </div>
+
+      {/* Featured Coffee Section */}
+      <FeaturedCoffee />
+    </>
   );
 };
 
