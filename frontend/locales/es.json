@@ -43,7 +43,21 @@
           "ourstory3": {
             "subtitle": "Alcance Global con un Toque Local",
             "description": "Estamos orgullosos de compartir los ricos sabores de Etiopía con el mundo. Nuestro café se exporta a varios mercados internacionales, llevando el auténtico sabor del café etíope a los amantes del café en todas partes. Con un enfoque en la calidad y la autenticidad, nos dedicamos a hacer del café etíope una experiencia global. Ya sea que seas un conocedor de café o un bebedor ocasional, prometemos que cada taza entregará un sabor de la historia, la cultura y la pasión por la excelencia de Etiopía."
-          }   
+          } ,  
+
+            "featured": {
+              "title": "Café Destacado del Mes",
+              "description": "Este mes, nos complace presentar los mejores granos de café de Etiopía. Una mezcla perfecta para los conocedores del café, disfruta de las vibrantes notas frutales de esta excepcional infusión.",
+              "coffeeAlt": "Café Etíope",
+              "coffeeName": "Café Yirgacheffe de Etiopía",
+              "coffeeDescription": "Este café raro y exquisito proviene de la región de Yirgacheffe en Etiopía, conocida por su acidez brillante, aromas florales y notas cítricas.",
+              "origin": "🌱 Origen: Etiopía, Yirgacheffe",
+              "flavorProfile": "💥 Perfil de Sabor: Brillante, Floral, Cítrico",
+              "brewingMethod": "☕ Método de Preparación Ideal: Pour-Over, Espresso",
+              "shopNow": "Comprar Ahora",
+              "learnMore": "Saber Más"
+            }
+          
      
   }
   

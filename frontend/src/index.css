@@ -431,7 +431,8 @@ font-size: 25px;
 }
 
 .featured{
-  height: 130vh;
+  height: 110vh;
+  background-color: rgb(240, 240, 240);
 }
 
 .featuredbutton{
@@ -448,15 +449,16 @@ font-size: 25px;
 
 .featuredcontainer{
 
-  margin: auto 30px;
-}
-
-.titlediv{
-
+  margin: 200px 30px auto;
 }
 
 .titleheader{
   font-size: 2rem;
   font-weight: bold;
   color: #61300d;
+}
+
+.footermain{
+
+  margin-left: 150px;
 }

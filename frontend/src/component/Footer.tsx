@@ -1,45 +1,87 @@
 import React from 'react';
+import { FaInstagram, FaTwitter, FaMapMarkerAlt, FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-50 text-black py-10 ">
-      <div className="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-[#7b563b] text-gray-300 border-t border-gray-800 h-[50vh] flex flex-col">
+      <div className="container mx-auto px-4 py-8 flex-grow flex flex-col">
+        {/* Main Footer Content */}
+        <div className="footermain grid grid-cols-1 md:grid-cols-3 gap-8 mb-4 flex-grow items-center">
+          
+          {/* Brand & Social */}
+          <div className="text-center md:text-left space-y-4"> {/* Added space-y-4 */}
+            <h3 className="text-2xl font-light leading-tight"> {/* Added leading-tight */}
+              <span className="font-bold text-[#61300d]">IFNA</span> Coffee
+            </h3>
+            <p className="text-gray-200 leading-relaxed"> {/* Added leading-relaxed */}
+              Ethically sourced Ethiopian coffee<br />straight from the highlands.
+            </p>
+            <div className="flex justify-center md:justify-start space-x-4 pt-2"> {/* Added pt-2 */}
+              <a href="#" aria-label="Instagram" className="text-gray-200 hover:text-[#61300d] transition-colors">
+                <FaInstagram className="text-xl" />
+              </a>
+              <a href="#" aria-label="Twitter" className="text-gray-200 hover:text-[#61300d] transition-colors">
+                <FaTwitter className="text-xl" />
+              </a>
+            </div>
+          </div>
 
-        {/* Contact Section */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Contact Us</h2>
-          <ul className="space-y-2">
-            <li><span className="text-gray-300">Email: </span>contact@coffeebiz.com</li>
-            <li><span className="text-gray-300">Phone: </span>+1 (800) 123-4567</li>
-            <li><span className="text-gray-300">Address: </span>123 Coffee Lane, Coffee Town, USA</li>
-          </ul>
-        </div>
+          {/* Contact Info */}
+          <div className="text-center md:text-left space-y-4"> {/* Added space-y-4 */}
+            <h4 className="text-lg font-semibold text-white leading-tight"> {/* Added leading-tight */}
+              Get in Touch
+            </h4>
+            <ul className="space-y-3 text-gray-200"> {/* Increased space-y to 3 */}
+              <li className="flex items-center justify-center md:justify-start leading-relaxed"> {/* Added leading-relaxed */}
+                <FaMapMarkerAlt className="mr-2 text-[#61300d] flex-shrink-0" />
+                <span>Addis Ababa, Ethiopia</span>
+              </li>
+              <li className="flex items-center justify-center md:justify-start leading-relaxed">
+                <FaPhoneAlt className="mr-2 text-[#61300d] flex-shrink-0" />
+                <span>+251 123 456 789</span>
+              </li>
+              <li className="flex items-center justify-center md:justify-start leading-relaxed">
+                <FaEnvelope className="mr-2 text-[#61300d] flex-shrink-0" />
+                <span>contact@ifnacoffee.com</span>
+              </li>
+            </ul>
+          </div>
 
-        {/* Social Media Section */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold">Follow Us</h2>
-          <div className="flex space-x-4">
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-black">
-              <i className="fab fa-facebook-f"></i> Facebook
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-black">
-              <i className="fab fa-twitter"></i> Twitter
-            </a>
-            <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-black">
-              <i className="fab fa-instagram"></i> Instagram
-            </a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-black">
-              <i className="fab fa-linkedin"></i> LinkedIn
-            </a>
+          {/* Newsletter */}
+          <div className="text-center md:text-left space-y-4"> {/* Added space-y-4 */}
+            <h4 className="text-lg font-semibold text-white leading-tight">
+              Coffee Updates
+            </h4>
+            <p className="text-gray-200 leading-relaxed"> {/* Added leading-relaxed */}
+              Join our newsletter for<br />seasonal blends and offers.
+            </p>
+            <form className="flex flex-col sm:flex-row gap-3 max-w-xs mx-auto md:mx-0"> {/* Increased gap to 3 */}
+              <input 
+                type="email" 
+                placeholder="Your email" 
+                className="flex-grow px-3 py-2 bg-[#61300d] border border-[#8a6d52] rounded focus:outline-none focus:ring-1 focus:ring-amber-500 text-white placeholder-gray-400 leading-normal"
+                required
+              />
+              <button 
+                type="submit" 
+                className="px-4 py-2 bg-[#61300d] hover:bg-[#7b563b] text-white rounded transition-colors leading-normal"
+              >
+                Join
+              </button>
+            </form>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Copyright Section */}
-      <div className="bg-brown-700 text-center py-4">
-        <p className="text-gray-300 text-sm">
-          &copy; {new Date().getFullYear()} CoffeeBiz. All rights reserved.
-        </p>
+        {/* Copyright & Legal */}
+        <div className="pt-4 border-t border-[#8a6d52] text-sm text-center text-gray-300 mt-auto space-y-2"> {/* Added space-y-2 */}
+          <p className="leading-relaxed"> {/* Added leading-relaxed */}
+            &copy; {new Date().getFullYear()} IFNA Coffee.<br className="md:hidden" /> {/* Responsive line break */}
+            <span className="mx-2 hidden md:inline">|</span>
+            <a href="#" className="hover:text-amber-500 transition-colors">Privacy Policy</a>
+            <span className="mx-2">|</span>
+            <a href="#" className="hover:text-amber-500 transition-colors">Terms</a>
+          </p>
+        </div>
       </div>
     </footer>
   );

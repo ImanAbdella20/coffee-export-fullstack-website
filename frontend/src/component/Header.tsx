@@ -13,11 +13,31 @@ const Header = ({ user }: HeaderProps) => {
   const [cartCount, setCartCount] = useState(0);
   const [userIconOpen, setUserIconOpen] = useState(false);
   const [signedIn, setSignedIn] = useState(!!user);
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const userIconRef = useRef<HTMLDivElement>(null);
+  const languageDropdownRef = useRef<HTMLDivElement>(null);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Language change handler
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
+    setSelectedLanguage(lang);
+    setLanguageDropdownOpen(false);
+    localStorage.setItem('preferredLanguage', lang);
+  };
+
+  // Initialize language from localStorage
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferredLanguage');
+    if (savedLanguage) {
+      i18n.changeLanguage(savedLanguage);
+      setSelectedLanguage(savedLanguage);
+    }
+  }, [i18n]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -28,30 +48,25 @@ const Header = ({ user }: HeaderProps) => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       const parsedCart = JSON.parse(storedCart);
-      setCartCount(parsedCart.reduce((total: number, item: { quantity: number }) => total + item.quantity, 0)); // Update cart count
+      setCartCount(parsedCart.reduce((total: number, item: { quantity: number }) => total + item.quantity, 0));
     } else {
-      setCartCount(0); // If cart is empty, set count to 0
+      setCartCount(0);
     }
   };
 
   useEffect(() => {
-    updateCartCount(); // Update cart count on initial mount
-
-    // Listen for changes to the cart in localStorage
+    updateCartCount();
     const handleStorageChange = () => {
       updateCartCount();
     };
-
     window.addEventListener('storage', handleStorageChange);
-
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, []); // Empty array ensures this runs only on mount and unmount
+  }, []);
 
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
-  const [isHovering, setIsHovering] = useState<boolean>(false);  // Track hover state for dropdown
-
+  const [isHovering, setIsHovering] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
 
   const handleMouseEnter = (menu: string) => {
@@ -71,6 +86,9 @@ const Header = ({ user }: HeaderProps) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setDropdownOpen(null);
     }
+    if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target as Node)) {
+      setLanguageDropdownOpen(false);
+    }
   };
 
   const handleItemClick = () => {
@@ -89,9 +107,9 @@ const Header = ({ user }: HeaderProps) => {
   };
 
   const handleNavigate = (path: string) => {
-    setIsOpen(false); // Close dropdown
-    navigate(path); // Navigate to the selected path
-    setUserIconOpen(false); // Close the user icon dropdown after navigation
+    setIsOpen(false);
+    navigate(path);
+    setUserIconOpen(false);
   };
 
   useEffect(() => {
@@ -200,38 +218,84 @@ const Header = ({ user }: HeaderProps) => {
           </ul>
         </nav>
 
-        <div className="hidden md:flex space-x-4 text-white">
+        <div className="hidden md:flex items-center space-x-4 text-white mr-9">
+          {/* Language Selector */}
+          <div className="relative" ref={languageDropdownRef}>
+            <button 
+              onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+              className="flex items-center space-x-1 px-3 py-1 rounded hover:bg-[#61300d] transition-colors"
+            >
+              <span className="text-sm uppercase">
+                {selectedLanguage === 'en' ? 'EN' : 
+                 selectedLanguage === 'es' ? 'ES' : 
+                 selectedLanguage === 'tr' ? 'TR' : 'AR'}
+              </span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {languageDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 text-black ">
+                <button 
+                  onClick={() => changeLanguage('en')}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'en' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                >
+                  English
+                </button>
+                <button 
+                  onClick={() => changeLanguage('es')}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'es' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                >
+                  Español
+                </button>
+                <button 
+                  onClick={() => changeLanguage('tr')}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'tr' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                >
+                  Türkçe
+                </button>
+                <button 
+                  onClick={() => changeLanguage('ar')}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'ar' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                >
+                  العربية
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Cart Icon */}
           <Link to="/cart" className="header-item cart relative" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H7M9 18c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
             </svg>
             {cartCount > 0 && (
-              <span className=" cartcount absolute text-xs font-bold text-white bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
+              <span className="cartcount absolute -top-1 -right-1 text-xs font-bold text-white bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
                 {cartCount}
               </span>
             )}
           </Link>
 
+          {/* User Icon */}
           {userIconOpen ? (
-            <div className="usericon absolute right-0  mt-2 bg-white text-black rounded shadow-lg w-40">
+            <div className="usericon absolute right-0 mt-10 bg-white text-black rounded shadow-lg w-40 z-50">
               <ul>
                 <li>
-                  <button className="dropdown-item cursor-pointer" onClick={() => { handleNavigate('/orderhistory'); setUserIconOpen(false); }}>
-                    order history
+                  <button className="dropdown-item cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100" onClick={() => { handleNavigate('/orderhistory'); setUserIconOpen(false); }}>
+                    {t('header.orderHistory')}
                   </button>
                 </li>
                 <li>
                   <Link to='/settings'>
-                    <button className="dropdown-item cursor-pointer" onClick={() => setUserIconOpen(false)}>
-                      Setting
+                    <button className="dropdown-item cursor-pointer w-full text-left px-4 py-2 hover:bg-gray-100" onClick={() => setUserIconOpen(false)}>
+                      {t('header.settings')}
                     </button>
                   </Link>
                 </li>
               </ul>
             </div>
-          ) : (
-            <div></div>
-          )}
+          ) : null}
           
           <button className="header-item user move-up cursor-pointer" onClick={handleItemClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

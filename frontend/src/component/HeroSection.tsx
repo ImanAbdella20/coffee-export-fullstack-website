@@ -9,20 +9,9 @@ interface HeroSectionProps {
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ handleClickArrow }) => {
-  const { t, i18n } = useTranslation(); // Access the translation function
+  const { t } = useTranslation(); // Access the translation function
 
   const [dropdownOpen, setDropdownOpen] = useState(false); // State to toggle dropdown
-  const [selectedLanguage, setSelectedLanguage] = useState('en'); // Default language is English
-
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-    setSelectedLanguage(lang); // Update the selected language
-    setDropdownOpen(false); // Close the dropdown after selecting a language
-  };
-
-  const toggleDropdown = () => {
-    setDropdownOpen((prev) => !prev);
-  };
 
   return (
     <div className="herocontainer">
@@ -90,38 +79,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ handleClickArrow }) => {
             <span onClick={() => handleClickArrow('prev')} className='text-white hover:text-[#AD7C59]'>&#11144;</span>
             <span onClick={() => handleClickArrow('next')} className='text-white '>&#11045;</span>
             <span onClick={() => handleClickArrow('next')} className='text-white hover:text-[#AD7C59]'>&#11146;</span>
-          </div>
-
-          {/* Language Selector */}
-          <div className="language-buttons absolute lg:left-270 md:left-120 sm:left-120 transform -translate-x-1/2 mt-2  ">
-            <button onClick={toggleDropdown} className="languages bg-[#61300D] hover:bg-[#AD7C59] text-white rounded-lg px-4 py-2 cursor-pointer">
-              {selectedLanguage === 'en'
-                ? 'ENGLISH'
-                : selectedLanguage === 'es'
-                ? 'SPANISH'
-                : selectedLanguage === 'tr'
-                ? 'TURKISH'
-                : 'ARABIC'}
-              <span className="ml-2">&#9662;</span>
-            </button>
-
-            {/* Dropdown */}
-            {dropdownOpen && (
-              <div className="absolute  mt-2 w-full bg-white rounded-lg shadow-lg ">
-                <button onClick={() => changeLanguage('en')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
-                  ENGLISH
-                </button>
-                <button onClick={() => changeLanguage('es')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
-                  SPANISH
-                </button>
-                <button onClick={() => changeLanguage('tr')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
-                  TURKISH
-                </button>
-                <button onClick={() => changeLanguage('ar')} className="block w-full px-4 py-2 text-left hover:bg-[#AD7C59] hover:text-white cursor-pointer">
-                  ARABIC
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>

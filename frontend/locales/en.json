@@ -43,7 +43,21 @@
         "ourstory3": {
           "subtitle": "Global Reach with a Local Touch",
           "description": "We are proud to share the rich flavors of Ethiopia with the world. Our coffee is exported to various international markets, bringing the authentic taste of Ethiopian coffee to coffee lovers everywhere. With a focus on quality and authenticity, we are dedicated to making Ethiopian coffee a global experience. Whether you are a coffee connoisseur or a casual drinker, we promise that every cup will deliver a taste of Ethiopia’s history, culture, and passion for excellence."
-        }
+        },
+        
+          "featured": {
+            "title": "Featured Coffee of the Month",
+            "description": "This month, we are excited to feature the finest coffee beans from Ethiopia. A perfect blend for coffee connoisseurs, enjoy the vibrant and fruity notes of this exceptional brew.",
+            "coffeeAlt": "Ethiopian Coffee",
+            "coffeeName": "Ethiopian Yirgacheffe Coffee",
+            "coffeeDescription": "This rare and exquisite coffee comes from the Yirgacheffe region of Ethiopia, known for its bright acidity, floral aromas, and citrusy notes.",
+            "origin": "🌱 Origin: Ethiopia, Yirgacheffe",
+            "flavorProfile": "💥 Flavor Profile: Bright, Floral, Citrus",
+            "brewingMethod": "☕ Ideal Brewing Method: Pour-Over, Espresso",
+            "shopNow": "Shop Now",
+            "learnMore": "Learn More"
+          }
+        
       
       
     

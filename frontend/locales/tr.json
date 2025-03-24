@@ -43,7 +43,21 @@
           "ourstory3": {
             "subtitle": "Yerel Dokunuşla Küresel Erişim",
             "description": "Etiyopya'nın zengin tatlarını dünya ile paylaşmaktan gurur duyuyoruz. Kahvemiz, Etiyopya kahvesinin otantik tadını kahve severlere ulaştırarak çeşitli uluslararası pazarlara ihraç edilmektedir. Kalite ve otantiklik üzerine odaklanarak, Etiyopya kahvesini küresel bir deneyim haline getirmeye kararlıyız. İster bir kahve gurmesi olun, isterse sıradan bir içici, her fincanda Etiyopya'nın tarihini, kültürünü ve mükemmeliyet tutkusunu tadacağınızın sözünü veriyoruz."
-          }  
+          } ,
+          
+            "featured": {
+              "title": "Ayın Öne Çıkan Kahvesi",
+              "description": "Bu ay, Etiyopya'nın en iyi kahve çekirdeklerini sunmaktan heyecan duyuyoruz. Kahve tutkunları için mükemmel bir harman olan bu özel demlemenin canlı ve meyvemsi notlarının tadını çıkarın.",
+              "coffeeAlt": "Etiyopya Kahvesi",
+              "coffeeName": "Etiyopya Yirgacheffe Kahvesi",
+              "coffeeDescription": "Bu nadir ve zarif kahve, parlak asiditesi, çiçeksi aromaları ve narenciye notalarıyla tanınan Etiyopya'nın Yirgacheffe bölgesinden gelmektedir.",
+              "origin": "🌱 Köken: Etiyopya, Yirgacheffe",
+              "flavorProfile": "💥 Lezzet Profili: Parlak, Çiçeksi, Narenciye",
+              "brewingMethod": "☕ İdeal Demleme Yöntemi: Pour-Over, Espresso",
+              "shopNow": "Şimdi Satın Al",
+              "learnMore": "Daha Fazla Bilgi"
+            }
+          
     
   }
   
