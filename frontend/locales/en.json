@@ -56,8 +56,35 @@
             "brewingMethod": "☕ Ideal Brewing Method: Pour-Over, Espresso",
             "shopNow": "Shop Now",
             "learnMore": "Learn More"
+          },
+        "footer":{
+          "brand": "IFNA",
+          "brand2":"COFFEE",
+          "tagline": "Ethically sourced Ethiopian coffee straight from the highlands.",
+          "contactTitle": "Get in Touch",
+          "address": "Addis Ababa, Ethiopia",
+          "phone": "+251 123 456 789",
+          "email": "contact@ifnacoffee.com",
+          "newsletterTitle": "Coffee Updates",
+          "newsletterText": "Join our newsletter for seasonal blends and offers.",
+          "emailPlaceholder": "Your email",
+          "joinButton": "Join",
+          "copyright": "© {2025} IFNA Coffee.",
+          "privacy": "Privacy Policy",
+          "terms": "Terms"
+        },
+        "team":{
+          "title": "Meet Our",
+          "teamHighlight": "Team",
+          "roles": {
+            "softwareEngineer": "Software Engineer",
+            "productManager": "Product Manager"
+          },
+          "socialLinks": {
+            "linkedIn": "LinkedIn",
+            "github": "GitHub"
           }
-        
+        }
       
       
     

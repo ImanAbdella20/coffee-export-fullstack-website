@@ -56,6 +56,34 @@
               "brewingMethod": "☕ طريقة التخمير المثالية: صب، إسبريسو",
               "shopNow": "تسوق الآن",
               "learnMore": "تعلم المزيد"
+            },
+            "footer":{
+              "brand": "إيفنا ",
+              "brand2":"قهوة",
+              "tagline": "قهوة إثيوبية مصدرها أخلاقي مباشرة من المرتفعات.",
+              "contactTitle": "اتصل بنا",
+              "address": "أديس أبابا، إثيوبيا",
+              "phone": "+251 123 456 789",
+              "email": "contact@ifnacoffee.com",
+              "newsletterTitle": "تحديثات القهوة",
+              "newsletterText": "انضم إلى نشرتنا الإخبارية للحصول على خلطات موسمية وعروض.",
+              "emailPlaceholder": "بريدك الإلكتروني",
+              "joinButton": "انضم",
+              "copyright": "© {2025} إيفنا قهوة.",
+              "privacy": "سياسة الخصوصية",
+              "terms": "الشروط"
+            },
+            "team":{
+              "title": "تعرف على",
+              "teamHighlight": "فريقنا",
+              "roles": {
+                "softwareEngineer": "مهندس برمجيات",
+                "productManager": "مدير منتج"
+              },
+              "socialLinks": {
+                "linkedIn": "لينكدإن",
+                "github": "جيت هاب"
+              }
             }
           
         

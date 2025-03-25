@@ -56,6 +56,35 @@
               "brewingMethod": "☕ İdeal Demleme Yöntemi: Pour-Over, Espresso",
               "shopNow": "Şimdi Satın Al",
               "learnMore": "Daha Fazla Bilgi"
+            },
+
+            "footer":{
+              "brand": "IFNA ",
+              "brand2":"Kahve",
+        "tagline": "Etiyopya'nın yaylalarından etik olarak tedarik edilen kahve.",
+        "contactTitle": "İletişim",
+        "address": "Addis Ababa, Etiyopya",
+        "phone": "+251 123 456 789",
+        "email": "iletisim@ifnakahve.com",
+        "newsletterTitle": "Kahve Güncellemeleri",
+        "newsletterText": "Mevsimlik karışımlar ve teklifler için bültenimize katılın.",
+        "emailPlaceholder": "E-posta adresiniz",
+        "joinButton": "Katıl",
+        "copyright": "© {2025} IFNA Kahve.",
+        "privacy": "Gizlilik Politikası",
+        "terms": "Şartlar"
+            },
+            "team":{
+              "title": "Ekibimizle",
+              "teamHighlight": "Tanışın",
+              "roles": {
+                "softwareEngineer": "Yazılım Mühendisi",
+                "productManager": "Ürün Yöneticisi"
+              },
+              "socialLinks": {
+                "linkedIn": "LinkedIn",
+                "github": "GitHub"
+              }
             }
           
     

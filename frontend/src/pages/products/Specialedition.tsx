@@ -43,7 +43,7 @@ const SpecialEdition = () => {
   if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }} className='h-screen'>
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }} className='h-screen bg-black' >
       <h1 className=''>Special Edition Coffees</h1>
       <p>Explore our exclusive collection of premium coffee beans.</p>
       <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>

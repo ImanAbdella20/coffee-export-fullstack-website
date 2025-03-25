@@ -56,7 +56,36 @@
               "brewingMethod": "☕ Método de Preparación Ideal: Pour-Over, Espresso",
               "shopNow": "Comprar Ahora",
               "learnMore": "Saber Más"
-            }
+            },
+        "footer":{
+          "brand": "IFNA ",
+          "brand2":"Café",
+        "tagline": "Café etíope obtenido éticamente directamente de las tierras altas.",
+        "contactTitle": "Contacto",
+        "address": "Adís Abeba, Etiopía",
+        "phone": "+251 123 456 789",
+        "email": "contacto@ifnacafe.com",
+        "newsletterTitle": "Actualizaciones de Café",
+        "newsletterText": "Únase a nuestro boletín para mezclas estacionales y ofertas.",
+        "emailPlaceholder": "Tu correo electrónico",
+        "joinButton": "Unirse",
+        "copyright": "© {2025} IFNA Café.",
+        "privacy": "Política de Privacidad",
+        "terms": "Términos"
+        }  ,
+        "team":{
+          "title": "Conoce a Nuestro",
+      "teamHighlight": "Equipo",
+      "roles": {
+        "softwareEngineer": "Ingeniero de Software",
+        "productManager": "Gerente de Producto"
+      },
+      "socialLinks": {
+        "linkedIn": "LinkedIn",
+        "github": "GitHub"
+      }
+        }
+
           
      
   }

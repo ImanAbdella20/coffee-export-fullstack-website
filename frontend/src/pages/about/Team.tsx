@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import fuad from '../../assets/images/fuad.jpg';
 import githubIcon from '../../assets/images/github.svg'; // assuming this is the image path
+import { useTranslation } from 'react-i18next';
 
 // Define the types for social link and team member props
 type SocialLink = {
@@ -17,6 +18,7 @@ type TeamMemberProps = {
 };
 
 const TeamMember: React.FC<TeamMemberProps> = ({ image, name, role, socialLinks }) => (
+
   <div className="flex flex-col items-center eachmem">
     <img
       src={image}
@@ -47,41 +49,88 @@ const TeamMember: React.FC<TeamMemberProps> = ({ image, name, role, socialLinks 
 );
 
 const Team = () => {
+  const { t } = useTranslation();
+
   const teamMembers = [
     {
       name: 'Fuad Abdella',
-      role: 'Software Engineer',
+      role: t('team.roles.softwareEngineer'),
       image: fuad,
       socialLinks: [
-        { name: 'LinkedIn', icon: '🔗', url: '#' },
-        { name: 'GitHub', icon: { github: githubIcon }, url: '#' }, // icon is now an object with the 'github' key
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' }, // icon is now an object with the 'github' key
       ],
     },
     {
       name: 'Iman Abdella',
-      role: 'Product Manager',
+      role: t('team.roles.productManager'),
       image: fuad,
       socialLinks: [
-        { name: 'LinkedIn', icon: '🔗', url: '#' },
-        { name: 'GitHub', icon: { github: githubIcon }, url: '#' },
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
       ],
     },
     {
       name: 'Nesr Abdella',
-      role: 'Product Manager',
+      role: t('team.roles.productManager'),
       image: fuad,
       socialLinks: [
-        { name: 'LinkedIn', icon: '🔗', url: '#' },
-        { name: 'GitHub', icon: { github: githubIcon }, url: '#' },
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
       ],
     },
     {
       name: 'Amir Abdella',
-      role: 'Product Manager',
+      role: t('team.roles.productManager'),
       image: fuad,
       socialLinks: [
-        { name: 'LinkedIn', icon: '🔗', url: '#' },
-        { name: 'GitHub', icon: { github: githubIcon }, url: '#' },
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
+      ],
+    },
+    {
+      name: 'Mami Abdella',
+      role: t('team.roles.productManager'),
+      image: fuad,
+      socialLinks: [
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
+      ],
+    },
+    {
+      name: 'Babi Abdella',
+      role: t('team.roles.productManager'),
+      image: fuad,
+      socialLinks: [
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
+      ],
+    },
+    {
+      name: 'Nunesh Abdella',
+      role: t('team.roles.productManager'),
+      image: fuad,
+      socialLinks: [
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
+      ],
+    },
+    {
+      name: 'Ema Abdella',
+      role: t('team.roles.productManager'),
+      image: fuad,
+      socialLinks: [
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
+      ],
+    },
+    {
+      name: 'Aba Abdella',
+      role: t('team.roles.productManager'),
+      image: fuad,
+      socialLinks: [
+        { name: t('team.socialLinks.linkedIn'), icon: '🔗', url: '#' },
+        { name: t('team.socialLinks.github'), icon: { github: githubIcon }, url: '#' },
       ],
     },
   ];
@@ -100,9 +149,9 @@ const Team = () => {
   };
 
   return (
-    <div className="h-screen justify-center items-center bg-gray-50">
+    <div className="teamdiv min-h-[75vh] flex flex-col ">
       <div className="text-center text-3xl font-bold teamcontainer">
-        Meet Our <span className="text-[#61300d]">Team</span>
+      {t('team.title')} <span className="text-[#61300d]">{t('team.teamHighlight')}</span>
       </div>
 
       <div className="relative flex items-center w-full px-4">
