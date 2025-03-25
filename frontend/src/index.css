@@ -292,6 +292,10 @@ li:hover .dropdown-menu {
 }
 
 /* Products Section */
+.productsdiv{
+  margin: auto 40px;
+}
+
 .search {
   margin-top: 30px;
 }
@@ -302,7 +306,12 @@ li:hover .dropdown-menu {
 
 .productsbtn {
   color: white;
+  height: 40px;
   background-color: #AD7C59;
+}
+
+.productsbtn:hover{
+  background-color:#7b563b
 }
 
 .product {
@@ -465,4 +474,21 @@ font-size: 25px;
 
 .teamdiv{
   background-color: rgb(240, 240, 240);
+}
+
+.specialedition{
+  background-color: rgb(240, 240, 240);
+
+}
+
+.specialedition2{
+  margin: auto 40px;
+}
+.specialeditionheader{
+  margin: 30px auto;
+}
+
+.specialeditionh1{
+  font-size: 25px;
+  font-weight: bold;
 }

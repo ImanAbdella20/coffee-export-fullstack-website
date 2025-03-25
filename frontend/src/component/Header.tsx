@@ -66,21 +66,26 @@ const Header = ({ user }: HeaderProps) => {
   }, []);
 
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
-  const [isHovering, setIsHovering] = useState<boolean>(false);
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
 
   const handleMouseEnter = (menu: string) => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+    }
     setDropdownOpen(menu);
   };
 
-  const handleMouseLeave = () => {
-    if (!isHovering) {
+  const handleMouseLeave = (menu: string) => {
+    dropdownTimeoutRef.current = setTimeout(() => {
       setDropdownOpen(null);
-    }
+    }, 300); // 300ms delay before closing
   };
 
-  const handleItemMouseEnter = () => setIsHovering(true);
-  const handleItemMouseLeave = () => setIsHovering(false);
+  const handleDropdownItemClick = (sectionId: string, pageUrl: string) => {
+    handleSectionClick(sectionId, pageUrl);
+    setDropdownOpen(null); // Close dropdown after click
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -116,6 +121,9 @@ const Header = ({ user }: HeaderProps) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      if (dropdownTimeoutRef.current) {
+        clearTimeout(dropdownTimeoutRef.current);
+      }
     };
   }, []);
 
@@ -148,29 +156,41 @@ const Header = ({ user }: HeaderProps) => {
             <li
               className="relative"
               onMouseEnter={() => handleMouseEnter('about')}
-              onMouseLeave={handleMouseLeave}
+              onMouseLeave={() => handleMouseLeave('about')}
             >
-              <Link to="/about">
-                <button className="about hover:text-[#AD7C59] cursor-pointer"
-                  onMouseEnter={handleItemMouseEnter}
-                  onMouseLeave={handleItemMouseLeave}>
+              <Link to="/about" className="flex items-center">
+                <button className="about hover:text-[#AD7C59] cursor-pointer">
                   {t('header.about')} <span>&#9662;</span>
                 </button>
               </Link>
               {/* Dropdown Menu */}
-              <ul ref={dropdownRef} className={`dropdown-menu ${dropdownOpen === 'about' ? 'show' : ''}`}>
+              <ul 
+                ref={dropdownRef} 
+                className={`dropdown-menu ${dropdownOpen === 'about' ? 'show' : ''}`}
+                onMouseEnter={() => handleMouseEnter('about')}
+                onMouseLeave={() => handleMouseLeave('about')}
+              >
                 <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('our-story', '/about')}>
+                  <button 
+                    className="dropdowns w-full text-left" 
+                    onClick={() => handleDropdownItemClick('our-story', '/about')}
+                  >
                     {t('header.about.story')}
                   </button>
                 </li>
                 <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('our-team', '/about')}>
+                  <button 
+                    className="dropdowns w-full text-left" 
+                    onClick={() => handleDropdownItemClick('our-team', '/about')}
+                  >
                     {t('header.about.team')}
                   </button>
                 </li>
                 <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('our-mission', '/about')}>
+                  <button 
+                    className="dropdowns w-full text-left" 
+                    onClick={() => handleDropdownItemClick('our-mission', '/about')}
+                  >
                     {t('header.about.missionVision')}
                   </button>
                 </li>
@@ -181,34 +201,47 @@ const Header = ({ user }: HeaderProps) => {
             <li
               className="relative"
               onMouseEnter={() => handleMouseEnter('products')}
-              onMouseLeave={handleMouseLeave}
+              onMouseLeave={() => handleMouseLeave('products')}
             >
-              <Link to="/products">
-                <button className="products text-white hover:text-[#AD7C59] cursor-pointer"
-                  onMouseEnter={handleItemMouseEnter}
-                  onMouseLeave={handleItemMouseLeave}>
+              <Link to="/products" className="flex items-center">
+                <button className="products text-white hover:text-[#AD7C59] cursor-pointer">
                   {t('header.products')} <span>&#9662;</span>
                 </button>
               </Link>
               {/* Dropdown Menu */}
-              <ul ref={dropdownRef} className={`dropdown-menu ${dropdownOpen === 'products' ? 'show' : ''}`}>
+              <ul 
+                ref={dropdownRef} 
+                className={`dropdown-menu ${dropdownOpen === 'products' ? 'show' : ''}`}
+                onMouseEnter={() => handleMouseEnter('products')}
+                onMouseLeave={() => handleMouseLeave('products')}
+              >
                 <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('coffees', '/products')}>
+                  <button 
+                    className="dropdowns w-full text-left" 
+                    onClick={() => handleDropdownItemClick('coffees', '/products')}
+                  >
                     {t('header.products.coffees')}
                   </button>
                 </li>
                 <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('special-editions', '/products')}>
+                  <button 
+                    className="dropdowns w-full text-left" 
+                    onClick={() => handleDropdownItemClick('special-editions', '/products')}
+                  >
                     {t('header.products.specialEditions')}
                   </button>
                 </li>
                 <li>
-                  <button className="dropdowns" onClick={() => handleSectionClick('subscription', '/products')}>
+                  <button 
+                    className="dropdowns w-full text-left" 
+                    onClick={() => handleDropdownItemClick('subscription', '/products')}
+                  >
                     {t('header.products.subscription')}
                   </button>
                 </li>
               </ul>
             </li>
+            
             {/* Contacts */}
             <li className="text-white hover:text-[#61300d]">
               <Link to="/contacts" className="header-item contacts" onClick={handleItemClick}>

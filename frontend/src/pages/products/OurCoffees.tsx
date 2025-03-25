@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
 import { motion, AnimatePresence } from 'framer-motion';
 import debounce from 'lodash.debounce';
 import { Link, useNavigate } from 'react-router-dom';
+import ConnectionError from '../../component/connectionerror/ConnectionError';
+import useApi from '../../component/connectionerror/useApi';
 
 interface Product {
   quantity: number;
@@ -17,15 +19,13 @@ interface Product {
   origin: string;
 }
 
-interface CoffeesProp{
-  user: any
+interface CoffeesProp {
+  user: any;
   setCartCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
-  const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]); // Store products to display
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
+  const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
   const [showQuantityPopup, setShowQuantityPopup] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -34,13 +34,46 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
   const [roastLevelFilter, setRoastLevelFilter] = useState('');
   const [originFilter, setOriginFilter] = useState('');
   const [coffeeTypeFilter, setCoffeeTypeFilter] = useState('');
-  const [page, setPage] = useState(1); // Track the current page
-  const [totalProducts, setTotalProducts] = useState(0); // Total number of products for pagination
+  const [page, setPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
+  // Create debounced fetch function
+  const debouncedFetch = useCallback(debounce(async (params: any) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`, { params });
+      setCoffeeProducts(response.data.products);
+      setTotalProducts(response.data.totalProducts);
+      setError(null);
+    } catch (err) {
+      setError(axios.isAxiosError(err) && err.message === 'Network Error' 
+        ? 'connection' 
+        : 'Failed to load products');
+    } finally {
+      setLoading(false);
+    }
+  }, 2000), []); // 2000ms debounce delay
+
   useEffect(() => {
-    // Load cart data from localStorage and sync with the state
+    const params = {
+      search,
+      roastLevel: roastLevelFilter,
+      origin: originFilter,
+      coffeeType: coffeeTypeFilter,
+      page,
+      limit: 8,
+    };
+    debouncedFetch(params);
+    
+    // Cleanup
+    return () => debouncedFetch.cancel();
+  }, [search, roastLevelFilter, originFilter, coffeeTypeFilter, page, debouncedFetch]);
+
+  useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       const parsedCart = JSON.parse(storedCart);
@@ -48,64 +81,6 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
       setCartCount(parsedCart.reduce((total: number, item: Product) => total + item.quantity, 0));
     }
   }, [setCartCount]);
-
-  // Debounced search function (1-second delay)
-  const debouncedSearch = debounce(async () => {
-    setLoading(true);
-    try {
-      const params = {
-        search,
-        roastLevel: roastLevelFilter,
-        origin: originFilter,
-        coffeeType: coffeeTypeFilter,
-        page,
-        limit: 8,
-      };
-
-      const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`, { params });
-
-      setCoffeeProducts(response.data.products);
-      setTotalProducts(response.data.totalProducts);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to load products');
-      setLoading(false);
-    }
-  }, 1000); // Delay of 1000ms after the user stops typing
-
-  // Debounced filters function (2-second delay)
-  const debouncedFilters = debounce(async () => {
-    setLoading(true);
-    try {
-      const params = {
-        search,
-        roastLevel: roastLevelFilter,
-        origin: originFilter,
-        coffeeType: coffeeTypeFilter,
-        page,
-        limit: 8,
-      };
-
-      const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/products`, { params });
-
-      setCoffeeProducts(response.data.products);
-      setTotalProducts(response.data.totalProducts);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to load products');
-      setLoading(false);
-    }
-  }, 2000); // Delay of 2000ms for filters
-
-  // Trigger debounced search whenever search changes
-  useEffect(() => {
-    debouncedSearch();
-  }, [search]);
-
-  // Trigger debounced filters whenever filters change
-  useEffect(() => {
-    debouncedFilters();
-  }, [roastLevelFilter, originFilter, coffeeTypeFilter, page]);
 
   const handleAddToCartDirectly = (product: Product) => {
     setSelectedProduct(product);
@@ -139,16 +114,7 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
     }
   };
 
-  if (loading) {
-    return <ReactLoading type="spin" color="#000" height={50} width={50} />;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   const handleBuyNow = async () => {
-
     if (!user) {
       navigate('/login');
       return;
@@ -176,27 +142,40 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
     }
   };
 
+  if (error === 'connection') {
+    return <ConnectionError />;
+  }
+
+  if (loading && page === 1) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ReactLoading type="spin" color="#000" height={50} width={50} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
+
   return (
-    <div className="relative bg-gray-50">
-      {/* Blurred Background when popup is open */}
-      <div className={`transition-all duration-300 ${showQuantityPopup ? 'blur-sm' : ''}`}>
-        {/* Search & Filters */}
-        <div className="search flex justify-between gap-4">
-          {/* Search Bar */}
-          <div className="flex border border-gray-300 rounded-lg w-1/3">
+    <div className="relative p-4 h-[200vh]">
+      <div className={`productsdiv transition-all duration-300 ${showQuantityPopup ? 'blur-sm' : ''}`}>
+        <div className="search flex flex-wrap justify-between gap-4 mb-6">
+          <div className="flex border border-gray-300 rounded-lg w-full md:w-1/3">
             <input
               type="text"
               placeholder="Search Coffee"
-              className="px-4 py-2 rounded-l-lg"
+              className=" px-4 py-2 rounded-l-lg w-full"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <FaSearch className="text-gray-600 p-2" />
+            <FaSearch className="text-gray-600 p-2 text-xl" />
+
           </div>
 
-          {/* Roast Level Filter */}
           <select
-            className="border px-4 py-2 rounded"
+            className="border px-4 py-2 rounded w-full md:w-auto"
             value={roastLevelFilter}
             onChange={(e) => setRoastLevelFilter(e.target.value)}
           >
@@ -206,9 +185,8 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
             <option value="Dark">Dark</option>
           </select>
 
-          {/* Origin Filter */}
           <select
-            className="border px-4 py-2 rounded"
+            className="border px-4 py-2 rounded w-full md:w-auto"
             value={originFilter}
             onChange={(e) => setOriginFilter(e.target.value)}
           >
@@ -218,9 +196,8 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
             <option value="Yirgacheffe">Yirgacheffe (Ethiopia)</option>
           </select>
 
-          {/* Coffee Type Filter */}
           <select
-            className="border px-4 py-2 rounded"
+            className="border px-4 py-2 rounded w-full md:w-auto"
             value={coffeeTypeFilter}
             onChange={(e) => setCoffeeTypeFilter(e.target.value)}
           >
@@ -230,51 +207,59 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
           </select>
         </div>
 
-        {/* Product List */}
-        <div className="product grid grid-cols-4 gap-4 mt-6 cursor-pointer">
+        <div className="product grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 border-2">
           {coffeeProducts.length > 0 ? (
             coffeeProducts.map((product) => (
-              <div key={product._id} className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <img src={product.image} alt={product.name} className="productimg object-cover rounded-md" />
-                <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
-                <p className="text-gray-600">{product.weight}</p>
-                <p className="text-xl font-bold mt-2">{product.price}</p>
-
-                <div className="mt-4 flex justify-between gap-2">
-                  <button
-                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
-                    onClick={() => handleAddToCartDirectly(product)}
-                  >
-                    Add to Cart
-                  </button>
-
-                    <button
-                      className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded hover:bg-[#61300d] cursor-pointer"
-                      onClick={handleBuyNow}
-                    >
-                      Buy Now
-                    </button>
-          
-                </div>
+              <div 
+              key={product._id} 
+              className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-white hover:scale-[1.02]"
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                className="productimg w-full h-48 object-cover rounded-md mb-4 transition-transform duration-300 hover:scale-105"
+              />
+              <h3 className="text-lg font-semibold transition-colors duration-300 hover:text-[#AD7C59]">{product.name}</h3>
+              <p className="text-gray-600 transition-colors duration-300 hover:text-gray-800">{product.weight}</p>
+              <p className="text-xl font-bold mt-2 transition-colors duration-300 hover:text-[#61300d]">{product.price}</p>
+            
+              <div className="mt-4 flex justify-between gap-2">
+                <button
+                  className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-lg hover:bg-[#61300d] cursor-pointer w-full 
+                             transition-all duration-300 hover:scale-105 active:scale-95"
+                  onClick={() => handleAddToCartDirectly(product)}
+                >
+                  Add to Cart
+                </button>
+            
+                <button
+                  className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-lg hover:bg-[#61300d] cursor-pointer w-full 
+                             transition-all duration-300 hover:scale-105 active:scale-95"
+                  onClick={handleBuyNow}
+                >
+                  Buy Now
+                </button>
               </div>
+            </div>
             ))
           ) : (
-            <div>No products available</div>
+            <div className="col-span-full text-center py-10">No products available</div>
           )}
         </div>
 
-        {/* Load More Button */}
         {coffeeProducts.length < totalProducts && (
-          <button
-            className="mt-6 bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d]"
-            onClick={loadMoreProducts}
-          >
-            Load More
-          </button>
+          <div className="flex justify-center mt-6">
+            <button
+              className="bg-[#AD7C59] text-white px-6 py-2 rounded hover:bg-[#61300d]"
+              onClick={loadMoreProducts}
+              disabled={loading}
+            >
+              {loading ? 'Loading...' : 'Load More'}
+            </button>
+          </div>
         )}
       </div>
 
-      {/* Smooth Popup for Quantity */}
       <AnimatePresence>
         {showQuantityPopup && selectedProduct && (
           <>
@@ -293,27 +278,30 @@ const OurCoffees= ({user , setCartCount}: CoffeesProp) => {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               <h2 className="text-lg font-semibold mb-4">Select Quantity for {selectedProduct.name}</h2>
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center justify-center gap-4 mb-6">
                 <button
-                  className="bg-gray-300 px-3 py-2 rounded"
+                  className="bg-gray-300 px-4 py-2 rounded text-xl"
                   onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
                 >
                   -
                 </button>
-                <span className="text-xl">{quantity}</span>
+                <span className="text-2xl font-bold w-10 text-center">{quantity}</span>
                 <button
-                  className="bg-gray-300 px-3 py-2 rounded"
+                  className="bg-gray-300 px-4 py-2 rounded text-xl"
                   onClick={() => setQuantity((prev) => prev + 1)}
                 >
                   +
                 </button>
               </div>
-              <div className="mt-4 flex justify-between">
-                <button className="text-red-500 cursor-pointer" onClick={() => setShowQuantityPopup(false)}>
+              <div className="flex justify-between gap-4">
+                <button
+                  className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded border border-gray-300 w-full"
+                  onClick={() => setShowQuantityPopup(false)}
+                >
                   Cancel
                 </button>
                 <button
-                  className="bg-[#AD7C59] text-white px-4 py-2 rounded cursor-pointer"
+                  className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] w-full"
                   onClick={() => handleAddToCartWithQuantity(selectedProduct, quantity)}
                 >
                   Add to Cart

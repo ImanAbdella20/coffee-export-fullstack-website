@@ -54,7 +54,7 @@ export const getProduct = async (req, res) => {
   const filters = {};
 
   if (search) {
-    filters.name = { $regex: search, $options: 'i' }; // case-insensitive search
+    filters.name = { $regex: search, $options: 'i' };
   }
   if (roastLevel) {
     filters.roastLevel = roastLevel;
@@ -69,7 +69,6 @@ export const getProduct = async (req, res) => {
   try {
     const productsQuery = Product.find(filters).limit(Number(limit));
 
-    // Apply random selection if no filters are applied and it's the first request
     if (!search && !roastLevel && !origin && !coffeeType) {
       const randomProducts = await Product.aggregate([{ $sample: { size: Number(limit) } }]);
       return res.json({
@@ -78,7 +77,6 @@ export const getProduct = async (req, res) => {
       });
     }
 
-    // Regular filtered query
     const products = await productsQuery.skip((page - 1) * limit);
     const totalProducts = await Product.countDocuments(filters);
     
@@ -87,7 +85,6 @@ export const getProduct = async (req, res) => {
     res.status(500).send('Error retrieving products');
   }
 };
-
 
 export const updateProduct = async (req, res) => {
   try {
