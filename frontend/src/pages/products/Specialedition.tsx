@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ConnectionError from '../../component/connectionerror/ConnectionError';
 import ReactLoading from 'react-loading';
 import useApi from '../../component/connectionerror/useApi';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight , FaSync} from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Coffee {
   _id: string;
@@ -12,6 +13,8 @@ interface Coffee {
   image?: string;
   roastLevel?: string;
   origin?: string;
+  quantity?: number;
+  maxQuantity: number;
 }
 
 const SpecialEdition = () => {
@@ -22,7 +25,19 @@ const SpecialEdition = () => {
   } = useApi<Coffee[]>(`${import.meta.env.REACT_APP_API_URL}/specialedition`);
   
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showQuantityPopup, setShowQuantityPopup] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Coffee | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [cart, setCart] = useState<Coffee[]>([]);
+  const [availableQuantity, setAvailableQuantity] = useState(5);
   const itemsPerPage = 3;
+
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
 
   const handleNext = () => {
     if (specialCoffee && currentIndex < specialCoffee.length - itemsPerPage) {
@@ -36,12 +51,62 @@ const SpecialEdition = () => {
     }
   };
 
-  // Handle connection errors
+  const handleAddToCartClick = (product: Coffee) => {
+    setSelectedProduct(product);
+    const maxAllowed = Math.min(5, product.maxQuantity || 5);
+    setAvailableQuantity(maxAllowed);
+    setQuantity(1);
+    setShowQuantityPopup(true);
+  };
+
+  const handleAddToCartWithQuantity = () => {
+    if (!selectedProduct) return;
+
+    const numericQuantity = Number(quantity);
+    if (isNaN(numericQuantity) || numericQuantity < 1) {
+      setQuantity(1);
+      return;
+    }
+
+    const finalQuantity = Math.min(numericQuantity, availableQuantity);
+    
+    const updatedCart = [...cart];
+    const existingProductIndex = updatedCart.findIndex(item => item._id === selectedProduct._id);
+
+    if (existingProductIndex > -1) {
+      const newQuantity = (updatedCart[existingProductIndex].quantity || 0) + finalQuantity;
+      updatedCart[existingProductIndex].quantity = Math.min(newQuantity, availableQuantity);
+    } else {
+      updatedCart.push({ 
+        ...selectedProduct, 
+        quantity: finalQuantity
+      });
+    }
+
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setShowQuantityPopup(false);
+    setQuantity(1);
+  };
+
+  const incrementQuantity = () => {
+    setQuantity(prev => {
+      const newQuantity = (prev || 0) + 1;
+      return Math.min(newQuantity, availableQuantity);
+    });
+  };
+
+  const decrementQuantity = () => {
+    setQuantity(prev => {
+      const newQuantity = (prev || 1) - 1;
+      return Math.max(1, newQuantity);
+    });
+  };
+
   if (error === 'connection') {
     return <ConnectionError />;
   }
 
-  // Handle loading state
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -55,11 +120,10 @@ const SpecialEdition = () => {
     );
   }
 
-  // Handle other errors
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="bg-white p-6 rounded-lg shadow-md max-w-md text-center">
+        <div className="p-6 max-w-md text-center">
           <h2 className="text-xl font-semibold text-red-600 mb-2">
             Error Loading Products
           </h2>
@@ -68,7 +132,7 @@ const SpecialEdition = () => {
             onClick={() => window.location.reload()}
             className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] transition"
           >
-            Refresh Page
+            <FaSync/>
           </button>
         </div>
       </div>
@@ -76,22 +140,21 @@ const SpecialEdition = () => {
   }
 
   return (
-    <div className="specialedition min-h-screen bg-gradient-to-b from-[#F8F3ED] to-[#F0E6D9] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="specialedition2 max-w-7xl mx-auto relative">
+    <div className="specialedition min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="specialedition2 max-w-4xl mx-auto relative">
         {/* Header Section */}
         <div className="specialeditionheader text-center mb-16">
-          <h1 className=" text-4xl font-bold text-[#3A2E26] mb-4 relative inline-block">
-            <span className="specialeditionh1 relative z-10 px-4">Special Edition Coffees</span>
-            <span className="absolute bottom-0 left-0 right-0 h-2 bg-[#AD7C59] opacity-30 z-0"></span>
+          <h1 className="text-4xl font-bold text-[#3A2E26] mb-4 relative inline-block">
+            <span className="specialeditionh1 relative z-10 top-3">Special Edition <span className='text-amber-800'>Coffees</span></span>
           </h1>
-          <p className="text-lg text-[#5A4A42] max-w-2xl mx-auto">
-            Discover our exclusive collection of premium coffee beans, carefully selected for their unique flavors and limited availability.
+          <p className="text-lg text-[#5A4A42] max-w-2xl mx-auto relative top-4 left-25">
+            Exclusive collection with limited availability. Maximum 5 bags per customer to ensure everyone gets to enjoy.
           </p>
         </div>
 
         {/* Coffee Products Carousel */}
         {specialCoffee && specialCoffee.length > 0 ? (
-          <div className="relative">
+          <div className="relative top-5">
             {/* Navigation Arrows */}
             <button 
               onClick={handlePrev}
@@ -109,74 +172,79 @@ const SpecialEdition = () => {
               <FaArrowRight className="text-[#AD7C59] text-xl" />
             </button>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-              {specialCoffee.slice(currentIndex, currentIndex + itemsPerPage).map((coffee) => (
-                <div
-                  key={coffee._id}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
-                >
-                  {/* Coffee Image */}
-                  <div className="h-64 bg-gradient-to-br from-[#F0E6D9] to-[#D9C7B8] flex items-center justify-center relative overflow-hidden">
-                    {coffee.image ? (
-                      <img
-                        src={coffee.image}
-                        alt={coffee.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <span className="text-[#5A4A42]">No image available</span>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <span className="absolute top-4 right-4 bg-[#AD7C59] text-white text-xs font-bold px-2 py-1 rounded-full">
-                      Limited
-                    </span>
-                  </div>
-
-                  {/* Coffee Details */}
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <h2 className="text-xl font-bold text-[#3A2E26]">
-                        {coffee.name}
-                      </h2>
-                      <p className="text-xl font-bold text-[#AD7C59]">
-                        ${coffee.price.toFixed(2)}
-                      </p>
-                    </div>
-
-                    <div className="flex gap-2 mb-3">
-                      {coffee.roastLevel && (
-                        <span className="text-xs bg-[#F0E6D9] text-[#5A4A42] px-2 py-1 rounded-full">
-                          {coffee.roastLevel} Roast
+            <div className="overflow-hidden">
+              <div 
+                className="flex transition-transform duration-300 ease-in-out"
+                style={{
+                  transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)`,
+                  width: `${specialCoffee ? (specialCoffee.length * (100 / itemsPerPage)) : 100}%`
+                }}
+              >
+                {specialCoffee.map((coffee) => (
+                  <div
+                    key={coffee._id}
+                    className="flex-shrink-0 px-4"
+                  >
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group h-full">
+                      {/* Coffee Image */}
+                      <div className="h-64 bg-gradient-to-br from-[#F0E6D9] to-[#D9C7B8] flex items-center justify-center relative overflow-hidden">
+                        {coffee.image ? (
+                          <img
+                            src={coffee.image}
+                            alt={coffee.name}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <span className="text-[#5A4A42]">No image available</span>
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <span className="limited absolute top-4 right-4 bg-[#AD7C59] text-white text-xs font-bold px-2 py-1 rounded-full">
+                          Only {coffee.maxQuantity} left!
                         </span>
-                      )}
-                      {coffee.origin && (
-                        <span className="text-xs bg-[#F0E6D9] text-[#5A4A42] px-2 py-1 rounded-full">
-                          {coffee.origin}
-                        </span>
-                      )}
-                    </div>
+                      </div>
 
-                    <p className="text-[#5A4A42] mb-6 line-clamp-3">
-                      {coffee.description}
-                    </p>
+                      {/* Coffee Details */}
+                      <div className="h-24 relative">
+                        <div className="specialcoffeedetail flex justify-between items-start mb-2">
+                          <h2 className="text-xl font-bold text-[#3A2E26]">
+                            {coffee.name}
+                          </h2>
+                          <p className="text-xl font-bold text-[#AD7C59]">
+                            ${coffee.price.toFixed(2)}
+                          </p>
+                        </div>
 
-                    <div className="flex justify-between items-center">
-                      <button className="text-sm font-medium text-[#AD7C59] hover:text-[#61300d] transition flex items-center">
-                        Learn More
-                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                      <button className="bg-[#AD7C59] hover:bg-[#61300d] text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center">
-                        Add to Cart
-                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                      </button>
+                        <div className="flex gap-2 mb-3">
+                          {coffee.roastLevel && (
+                            <span className="text-xs bg-[#F0E6D9] text-[#5A4A42] px-2 py-1 rounded-full">
+                              {coffee.roastLevel} Roast
+                            </span>
+                          )}
+                          {coffee.origin && (
+                            <span className="text-xs bg-[#F0E6D9] text-[#5A4A42] px-2 py-1 rounded-full">
+                              {coffee.origin}
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="specialcoffeedetail text-[#5A4A42] mb-6 line-clamp-3">
+                          {coffee.description}
+                        </p>
+
+                        <div className="flex items-center absolute bottom-0">
+                          <button 
+                            className="specialeditionbtn bg-[#AD7C59] hover:bg-[#61300d] text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center"
+                            onClick={() => handleAddToCartClick(coffee)}
+                            disabled={coffee.maxQuantity <= 0}
+                          >
+                            {coffee.maxQuantity <= 0 ? 'Sold Out' : 'Add to Cart'}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
             {/* Dots Indicator */}
@@ -208,6 +276,64 @@ const SpecialEdition = () => {
           )
         )}
       </div>
+
+      {/* Quantity Selection Popup */}
+      <AnimatePresence>
+        {showQuantityPopup && selectedProduct && (
+          <>
+            <motion.div
+              className="fixed inset-0 backdrop-blur-md z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowQuantityPopup(false)}
+            />
+            <motion.div
+              className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white p-6 shadow-xl border-t rounded-t-lg z-50"
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
+              <h2 className="text-lg font-semibold mb-2">Select Quantity for {selectedProduct.name}</h2>
+              <p className="text-sm text-[#AD7C59] mb-4">
+                Maximum {availableQuantity} per customer (Limited Edition)
+              </p>
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <button
+                  className="bg-gray-300 px-4 py-2 rounded text-xl disabled:opacity-50"
+                  onClick={decrementQuantity}
+                  disabled={quantity <= 1}
+                >
+                  -
+                </button>
+                <span className="text-2xl font-bold w-10 text-center">{quantity}</span>
+                <button
+                  className="bg-gray-300 px-4 py-2 rounded text-xl disabled:opacity-50"
+                  onClick={incrementQuantity}
+                  disabled={quantity >= availableQuantity}
+                >
+                  +
+                </button>
+              </div>
+              <div className="flex justify-between gap-4">
+                <button
+                  className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded border border-gray-300 w-full"
+                  onClick={() => setShowQuantityPopup(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] w-full"
+                  onClick={handleAddToCartWithQuantity}
+                >
+                  Add {quantity} to Cart
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import debounce from 'lodash.debounce';
 import { Link, useNavigate } from 'react-router-dom';
 import ConnectionError from '../../component/connectionerror/ConnectionError';
+import { FaSync } from 'react-icons/fa';
 import useApi from '../../component/connectionerror/useApi';
 
 interface Product {
@@ -50,8 +51,8 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
       setTotalProducts(response.data.totalProducts);
       setError(null);
     } catch (err) {
-      setError(axios.isAxiosError(err) && err.message === 'Network Error' 
-        ? 'connection' 
+      setError(axios.isAxiosError(err) && err.message === 'Network Error'
+        ? 'connection'
         : 'Failed to load products');
     } finally {
       setLoading(false);
@@ -68,7 +69,7 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
       limit: 8,
     };
     debouncedFetch(params);
-    
+
     // Cleanup
     return () => debouncedFetch.cancel();
   }, [search, roastLevelFilter, originFilter, coffeeTypeFilter, page, debouncedFetch]);
@@ -148,15 +149,35 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
 
   if (loading && page === 1) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <ReactLoading type="spin" color="#000" height={50} width={50} />
+      <div className="flex justify-center items-center min-h-screen">
+        <ReactLoading
+          type="spinningBubbles"
+          color="#AD7C59"
+          height={80}
+          width={80}
+        />
       </div>
     );
   }
 
-  if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
-  }
+   if (error) {
+      return (
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="p-6 max-w-md text-center">
+            <h2 className="text-xl font-semibold text-red-600 mb-2">
+              Error Loading Products
+            </h2>
+            <p className="text-gray-700 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] transition"
+            >
+              <FaSync/>
+            </button>
+          </div>
+        </div>
+      );
+    }
 
   return (
     <div className="relative p-4 h-[200vh]">
@@ -207,40 +228,41 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
           </select>
         </div>
 
-        <div className="product grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 border-2">
+        <div className="product grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 rounded-2xl">
           {coffeeProducts.length > 0 ? (
             coffeeProducts.map((product) => (
-              <div 
-              key={product._id} 
-              className="border p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 bg-white hover:scale-[1.02]"
-            >
-              <img
-                src={product.image}
-                alt={product.name}
-                className="productimg w-full h-48 object-cover rounded-md mb-4 transition-transform duration-300 hover:scale-105"
-              />
-              <h3 className="text-lg font-semibold transition-colors duration-300 hover:text-[#AD7C59]">{product.name}</h3>
-              <p className="text-gray-600 transition-colors duration-300 hover:text-gray-800">{product.weight}</p>
-              <p className="text-xl font-bold mt-2 transition-colors duration-300 hover:text-[#61300d]">{product.price}</p>
-            
-              <div className="mt-4 flex justify-between gap-2">
-                <button
-                  className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-lg hover:bg-[#61300d] cursor-pointer w-full 
-                             transition-all duration-300 hover:scale-105 active:scale-95"
-                  onClick={() => handleAddToCartDirectly(product)}
-                >
-                  Add to Cart
-                </button>
-            
-                <button
-                  className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-lg hover:bg-[#61300d] cursor-pointer w-full 
-                             transition-all duration-300 hover:scale-105 active:scale-95"
-                  onClick={handleBuyNow}
-                >
-                  Buy Now
-                </button>
+              <div
+                key={product._id}
+                className="border p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 bg-white hover:scale-[1.02]"
+              >
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="productimg w-full h-48 object-cover rounded-2xl mb-4 transition-transform duration-300 hover:scale-105"
+                />
+                
+                <h3 className="productdisc text-lg font-semibold transition-colors duration-300 hover:text-[#AD7C59]">{product.name}</h3>
+                <p className="productdisc text-gray-600 transition-colors duration-300 hover:text-gray-800">{product.weight}</p>
+                <p className="productdisc text-xl font-bold mt-2 transition-colors duration-300 hover:text-[#61300d]">{product.price}</p>
+
+                <div className="mt-4 flex justify-between gap-2">
+                  <button
+                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-xl hover:bg-[#61300d] cursor-pointer w-full 
+                              "
+                    onClick={() => handleAddToCartDirectly(product)}
+                  >
+                    Add to Cart
+                  </button>
+
+                  <button
+                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-xl hover:bg-[#61300d] cursor-pointer w-full 
+                             "
+                    onClick={handleBuyNow}
+                  >
+                    Buy Now
+                  </button>
+                </div>
               </div>
-            </div>
             ))
           ) : (
             <div className="col-span-full text-center py-10">No products available</div>
@@ -280,14 +302,14 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
               <h2 className="text-lg font-semibold mb-4">Select Quantity for {selectedProduct.name}</h2>
               <div className="flex items-center justify-center gap-4 mb-6">
                 <button
-                  className="bg-gray-300 px-4 py-2 rounded text-xl"
+                  className="bg-gray-300 px-4 py-2 rounded-xl text-xl"
                   onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
                 >
                   -
                 </button>
                 <span className="text-2xl font-bold w-10 text-center">{quantity}</span>
                 <button
-                  className="bg-gray-300 px-4 py-2 rounded text-xl"
+                  className="bg-gray-300 px-4 py-2 rounded-xl text-xl"
                   onClick={() => setQuantity((prev) => prev + 1)}
                 >
                   +

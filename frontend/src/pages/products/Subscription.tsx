@@ -59,20 +59,20 @@ console.log('To be sent' );
   };
 
   return (
-    <div className="h-screen bg-gradient-to-b  flex items-center justify-center">
-      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center text-amber-800 mb-2">Subscribe to Our Coffee Club</h1>
-        <p className="text-center text-sm text-gray-600 mb-6">
+    <div className="subscribtion flex flex-col items-center">
+      <div className="w-full max-w-md p-8 relative top-5">
+        <h1 className="subscribtionh1 font-bold text-center text-amber-800 mb-2">Subscribe to Our Coffee Club</h1>
+        <p className=" text-sm text-gray-600 mb-6">
           Get the best coffee from around the world delivered to your doorstep.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 relative top-10 flex justify-around gap-5">
           <input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 "
             required
           />
           <select
@@ -86,7 +86,7 @@ console.log('To be sent' );
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 transition disabled:opacity-50"
+            className="subscribtionbtn w-full transition disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Processing...' : 'Subscribe Now'}
           </button>

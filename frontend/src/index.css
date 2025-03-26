@@ -318,6 +318,10 @@ li:hover .dropdown-menu {
   margin-top: 50px;
 }
 
+.productdisc{
+  padding: 2px 7px;
+}
+
 /* cart */
 .check-outbtn{
   background-color: #AD7C59;
@@ -482,7 +486,7 @@ font-size: 25px;
 }
 
 .specialedition2{
-  margin: auto 40px;
+  margin: auto 180px;
 }
 .specialeditionheader{
   margin: 30px auto;
@@ -491,4 +495,38 @@ font-size: 25px;
 .specialeditionh1{
   font-size: 25px;
   font-weight: bold;
+}
+
+.specialeditionbtn{
+  background-color: #AD7C59;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.specialeditionbtn:hover{
+  background-color:#7b563b;
+}
+.specialcoffeedetail{
+  padding: 2px 7px;
+}
+
+.limited{
+  padding: 3px 5px;
+}
+
+.subscribtion{
+  height: 70vh;
+}
+.subscribtionh1{
+  font-size: 25px;
+  font-weight: bold;
+}
+.subscribtionbtn{
+  background-color: #AD7C59;
+  color: white;
+  border-radius: 3px;
+}
+
+.subscribtionbtn:hover{
+  background-color:#7b563b;
 }
