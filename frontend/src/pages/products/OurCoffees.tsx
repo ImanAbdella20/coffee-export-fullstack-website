@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ConnectionError from '../../component/connectionerror/ConnectionError';
 import { FaSync } from 'react-icons/fa';
 import useApi from '../../component/connectionerror/useApi';
+import { useTranslation } from 'react-i18next';
 
 interface Product {
   quantity: number;
@@ -26,6 +27,7 @@ interface CoffeesProp {
 }
 
 const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
+  const { t } = useTranslation();
   const [coffeeProducts, setCoffeeProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
   const [showQuantityPopup, setShowQuantityPopup] = useState(false);
@@ -53,11 +55,11 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
     } catch (err) {
       setError(axios.isAxiosError(err) && err.message === 'Network Error'
         ? 'connection'
-        : 'Failed to load products');
+        : t('coffees.errors.loadFailed'));
     } finally {
       setLoading(false);
     }
-  }, 2000), []); // 2000ms debounce delay
+  }, 2000), [t]);
 
   useEffect(() => {
     const params = {
@@ -160,24 +162,24 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
     );
   }
 
-   if (error) {
-      return (
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="p-6 max-w-md text-center">
-            <h2 className="text-xl font-semibold text-red-600 mb-2">
-              Error Loading Products
-            </h2>
-            <p className="text-gray-700 mb-4">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] transition"
-            >
-              <FaSync/>
-            </button>
-          </div>
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="p-6 max-w-md text-center">
+          <h2 className="text-xl font-semibold text-red-600 mb-2">
+            {t('coffees.errors.title')}
+          </h2>
+          <p className="text-gray-700 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] transition"
+          >
+            <FaSync/>
+          </button>
         </div>
-      );
-    }
+      </div>
+    );
+  }
 
   return (
     <div className="relative p-4 h-[200vh]">
@@ -186,13 +188,12 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
           <div className="flex border border-gray-300 rounded-lg w-full md:w-1/3">
             <input
               type="text"
-              placeholder="Search Coffee"
-              className=" px-4 py-2 rounded-l-lg w-full"
+              placeholder={t('coffees.searchPlaceholder')}
+              className="w-70 rounded-l-lg relative"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <FaSearch className="text-gray-600 p-2 text-xl" />
-
+            <FaSearch className="text-gray-600 p-2 text-xl relative right-7" />
           </div>
 
           <select
@@ -200,10 +201,10 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
             value={roastLevelFilter}
             onChange={(e) => setRoastLevelFilter(e.target.value)}
           >
-            <option value="">Roast Level</option>
-            <option value="Light">Light</option>
-            <option value="Medium">Medium</option>
-            <option value="Dark">Dark</option>
+            <option value="">{t('coffees.filters.roastLevel')}</option>
+            <option value="Light">{t('coffees.filters.light')}</option>
+            <option value="Medium">{t('coffees.filters.medium')}</option>
+            <option value="Dark">{t('coffees.filters.dark')}</option>
           </select>
 
           <select
@@ -211,10 +212,10 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
             value={originFilter}
             onChange={(e) => setOriginFilter(e.target.value)}
           >
-            <option value="">Origin</option>
-            <option value="Jimma">Jimma (Ethiopia)</option>
-            <option value="Sidamo">Sidamo (Ethiopia)</option>
-            <option value="Yirgacheffe">Yirgacheffe (Ethiopia)</option>
+            <option value="">{t('coffees.filters.origin')}</option>
+            <option value="Jimma">{t('coffees.filters.jimma')}</option>
+            <option value="Sidamo">{t('coffees.filters.sidamo')}</option>
+            <option value="Yirgacheffe">{t('coffees.filters.yirgacheffe')}</option>
           </select>
 
           <select
@@ -222,9 +223,9 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
             value={coffeeTypeFilter}
             onChange={(e) => setCoffeeTypeFilter(e.target.value)}
           >
-            <option value="">Coffee Type</option>
-            <option value="Whole">Whole Bean</option>
-            <option value="Grinded">Ground</option>
+            <option value="">{t('coffees.filters.coffeeType')}</option>
+            <option value="Whole">{t('coffees.filters.wholeBean')}</option>
+            <option value="Grinded">{t('coffees.filters.ground')}</option>
           </select>
         </div>
 
@@ -247,25 +248,23 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
 
                 <div className="mt-4 flex justify-between gap-2">
                   <button
-                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-xl hover:bg-[#61300d] cursor-pointer w-full 
-                              "
+                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-xl hover:bg-[#61300d] cursor-pointer w-full"
                     onClick={() => handleAddToCartDirectly(product)}
                   >
-                    Add to Cart
+                    {t('coffees.addToCart')}
                   </button>
 
                   <button
-                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-xl hover:bg-[#61300d] cursor-pointer w-full 
-                             "
+                    className="productsbtn bg-[#AD7C59] text-white py-2 px-4 rounded-xl hover:bg-[#61300d] cursor-pointer w-full"
                     onClick={handleBuyNow}
                   >
-                    Buy Now
+                    {t('coffees.buyNow')}
                   </button>
                 </div>
               </div>
             ))
           ) : (
-            <div className="col-span-full text-center py-10">No products available</div>
+            <div className="col-span-full text-center py-10">{t('coffees.noProducts')}</div>
           )}
         </div>
 
@@ -276,7 +275,7 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
               onClick={loadMoreProducts}
               disabled={loading}
             >
-              {loading ? 'Loading...' : 'Load More'}
+              {loading ? t('coffees.loading') : t('coffees.loadMore')}
             </button>
           </div>
         )}
@@ -299,7 +298,9 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
               exit={{ y: 100, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              <h2 className="text-lg font-semibold mb-4">Select Quantity for {selectedProduct.name}</h2>
+              <h2 className="text-lg font-semibold mb-4">
+                {t('coffees.quantityPopup.title', { productName: selectedProduct.name })}
+              </h2>
               <div className="flex items-center justify-center gap-4 mb-6">
                 <button
                   className="bg-gray-300 px-4 py-2 rounded-xl text-xl"
@@ -320,13 +321,13 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
                   className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded border border-gray-300 w-full"
                   onClick={() => setShowQuantityPopup(false)}
                 >
-                  Cancel
+                  {t('coffees.quantityPopup.cancel')}
                 </button>
                 <button
                   className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] w-full"
                   onClick={() => handleAddToCartWithQuantity(selectedProduct, quantity)}
                 >
-                  Add to Cart
+                  {t('coffees.addToCart')}
                 </button>
               </div>
             </motion.div>

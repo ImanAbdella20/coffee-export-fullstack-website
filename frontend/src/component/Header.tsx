@@ -96,7 +96,7 @@ const Header = ({ user }: HeaderProps) => {
     }
   };
 
-  const handleItemClick = () => {
+  const handleUserIconClick = () => {
     setUserIconOpen(!userIconOpen);
   };
 
@@ -147,7 +147,7 @@ const Header = ({ user }: HeaderProps) => {
           <ul className="flex flex-col md:flex-row items-center gap-4 md:gap-8 p-4 md:p-0">
             {/* Home */}
             <li className="text-white hover:text-[#61300d]">
-              <Link to="/" className="header-item home" onClick={handleItemClick}>
+              <Link to="/" className="header-item home">
                 {t('header.home')}
               </Link>
             </li>
@@ -244,7 +244,7 @@ const Header = ({ user }: HeaderProps) => {
             
             {/* Contacts */}
             <li className="text-white hover:text-[#61300d]">
-              <Link to="/contacts" className="header-item contacts" onClick={handleItemClick}>
+              <Link to="/contacts" className="header-item contacts">
                 {t('header.contacts')}
               </Link>
             </li>
@@ -299,7 +299,7 @@ const Header = ({ user }: HeaderProps) => {
           </div>
 
           {/* Cart Icon */}
-          <Link to="/cart" className="header-item cart relative" onClick={handleItemClick}>
+          <Link to="/cart" className="header-item cart relative">
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H7M9 18c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path>
             </svg>
@@ -330,7 +330,7 @@ const Header = ({ user }: HeaderProps) => {
             </div>
           ) : null}
           
-          <button className="header-item user move-up cursor-pointer" onClick={handleItemClick}>
+          <button className="header-item user move-up cursor-pointer" onClick={handleUserIconClick}>
             <svg className="w-6 h-6 hover:text-[#61300d]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 14c-4.42 0-8 1.79-8 4v2h16v-2c0-2.21-3.58-4-8-4z" />
             </svg>

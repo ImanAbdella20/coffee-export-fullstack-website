@@ -1,12 +1,14 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 interface SubscriptionProps {
   user: User | null;
 }
 
 const Subscription: React.FC<SubscriptionProps> = ({ user }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [plan, setPlan] = useState('monthly');
   const [loading, setLoading] = useState(false);
@@ -34,24 +36,22 @@ const Subscription: React.FC<SubscriptionProps> = ({ user }) => {
     setError(null);
     setSuccess(null);
 
-console.log('To be sent' );
     try {
       const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/subscription/add`, {
         email,
         plan,
       });
-      console.log('sent value:' , response.data);
 
       if (response.status === 201) {
-        setSuccess(`Thanks for subscribing with ${email} to the ${plan} plan!`);
+        setSuccess(t('subscription.success', { email, plan: t(`subscription.plans.${plan}`) }));
       } else {
-        throw new Error('Failed to subscribe. Please try again.');
+        throw new Error(t('subscription.errors.generic'));
       }
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.status === 409) {
-        setError('You have already subscribed to a plan.');
+        setError(t('subscription.errors.alreadySubscribed'));
       } else {
-        setError('There was an error processing your subscription.');
+        setError(t('subscription.errors.generic'));
       }
     } finally {
       setLoading(false);
@@ -61,18 +61,20 @@ console.log('To be sent' );
   return (
     <div className="subscribtion flex flex-col items-center">
       <div className="w-full max-w-md p-8 relative top-5">
-        <h1 className="subscribtionh1 font-bold text-center text-amber-800 mb-2">Subscribe to Our Coffee Club</h1>
-        <p className=" text-sm text-gray-600 mb-6">
-          Get the best coffee from around the world delivered to your doorstep.
+        <h1 className="subscribtionh1 font-bold text-center text-amber-800 mb-2">
+          {t('subscription.title')}
+        </h1>
+        <p className="text-sm text-gray-600 mb-6">
+          {t('subscription.description')}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4 relative top-10 flex justify-around gap-5">
           <input
             type="email"
-            placeholder="Enter your email"
+            placeholder={t('subscription.emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 "
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
             required
           />
           <select
@@ -80,15 +82,15 @@ console.log('To be sent' );
             onChange={(e) => setPlan(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
-            <option value="monthly">Monthly Plan - 500br</option>
-            <option value="yearly">Yearly Plan - 5000br</option>
+            <option value="monthly">{t('subscription.plans.monthly')}</option>
+            <option value="yearly">{t('subscription.plans.yearly')}</option>
           </select>
           <button
             type="submit"
             disabled={loading}
             className="subscribtionbtn w-full transition disabled:opacity-50 cursor-pointer"
           >
-            {loading ? 'Processing...' : 'Subscribe Now'}
+            {loading ? t('subscription.processing') : t('subscription.submitButton')}
           </button>
         </form>
 

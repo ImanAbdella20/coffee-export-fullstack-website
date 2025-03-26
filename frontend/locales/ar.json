@@ -84,9 +84,106 @@
                 "linkedIn": "لينكدإن",
                 "github": "جيت هاب"
               }
-            }
+            },
+            "contact": {
+      "title": "اتصل بنا",
+      "info": {
+        "title": "معلومات الاتصال الخاصة بنا",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "address": "العنوان",
+        "emailValue": "info@coffeeexport.com",
+        "phoneValue": "+251 178 456 789",
+        "addressValue": "123 شارع القهوة، أ.أ، إثيوبيا"
+      },
+      "form": {
+        "title": "أرسل لنا رسالة",
+        "name": "اسمك",
+        "email": "بريدك الإلكتروني",
+        "message": "رسالتك",
+        "namePlaceholder": "محمد أحمد",
+        "emailPlaceholder": "your@example.com",
+        "messagePlaceholder": "كيف يمكننا مساعدتك؟",
+        "submit": "إرسال الرسالة",
+        "sending": "جاري الإرسال..."
+      },
+      "errors": {
+        "required": "جميع الحقول مطلوبة.",
+        "failed": "فشل إرسال الرسالة.",
+        "generic": "حدثت مشكلة في إرسال رسالتك. يرجى المحاولة مرة أخرى.",
+        "unexpected": "حدث خطأ غير متوقع"
+      },
+      "success": "تم إرسال الرسالة بنجاح!"
+    },
+    "subscription": {
+      "title": "اشترك في نادي القهوة الخاص بنا",
+      "description": "احصل على أفضل أنواع القهوة من حول العالم مباشرة إلى باب منزلك.",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "plans": {
+        "monthly": "الخطة الشهرية - 500br",
+        "yearly": "الخطة السنوية - 5000br"
+      },
+      "submitButton": "اشترك الآن",
+      "processing": "جاري المعالجة...",
+      "success": "شكرًا لك على الاشتراك باستخدام {email} في خطة {plan}!",
+      "errors": {
+        "alreadySubscribed": "لقد اشتركت بالفعل في خطة.",
+        "generic": "حدث خطأ أثناء معالجة اشتراكك."
+      }
+    },
+    "coffees": {
+      "searchPlaceholder": "ابحث عن القهوة",
+      "filters": {
+        "roastLevel": "مستوى التحميص",
+        "light": "فاتح",
+        "medium": "متوسط",
+        "dark": "داكن",
+        "origin": "المصدر",
+        "jimma": "جيما (إثيوبيا)",
+        "sidamo": "سيدامو (إثيوبيا)",
+        "yirgacheffe": "يرجاشيف (إثيوبيا)",
+        "coffeeType": "نوع القهوة",
+        "wholeBean": "حبة كاملة",
+        "ground": "مطحون"
+      },
+      "addToCart": "أضف إلى السلة",
+      "buyNow": "اشتر الآن",
+      "noProducts": "لا توجد منتجات متاحة",
+      "loadMore": "تحميل المزيد",
+      "loading": "جاري التحميل...",
+      "quantityPopup": {
+        "title": "حدد الكمية لـ {productName}",
+        "cancel": "إلغاء"
+      },
+      "errors": {
+        "title": "خطأ في تحميل المنتجات. يرجى الاتصال بالإنترنت",
+        "loadFailed": "فشل تحميل المنتجات"
+      }
+    },
+    "specialEdition": {
+      "title": "إصدار خاص",
+      "coffees": "قهوة",
+      "description": "مجموعة حصرية بكميات محدودة. بحد أقصى 5 أكياس لكل عميل لضمان حصول الجميع على فرصة الاستمتاع.",
+      "noImage": "لا توجد صورة متاحة",
+      "onlyLeft": "!باقي فقط {1}",
+      "roast": "تحميص",
+      "soldOut": "نفذت الكمية",
+      "addToCart": "أضف إلى السلة",
+      "noCoffeesAvailable": "حاليًا لا تتوفر قهوة من الإصدار الخاص",
+      "checkBackSoon": "نحن نعد شيئًا استثنائيًا لك. تحقق مرة أخرى قريبًا!",
+      "notifyMe": "أخبرني عند التوفر",
+      "quantityPopup": {
+        "title": "حدد الكمية لـ {productName}",
+        "maxLimit": "بحد أقصى {5} لكل عميل (إصدار محدود)",
+        "cancel": "إلغاء",
+        "addToCart": "أضف إلى السلة"
+      },
+      "errors": {
+        "title": "خطأ في تحميل المنتجات. يرجى الاتصال بالإنترنت"
+      }
+    }
+  
           
-        
-      
+             
   }
   

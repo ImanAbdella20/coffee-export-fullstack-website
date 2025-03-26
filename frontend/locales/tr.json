@@ -85,7 +85,105 @@
                 "linkedIn": "LinkedIn",
                 "github": "GitHub"
               }
-            }
+            },
+            "contact": {
+              "title": "Bize Ulaşın",
+              "info": {
+                "title": "İletişim Bilgilerimiz",
+                "email": "E-posta",
+                "phone": "Telefon",
+                "address": "Adres",
+                "emailValue": "info@coffeeexport.com",
+                "phoneValue": "+251 178 456 789",
+                "addressValue": "123 Kahve Sokak, A.A, Etiyopya"
+              },
+              "form": {
+                "title": "Bize Mesaj Gönderin",
+                "name": "Adınız",
+                "email": "E-posta Adresiniz",
+                "message": "Mesajınız",
+                "namePlaceholder": "Ahmet Yılmaz",
+                "emailPlaceholder": "ornek@mail.com",
+                "messagePlaceholder": "Size nasıl yardımcı olabiliriz?",
+                "submit": "Mesaj Gönder",
+                "sending": "Gönderiliyor..."
+              },
+              "errors": {
+                "required": "Tüm alanlar zorunludur.",
+                "failed": "Mesaj gönderilemedi.",
+                "generic": "Mesajınız gönderilirken bir sorun oluştu. Lütfen tekrar deneyin.",
+                "unexpected": "Beklenmeyen bir hata oluştu"
+              },
+              "success": "Mesajınız başarıyla gönderildi!"
+            },
+            "subscription": {
+              "title": "Kahve Kulübümüze Abone Olun",
+              "description": "Dünyanın en iyi kahvelerini kapınıza kadar getiriyoruz.",
+              "emailPlaceholder": "E-postanızı girin",
+              "plans": {
+                "monthly": "Aylık Plan - 500br",
+                "yearly": "Yıllık Plan - 5000br"
+              },
+              "submitButton": "Şimdi Abone Ol",
+              "processing": "İşleniyor...",
+              "success": "{email} ile {plan} planına abone olduğunuz için teşekkürler!",
+              "errors": {
+                "alreadySubscribed": "Zaten bir plana abonesiniz.",
+                "generic": "Aboneliğiniz işlenirken bir hata oluştu."
+              }
+            },
+            "coffees": {
+              "searchPlaceholder": "Kahve ara",
+              "filters": {
+                "roastLevel": "Kavurma Seviyesi",
+                "light": "Hafif",
+                "medium": "Orta",
+                "dark": "Koyu",
+                "origin": "Menşei",
+                "jimma": "Jimma (Etiyopya)",
+                "sidamo": "Sidamo (Etiyopya)",
+                "yirgacheffe": "Yirgacheffe (Etiyopya)",
+                "coffeeType": "Kahve Türü",
+                "wholeBean": "Çekirdek",
+                "ground": "Öğütülmüş"
+              },
+              "addToCart": "Sepete Ekle",
+              "buyNow": "Şimdi Satın Al",
+              "noProducts": "Mevcut ürün bulunmamaktadır",
+              "loadMore": "Daha Fazla Yükle",
+              "loading": "Yükleniyor...",
+              "quantityPopup": {
+                "title": "{productName} için miktar seçin",
+                "cancel": "İptal"
+              },
+              "errors": {
+                "title": "Ürünler yüklenirken hata. Lütfen internete bağlanın",
+                "loadFailed": "Ürünler yüklenirken hata oluştu"
+              }
+            },
+            "specialEdition": {
+      "title": "Özel Baskı",
+      "coffees": "Kahveler",
+      "description": "Sınırlı sayıda bulunan özel koleksiyon. Herkesin tadını çıkarabilmesi için müşteri başına maksimum 5 paket.",
+      "noImage": "Resim yok",
+      "onlyLeft": "Sadece {1} adet kaldı!",
+      "roast": "Kavrulma",
+      "soldOut": "Tükendi",
+      "addToCart": "Sepete Ekle",
+      "noCoffeesAvailable": "Şu anda özel baskı kahve bulunmamaktadır",
+      "checkBackSoon": "Sizin için olağanüstü bir şey hazırlıyoruz. Yakında tekrar kontrol edin!",
+      "notifyMe": "Müsait olduğunda haber ver",
+      "quantityPopup": {
+        "title": "{productName} için miktar seçin",
+        "maxLimit": "Müşteri başına maksimum {5} adet (Sınırlı Baskı)",
+        "cancel": "İptal",
+        "addToCart": "Sepete adet ekle"
+      },
+      "errors": {
+        "title": "Ürünler yüklenirken hata. Lütfen internete bağlanın"
+      }
+    }
+              
           
     
   }

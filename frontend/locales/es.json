@@ -84,7 +84,105 @@
         "linkedIn": "LinkedIn",
         "github": "GitHub"
       }
-        }
+        },
+        "contact": {
+      "title": "Contáctenos",
+      "info": {
+        "title": "Nuestra Información de Contacto",
+        "email": "Correo Electrónico",
+        "phone": "Teléfono",
+        "address": "Dirección",
+        "emailValue": "info@coffeeexport.com",
+        "phoneValue": "+251 178 456 789",
+        "addressValue": "123 Calle Café, A.A, Etiopía"
+      },
+      "form": {
+        "title": "Envíenos un Mensaje",
+        "name": "Su Nombre",
+        "email": "Su Correo Electrónico",
+        "message": "Su Mensaje",
+        "namePlaceholder": "Juan Pérez",
+        "emailPlaceholder": "tu@ejemplo.com",
+        "messagePlaceholder": "¿Cómo podemos ayudarte?",
+        "submit": "Enviar Mensaje",
+        "sending": "Enviando..."
+      },
+      "errors": {
+        "required": "Todos los campos son obligatorios.",
+        "failed": "Error al enviar el mensaje.",
+        "generic": "Hubo un problema al enviar su mensaje. Por favor, inténtelo de nuevo.",
+        "unexpected": "Ocurrió un error inesperado"
+      },
+      "success": "¡Mensaje enviado con éxito!"
+    },
+    "subscription": {
+      "title": "Suscríbete a nuestro Club de Café",
+      "description": "Recibe el mejor café del mundo directamente en tu puerta.",
+      "emailPlaceholder": "Ingresa tu correo electrónico",
+      "plans": {
+        "monthly": "Plan Mensual - 500br",
+        "yearly": "Plan Anual - 5000br"
+      },
+      "submitButton": "Suscríbete Ahora",
+      "processing": "Procesando...",
+      "success": "¡Gracias por suscribirte con {email} al plan {plan}!",
+      "errors": {
+        "alreadySubscribed": "Ya estás suscrito a un plan.",
+        "generic": "Hubo un error al procesar tu suscripción."
+      }
+    },
+    "coffees": {
+      "searchPlaceholder": "Buscar café",
+      "filters": {
+        "roastLevel": "Nivel de tostado",
+        "light": "Claro",
+        "medium": "Medio",
+        "dark": "Oscuro",
+        "origin": "Origen",
+        "jimma": "Jimma (Etiopía)",
+        "sidamo": "Sidamo (Etiopía)",
+        "yirgacheffe": "Yirgacheffe (Etiopía)",
+        "coffeeType": "Tipo de café",
+        "wholeBean": "Grano entero",
+        "ground": "Molido"
+      },
+      "addToCart": "Añadir al carrito",
+      "buyNow": "Comprar ahora",
+      "noProducts": "No hay productos disponibles",
+      "loadMore": "Cargar más",
+      "loading": "Cargando...",
+      "quantityPopup": {
+        "title": "Seleccionar cantidad para {productName}",
+        "cancel": "Cancelar"
+      },
+      "errors": {
+        "title": "Error al cargar productos. Por favor conéctese a internet",
+        "loadFailed": "Error al cargar los productos"
+      }
+    },
+    "specialEdition": {
+      "title": "Edición Especial",
+      "coffees": "Cafés",
+      "description": "Colección exclusiva con disponibilidad limitada. Máximo 5 bolsas por cliente para que todos puedan disfrutar.",
+      "noImage": "No hay imagen disponible",
+      "onlyLeft": "¡Solo quedan {1}!",
+      "roast": "Tostado",
+      "soldOut": "Agotado",
+      "addToCart": "Añadir al carrito",
+      "noCoffeesAvailable": "Actualmente no hay cafés de edición especial disponibles",
+      "checkBackSoon": "Estamos preparando algo extraordinario para ti. ¡Vuelve pronto!",
+      "notifyMe": "Notificarme cuando esté disponible",
+      "quantityPopup": {
+        "title": "Seleccionar cantidad para {productName}",
+        "maxLimit": "Máximo {5} por cliente (Edición Limitada)",
+        "cancel": "Cancelar",
+        "addToCart": "Añadir al carrito"
+      },
+      "errors": {
+        "title": "Error al cargar productos. Por favor conéctese a internet"
+      }
+    }
+  
 
           
      

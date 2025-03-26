@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import ConnectionError from '../../component/connectionerror/ConnectionError';
 import ReactLoading from 'react-loading';
 import useApi from '../../component/connectionerror/useApi';
-import { FaArrowLeft, FaArrowRight , FaSync} from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaSync } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface Coffee {
   _id: string;
@@ -18,6 +19,7 @@ interface Coffee {
 }
 
 const SpecialEdition = () => {
+  const { t } = useTranslation();
   const { 
     data: specialCoffee, 
     loading, 
@@ -125,7 +127,7 @@ const SpecialEdition = () => {
       <div className="flex justify-center items-center min-h-screen">
         <div className="p-6 max-w-md text-center">
           <h2 className="text-xl font-semibold text-red-600 mb-2">
-            Error Loading Products
+            {t('specialEdition.errors.title')}
           </h2>
           <p className="text-gray-700 mb-4">{error}</p>
           <button
@@ -145,10 +147,12 @@ const SpecialEdition = () => {
         {/* Header Section */}
         <div className="specialeditionheader text-center mb-16">
           <h1 className="text-4xl font-bold text-[#3A2E26] mb-4 relative inline-block">
-            <span className="specialeditionh1 relative z-10 top-3">Special Edition <span className='text-amber-800'>Coffees</span></span>
+            <span className="specialeditionh1 relative z-10 top-3">
+              {t('specialEdition.title')} <span className='text-amber-800'>{t('specialEdition.coffees')}</span>
+            </span>
           </h1>
           <p className="text-lg text-[#5A4A42] max-w-2xl mx-auto relative top-4 left-25">
-            Exclusive collection with limited availability. Maximum 5 bags per customer to ensure everyone gets to enjoy.
+            {t('specialEdition.description')}
           </p>
         </div>
 
@@ -195,11 +199,11 @@ const SpecialEdition = () => {
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                         ) : (
-                          <span className="text-[#5A4A42]">No image available</span>
+                          <span className="text-[#5A4A42]">{t('specialEdition.noImage')}</span>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <span className="limited absolute top-4 right-4 bg-[#AD7C59] text-white text-xs font-bold px-2 py-1 rounded-full">
-                          Only {coffee.maxQuantity} left!
+                          {t('specialEdition.onlyLeft', { count: coffee.maxQuantity })}
                         </span>
                       </div>
 
@@ -217,7 +221,7 @@ const SpecialEdition = () => {
                         <div className="flex gap-2 mb-3">
                           {coffee.roastLevel && (
                             <span className="text-xs bg-[#F0E6D9] text-[#5A4A42] px-2 py-1 rounded-full">
-                              {coffee.roastLevel} Roast
+                              {coffee.roastLevel} {t('specialEdition.roast')}
                             </span>
                           )}
                           {coffee.origin && (
@@ -237,7 +241,7 @@ const SpecialEdition = () => {
                             onClick={() => handleAddToCartClick(coffee)}
                             disabled={coffee.maxQuantity <= 0}
                           >
-                            {coffee.maxQuantity <= 0 ? 'Sold Out' : 'Add to Cart'}
+                            {coffee.maxQuantity <= 0 ? t('specialEdition.soldOut') : t('specialEdition.addToCart')}
                           </button>
                         </div>
                       </div>
@@ -264,13 +268,13 @@ const SpecialEdition = () => {
           !loading && (
             <div className="text-center py-16 bg-white rounded-xl shadow-sm max-w-3xl mx-auto">
               <h3 className="text-2xl font-bold text-[#3A2E26] mb-3">
-                Currently no special edition coffees available
+                {t('specialEdition.noCoffeesAvailable')}
               </h3>
               <p className="text-[#5A4A42] mb-6">
-                We're preparing something extraordinary for you. Check back soon!
+                {t('specialEdition.checkBackSoon')}
               </p>
               <button className="bg-[#AD7C59] hover:bg-[#61300d] text-white px-6 py-3 rounded-lg font-medium transition">
-                Notify Me When Available
+                {t('specialEdition.notifyMe')}
               </button>
             </div>
           )
@@ -295,9 +299,11 @@ const SpecialEdition = () => {
               exit={{ y: 100, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
-              <h2 className="text-lg font-semibold mb-2">Select Quantity for {selectedProduct.name}</h2>
+              <h2 className="text-lg font-semibold mb-2">
+                {t('specialEdition.quantityPopup.title', { productName: selectedProduct.name })}
+              </h2>
               <p className="text-sm text-[#AD7C59] mb-4">
-                Maximum {availableQuantity} per customer (Limited Edition)
+                {t('specialEdition.quantityPopup.maxLimit', { count: availableQuantity })}
               </p>
               <div className="flex items-center justify-center gap-4 mb-6">
                 <button
@@ -321,13 +327,13 @@ const SpecialEdition = () => {
                   className="text-gray-600 hover:text-gray-800 px-4 py-2 rounded border border-gray-300 w-full"
                   onClick={() => setShowQuantityPopup(false)}
                 >
-                  Cancel
+                  {t('specialEdition.quantityPopup.cancel')}
                 </button>
                 <button
                   className="bg-[#AD7C59] text-white px-4 py-2 rounded hover:bg-[#61300d] w-full"
                   onClick={handleAddToCartWithQuantity}
                 >
-                  Add {quantity} to Cart
+                  {t('specialEdition.quantityPopup.addToCart', { count: quantity })}
                 </button>
               </div>
             </motion.div>

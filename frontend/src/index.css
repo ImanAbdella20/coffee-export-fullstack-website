@@ -520,6 +520,7 @@ font-size: 25px;
 .subscribtionh1{
   font-size: 25px;
   font-weight: bold;
+  margin: 15px auto;
 }
 .subscribtionbtn{
   background-color: #AD7C59;
@@ -529,4 +530,15 @@ font-size: 25px;
 
 .subscribtionbtn:hover{
   background-color:#7b563b;
+}
+
+.contactcontainerh1{
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px auto;
+}
+
+.contactinfoh2{
+  font-size: 18px;
+  margin-bottom: 10px;
 }

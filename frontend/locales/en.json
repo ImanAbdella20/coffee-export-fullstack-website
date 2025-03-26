@@ -84,7 +84,103 @@
             "linkedIn": "LinkedIn",
             "github": "GitHub"
           }
-        }
+        },
+        "contact":{
+          "title": "Contact Us",
+          "info": {
+            "title": "Our Contact Information",
+            "email": "Email",
+            "phone": "Phone",
+            "address": "Address",
+            "emailValue": "info@coffeeexport.com",
+            "phoneValue": "+251 178 456 789",
+            "addressValue": "123 Coffee St, A.A, Ethiopia"
+          },
+          "form": {
+            "title": "Send Us a Message",
+            "name": "Your Name",
+            "email": "Your Email",
+            "message": "Your Message",
+            "namePlaceholder": "John Doe",
+            "emailPlaceholder": "you@example.com",
+            "messagePlaceholder": "How can we help you?",
+            "submit": "Send Message",
+            "sending": "Sending..."
+          },
+          "errors": {
+            "required": "All fields are required.",
+            "failed": "Failed to send the message.",
+            "generic": "There was an issue sending your message. Please try again.",
+            "unexpected": "An unexpected error occurred"
+          },
+          "success": "Message sent successfully!"
+        },
+        "subscription": {
+    "title": "Subscribe to Our Coffee Club",
+    "description": "Get the best coffee from around the world delivered to your doorstep.",
+    "emailPlaceholder": "Enter your email",
+    "plans": {
+      "monthly": "Monthly Plan - 500br",
+      "yearly": "Yearly Plan - 5000br"
+    },
+    "submitButton": "Subscribe Now",
+    "processing": "Processing...",
+    "success": "Thanks for subscribing with {email} to the {plan} plan!",
+    "errors": {
+      "alreadySubscribed": "You have already subscribed to a plan.",
+      "generic": "There was an error processing your subscription."
+    }
+  },
+  "coffees": {
+    "searchPlaceholder": "Search Coffee",
+    "filters": {
+      "roastLevel": "Roast Level",
+      "light": "Light",
+      "medium": "Medium",
+      "dark": "Dark",
+      "origin": "Origin",
+      "jimma": "Jimma (Ethiopia)",
+      "sidamo": "Sidamo (Ethiopia)",
+      "yirgacheffe": "Yirgacheffe (Ethiopia)",
+      "coffeeType": "Coffee Type",
+      "wholeBean": "Whole Bean",
+      "ground": "Ground"
+    },
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "noProducts": "No products available",
+    "loadMore": "Load More",
+    "loading": "Loading...",
+    "quantityPopup": {
+      "title": "Select Quantity for {productName}",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "title": "Error Loading Products. Please Connect To The Internet",
+      "loadFailed": "Failed to load products"
+    }
+  },
+  "specialEdition": {
+    "title": "Special Edition",
+    "coffees": "Coffees",
+    "description": "Exclusive collection with limited availability. Maximum 5 bags per customer to ensure everyone gets to enjoy.",
+    "noImage": "No image available",
+    "onlyLeft": "Only {1} left!",
+    "roast": "Roast",
+    "soldOut": "Sold Out",
+    "addToCart": "Add to Cart",
+    "noCoffeesAvailable": "Currently no special edition coffees available",
+    "checkBackSoon": "We're preparing something extraordinary for you. Check back soon!",
+    "notifyMe": "Notify Me When Available",
+    "quantityPopup": {
+      "title": "Select Quantity for {productName}",
+      "maxLimit": "Maximum {5} per customer (Limited Edition)",
+      "cancel": "Cancel",
+      "addToCart": "Add  to Cart"
+    },
+    "errors": {
+      "title": "Error Loading Products. Please Connect To The Internet"
+    }}
       
       
     
