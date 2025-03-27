@@ -97,7 +97,6 @@ function App() {
                 <Route path="/featuredcoffee" element={<FeaturedCoffee/>} />
               </Routes>
             </main>
-            <Footer />
           </>
         )}
       </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Fix for 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 interface CartItem {
@@ -18,24 +18,18 @@ interface CartsPageProps {
 const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
-  const [selectAll, setSelectAll] = useState(false); // To handle select all checkbox
+  const [selectAll, setSelectAll] = useState(false);
   const navigate = useNavigate();
 
   // Retrieve cart from localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
-      const parsedCart: CartItem[] = JSON.parse(storedCart); // Explicitly typed as CartItem[]
+      const parsedCart: CartItem[] = JSON.parse(storedCart);
       setCart(parsedCart);
-
-      // Update cart count
       setCartCount(parsedCart.reduce((total: number, item: CartItem) => total + item.quantity, 0));
-
-      // Automatically select all items in the cart
       const selectedSet: Set<string> = new Set(parsedCart.map((item: CartItem) => item._id));
       setSelectedItems(selectedSet);
-
-      // Check if all items are selected to set "select all" checkbox state
       setSelectAll(parsedCart.length > 0 && parsedCart.every(item => selectedSet.has(item._id)));
     }
   }, [setCartCount]);
@@ -44,23 +38,19 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   const removeSelectedItems = () => {
     const updatedCart = cart.filter((item: CartItem) => !selectedItems.has(item._id));
     setCart(updatedCart);
-    setSelectedItems(new Set()); // Clear selected items
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
-
-    // Update cart count
+    setSelectedItems(new Set());
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
     setCartCount(updatedCart.reduce((total: number, item: CartItem) => total + item.quantity, 0));
   };
 
   // Update item quantity
   const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity < 1) return; // Ensure quantity is not less than 1
+    if (quantity < 1) return;
     const updatedCart = cart.map((item: CartItem) =>
       item._id === productId ? { ...item, quantity } : item
     );
     setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
-
-    // Update cart count
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
     setCartCount(updatedCart.reduce((total: number, item: CartItem) => total + item.quantity, 0));
   };
 
@@ -68,18 +58,13 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   const toggleItemSelection = (productId: string) => {
     const updatedSelectedItems = new Set(selectedItems);
     if (updatedSelectedItems.has(productId)) {
-      updatedSelectedItems.delete(productId); // Deselect item
+      updatedSelectedItems.delete(productId);
     } else {
-      updatedSelectedItems.add(productId); // Select item
+      updatedSelectedItems.add(productId);
     }
-
     setSelectedItems(updatedSelectedItems);
-
-    // Update the localStorage based on the selection
-    const updatedCart = cart.filter((item: CartItem) =>
-      updatedSelectedItems.has(item._id)
-    );
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+    const updatedCart = cart.filter((item: CartItem) => updatedSelectedItems.has(item._id));
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   // Handle select all toggle
@@ -90,10 +75,10 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
     if (newSelectAll) {
       const newSelectedItems = new Set(cart.map((item: CartItem) => item._id));
       setSelectedItems(newSelectedItems);
-      updateLocalStorage(newSelectedItems); // Update localStorage
+      updateLocalStorage(newSelectedItems);
     } else {
       setSelectedItems(new Set());
-      updateLocalStorage(new Set()); // Clear localStorage
+      updateLocalStorage(new Set());
     }
   };
 
@@ -101,7 +86,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   const updateLocalStorage = (updatedSelectedItems: Set<string>) => {
     const updatedCart = cart.filter((item: CartItem) => updatedSelectedItems.has(item._id));
     setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update localStorage
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   // Calculate total price
@@ -114,10 +99,9 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
 
   // Checkout handler
   const handleCheckOut = async () => {
-
     if (selectedItems.size === 0) {
       alert('Please select the items you want to checkout!');
-      return; // Prevent checkout if no items are selected
+      return;
     }
     
     if (!user) {
@@ -168,61 +152,86 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
   };
 
   return (
-    <div className="cart-page h-screen">
-      <h2>Your Cart</h2>
-      {cart.length > 0 ? (
-        <div>
-          {cart.map((item: CartItem) => (
-            <div key={item._id} className="flex items-center gap-5 bg-gray-100 border-2 max-w-[60%]">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 flex flex-col">
+      <div className="max-w-4xl mx-auto w-full flex-grow">
+        <h2 className="carth2 text-2xl font-bold text-center mb-8">Your Cart</h2>
+        
+        {cart.length > 0 ? (
+          <div className="bg-white w-[45%] ">
+            <div className="divide-y divide-gray-200 grid grid-cols-2 gap-150">
+              {cart.map((item: CartItem) => (
+                <div key={item._id} className="flex items-center p-4 hover:bg-gray-50">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.has(item._id)}
+                    onChange={() => toggleItemSelection(item._id)}
+                    className="cartcheckbox h-5 w-5 text-blue-600 rounded mr-9"
+                  />
+                  
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="cartimg h-20 w-20 object-cover rounded"
+                  />
+                  
+                  <div className="ml-4 flex-1">
+                    <h3 className="text-lg font-medium">{item.name}</h3>
+                    <p className="cartprice text-gray-600">${item.price}</p>
+                    
+                    <div className="mt-2 flex items-center">
+                      <button
+                        onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
+                        className={`px-3 py-1 bg-gray-200 rounded-l ${item.quantity <= 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'}`}
+                      >
+                        -
+                      </button>
+                      <span className="px-3 py-1 bg-gray-100">{item.quantity}</span>
+                      <button 
+                        onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                        className="px-3 py-1 bg-gray-200 rounded-r hover:bg-gray-300"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Your cart is empty.</p>
+          </div>
+        )}
+      </div>
+
+      {cart.length > 0 && (
+        <div className="cartproceed mt-6 shadow-md rounded-lg p-4 max-w-4xl mx-auto sticky  bottom-0 left-30 h-[100px] flex items-center justify-center w-[70%] ">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center">
               <input
                 type="checkbox"
-                checked={selectedItems.has(item._id)}
-                onChange={() => toggleItemSelection(item._id)}
-                className="checkbox"
+                checked={selectAll}
+                onChange={handleSelectAll}
+                className="cartcheckbox2 h-5 w-5 text-blue-600 rounded mr-2"
               />
-              <img src={item.image} alt={item.name} className="product-img" />
-              <div className="cart-item-details flex-1">
-                <h3>{item.name}</h3>
-                <p>{item.price}</p>
-                <div className="quantity-controls">
-                  <button
-                    onClick={() => updateQuantity(item._id, item.quantity - 1)}
-                    disabled={item.quantity <= 1}
-                  >
-                    -
-                  </button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item._id, item.quantity + 1)}>+</button>
-                </div>
-              </div>
+              <span>Select All</span>
             </div>
-          ))}
+            
+            <div className="text-lg font-semibold">
+              Total: ${calculateTotal()}
+            </div>
+            
+            <button
+              onClick={handleCheckOut}
+              className="cartbtn px-6 py-2 text-white rounded"
+            >
+              Proceed to Checkout
+            </button>
+          </div>
         </div>
-      ) : (
-        <p>Your cart is empty.</p>
       )}
-
-      <div className="bg-gray-200 absolute bottom-0 h-[150px] flex w-[80%] fixed items-center mx-auto justify-around">
-        <div className="flex">
-          <input
-            type="checkbox"
-            checked={selectAll}
-            onChange={handleSelectAll}
-          />
-          <h3>Select All</h3>
-        </div>
-        <div className="flex">
-          <input
-            type="checkbox"
-            onChange={removeSelectedItems}
-          />
-          <h3>Remove selected</h3>
-        </div>
-        <h3>Total: br {calculateTotal()}</h3>
-        <button className="check-outbtn" onClick={handleCheckOut}>
-          Proceed to Checkout
-        </button>
-      </div>
     </div>
   );
 };

@@ -542,3 +542,40 @@ font-size: 25px;
   font-size: 18px;
   margin-bottom: 10px;
 }
+
+.carth2{
+  font-size: 25px;
+  font-weight: bold;
+  margin: 10px auto;
+}
+
+.cartproceed{
+  background-color: #ad8263;
+}
+
+.cartbtn{
+  background-color: #61300D;
+  padding: 5px 6px;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+}
+
+.cartbtn:hover{
+  background-color: #7b563b;
+}
+
+.cartcheckbox{
+  margin: auto 20px;
+}
+
+.cartimg{
+  margin: auto 30px;
+}
+.cartprice{
+  font-size: 15px;
+}
+
+.cartcheckbox2{
+  margin-right: 10px;
+}

@@ -3,7 +3,7 @@ import { Product } from "../models/productsModel.js";
 export const addProduct = async (req, res) => {
   try {
     // Extract product data from request body
-    const { name, image, weight, price, type, roastLevel, origin, flavour } =
+    const { name, image, weight, price, type, roastLevel, origin } =
       req.body;
 
     // Check if all required fields are provided
@@ -14,8 +14,7 @@ export const addProduct = async (req, res) => {
       !price ||
       !type ||
       !roastLevel ||
-      !origin ||
-      !flavour
+      !origin 
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -30,7 +29,6 @@ export const addProduct = async (req, res) => {
       type,
       roastLevel,
       origin,
-      flavour,
     });
 
     await newProduct.save();
@@ -100,7 +98,6 @@ export const updateProduct = async (req, res) => {
       type,
       roastLevel,
       origin,
-      flavour,
     });
 
     if (!updatedProduct) {

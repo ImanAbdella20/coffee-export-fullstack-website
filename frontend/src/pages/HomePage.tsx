@@ -5,6 +5,7 @@ import backgroundImage from '../assets/images/1.jpg';
 import backgroundImage2 from '../assets/images/4.png';
 import backgroundImage3 from '../assets/images/3.jpg';
 import FeaturedCoffee from './featuredcoffee/featuredCoffee';
+import Footer from '../component/Footer';
 
 const HomePage = () => {
   const [backgroundIndex, setBackgroundIndex] = useState<number>(0);
@@ -41,6 +42,7 @@ const HomePage = () => {
 
       {/* Featured Coffee Section */}
       <FeaturedCoffee />
+      <Footer/>
     </>
   );
 };
