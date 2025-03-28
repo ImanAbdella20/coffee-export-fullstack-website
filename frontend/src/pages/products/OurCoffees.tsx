@@ -299,7 +299,7 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               <h2 className="text-lg font-semibold mb-4">
-                {t('coffees.quantityPopup.title', { productName: selectedProduct.name })}
+                {t('coffees.quantityPopup.title')} {selectedProduct.name}
               </h2>
               <div className="flex items-center justify-center gap-4 mb-6">
                 <button

@@ -152,7 +152,7 @@
     "loadMore": "Load More",
     "loading": "Loading...",
     "quantityPopup": {
-      "title": "Select Quantity for {productName}",
+      "title": "Select Quantity for ",
       "cancel": "Cancel"
     },
     "errors": {
@@ -173,7 +173,7 @@
     "checkBackSoon": "We're preparing something extraordinary for you. Check back soon!",
     "notifyMe": "Notify Me When Available",
     "quantityPopup": {
-      "title": "Select Quantity for {productName}",
+      "title": "Select Quantity for ",
       "maxLimit": "Maximum {5} per customer (Limited Edition)",
       "cancel": "Cancel",
       "addToCart": "Add  to Cart"

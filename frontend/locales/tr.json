@@ -153,7 +153,7 @@
               "loadMore": "Daha Fazla Yükle",
               "loading": "Yükleniyor...",
               "quantityPopup": {
-                "title": "{productName} için miktar seçin",
+                "title": "için miktar seçin",
                 "cancel": "İptal"
               },
               "errors": {
@@ -174,7 +174,7 @@
       "checkBackSoon": "Sizin için olağanüstü bir şey hazırlıyoruz. Yakında tekrar kontrol edin!",
       "notifyMe": "Müsait olduğunda haber ver",
       "quantityPopup": {
-        "title": "{productName} için miktar seçin",
+        "title": "için miktar seçin",
         "maxLimit": "Müşteri başına maksimum {5} adet (Sınırlı Baskı)",
         "cancel": "İptal",
         "addToCart": "Sepete adet ekle"

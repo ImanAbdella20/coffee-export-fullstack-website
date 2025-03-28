@@ -63,8 +63,6 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       updatedSelectedItems.add(productId);
     }
     setSelectedItems(updatedSelectedItems);
-    const updatedCart = cart.filter((item: CartItem) => updatedSelectedItems.has(item._id));
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   // Handle select all toggle
@@ -75,18 +73,9 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
     if (newSelectAll) {
       const newSelectedItems = new Set(cart.map((item: CartItem) => item._id));
       setSelectedItems(newSelectedItems);
-      updateLocalStorage(newSelectedItems);
     } else {
       setSelectedItems(new Set());
-      updateLocalStorage(new Set());
     }
-  };
-
-  // Helper to update localStorage when selecting/unselecting items
-  const updateLocalStorage = (updatedSelectedItems: Set<string>) => {
-    const updatedCart = cart.filter((item: CartItem) => updatedSelectedItems.has(item._id));
-    setCart(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
   };
 
   // Calculate total price
@@ -126,16 +115,12 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       if (hasShippingDetails) {
         navigate('/paymentprocess');
       } else {
-        if (user) {
-          navigate('/shippingform');
-        } else {
-          navigate('/login', { state: { redirectTo: '/shippingform' } });
-        }
+        navigate('/shippingform');
       }
 
       const orderDetails = {
         userId: user.uid,
-        cartItems: cart,
+        cartItems: cart.filter(item => selectedItems.has(item._id)),
         shippingDetails: response.data.shippingdetails[0],
         totalPrice: calculateTotal(),
       };
@@ -153,32 +138,59 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 flex flex-col">
-      <div className="max-w-4xl mx-auto w-full flex-grow">
+      <div className="max-w-6xl mx-auto w-full flex-grow">
         <h2 className="carth2 text-2xl font-bold text-center mb-8">Your Cart</h2>
         
         {cart.length > 0 ? (
-          <div className="bg-white w-[45%] ">
-            <div className="divide-y divide-gray-200 grid grid-cols-2 gap-150">
+          <div className="bg-white rounded-lg shadow-md overflow-hidden relative pb-20 ">
+            {/* Cart Header */}
+            <div className="grid grid-cols-12 gap-4 bg-gray-100 p-4 font-medium border-b ">
+              <div className="col-span-1 flex items-center">
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                  className="cartcheckbox h-5 w-5 text-blue-600 rounded"
+                />
+              </div>
+              <div className="col-span-5">Product</div>
+              <div className="col-span-2 text-center">Price</div>
+              <div className="col-span-2 text-center">Quantity</div>
+              <div className="col-span-2 text-right">Subtotal</div>
+            </div>
+            
+            {/* Cart Items */}
+            <div className="divide-y divide-gray-200 ">
               {cart.map((item: CartItem) => (
-                <div key={item._id} className="flex items-center p-4 hover:bg-gray-50">
-                  <input
-                    type="checkbox"
-                    checked={selectedItems.has(item._id)}
-                    onChange={() => toggleItemSelection(item._id)}
-                    className="cartcheckbox h-5 w-5 text-blue-600 rounded mr-9"
-                  />
+                <div key={item._id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50 ">
+                  {/* Checkbox */}
+                  <div className="cartitems col-span-1 flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.has(item._id)}
+                      onChange={() => toggleItemSelection(item._id)}
+                      className="cartcheckbox h-5 w-5 text-blue-600 rounded"
+                    />
+                  </div>
                   
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
-                    className="cartimg h-20 w-20 object-cover rounded"
-                  />
+                  {/* Product Image and Name */}
+                  <div className="col-span-5 flex items-center">
+                    <img 
+                      src={item.image} 
+                      alt={item.name} 
+                      className="h-20 w-20 object-cover rounded mr-4"
+                    />
+                    <span className="font-medium">{item.name}</span>
+                  </div>
                   
-                  <div className="ml-4 flex-1">
-                    <h3 className="text-lg font-medium">{item.name}</h3>
-                    <p className="cartprice text-gray-600">${item.price}</p>
-                    
-                    <div className="mt-2 flex items-center">
+                  {/* Price */}
+                  <div className="col-span-2 text-center">
+                    <span className="text-gray-600">{item.price}</span>
+                  </div>
+                  
+                  {/* Quantity Controls */}
+                  <div className="col-span-2 flex justify-center">
+                    <div className="flex items-center">
                       <button
                         onClick={() => updateQuantity(item._id, item.quantity - 1)}
                         disabled={item.quantity <= 1}
@@ -195,43 +207,55 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
                       </button>
                     </div>
                   </div>
+                  
+                  {/* Subtotal */}
+                  <div className="col-span-2 text-right">
+                    <span className="font-medium">
+                      {(parseFloat(item.price) * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
+            
+            {/* Sticky Cart Footer */}
+            <div className="sticky bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg">
+              <div className="flex flex-wrap justify-between items-center">
+                <button
+                  onClick={removeSelectedItems}
+                  disabled={selectedItems.size === 0}
+                  className={`cartbtn px-4 py-2 rounded ${selectedItems.size === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-500 text-white hover:bg-red-600'}`}
+                >
+                  Remove Selected
+                </button>
+                
+                <div className="flex items-center ">
+                  <div className="text-xl font-semibold">
+                    Total: {calculateTotal()}
+                  </div>
+                  <button
+                    onClick={handleCheckOut}
+                    disabled={selectedItems.size === 0}
+                    className={`cartbtn px-6 py-2 rounded text-white ${selectedItems.size === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+                  >
+                    Proceed to Checkout
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500">Your cart is empty.</p>
+          <div className="text-center py-12 bg-white rounded-lg shadow">
+            <p className="text-gray-500 text-lg">Your cart is empty.</p>
+            <button
+              onClick={() => navigate('/products/coffees')}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Continue Shopping
+            </button>
           </div>
         )}
       </div>
-
-      {cart.length > 0 && (
-        <div className="cartproceed mt-6 shadow-md rounded-lg p-4 max-w-4xl mx-auto sticky  bottom-0 left-30 h-[100px] flex items-center justify-center w-[70%] ">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                checked={selectAll}
-                onChange={handleSelectAll}
-                className="cartcheckbox2 h-5 w-5 text-blue-600 rounded mr-2"
-              />
-              <span>Select All</span>
-            </div>
-            
-            <div className="text-lg font-semibold">
-              Total: ${calculateTotal()}
-            </div>
-            
-            <button
-              onClick={handleCheckOut}
-              className="cartbtn px-6 py-2 text-white rounded"
-            >
-              Proceed to Checkout
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

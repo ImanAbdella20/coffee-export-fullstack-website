@@ -579,3 +579,7 @@ font-size: 25px;
 .cartcheckbox2{
   margin-right: 10px;
 }
+
+.cartitems{
+  padding: 90px auto;
+}

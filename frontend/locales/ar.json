@@ -152,7 +152,7 @@
       "loadMore": "تحميل المزيد",
       "loading": "جاري التحميل...",
       "quantityPopup": {
-        "title": "حدد الكمية لـ {productName}",
+        "title": "حدد الكمية لـ ",
         "cancel": "إلغاء"
       },
       "errors": {
@@ -173,7 +173,7 @@
       "checkBackSoon": "نحن نعد شيئًا استثنائيًا لك. تحقق مرة أخرى قريبًا!",
       "notifyMe": "أخبرني عند التوفر",
       "quantityPopup": {
-        "title": "حدد الكمية لـ {productName}",
+        "title": "حدد الكمية لـ ",
         "maxLimit": "بحد أقصى {5} لكل عميل (إصدار محدود)",
         "cancel": "إلغاء",
         "addToCart": "أضف إلى السلة"
