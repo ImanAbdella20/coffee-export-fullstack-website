@@ -16,7 +16,9 @@
       "blog.stories": "Historias de Clientes",
       "contacts": "Contáctanos",
       "cart": "Carrito",
-      "user": "Usuario"
+      "user": "Usuario",
+       "settings":"Configuración",
+      "orderHistory":"Historial de Pedidos"
     },
     "hero": {
       "title": "Café en Polvo Empacado Premium",

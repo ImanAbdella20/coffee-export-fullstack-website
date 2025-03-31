@@ -16,7 +16,9 @@
       "blog.stories": "Müşteri Hikayeleri",
       "contacts": "Bize Ulaşın",
       "cart": "Sepet",
-      "user": "Kullanıcı"
+      "user": "Kullanıcı",
+       "settings":"Ayarlar",
+      "orderHistory":"Sipariş Geçmişi"
     },
     "hero": {
       "title": "Premium Paketlenmiş Toz Kahve",

@@ -16,7 +16,9 @@
       "blog.stories": "Customer Stories",
       "contacts": "Contact Us",
       "cart": "Cart",
-      "user": "User"
+      "user": "User",
+      "settings":"Setting",
+      "orderHistory":"Order History"
     },
     "hero": {
       "title": "Premium Packed Powdered Coffee",
