@@ -118,19 +118,6 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
         navigate('/shippingform');
       }
 
-      const orderDetails = {
-        userId: user.uid,
-        cartItems: cart.filter(item => selectedItems.has(item._id)),
-        shippingDetails: response.data.shippingdetails[0],
-        totalPrice: calculateTotal(),
-      };
-
-      await axios.post(`${import.meta.env.REACT_APP_API_URL}/orderhistory/create`, orderDetails, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
     } catch (error) {
       console.error('Error checking shipping details:', error);
     }

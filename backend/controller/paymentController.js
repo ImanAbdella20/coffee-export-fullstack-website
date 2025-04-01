@@ -11,12 +11,6 @@ export const addPaymentInfo = async(req,res) => {
 
  try {
 
-    const existingPaymentDetail  = await PaymentDetail.findOne({user: req.user._id})
-
-    if(existingPaymentDetail){
-
-      return res.status(400).json({ message: 'User already has a Payment detail on file.' });
-    }
     const Paymentdetail = new PaymentDetail ({
         cardNumber,
         expiryDate,
@@ -30,4 +24,27 @@ export const addPaymentInfo = async(req,res) => {
     console.error('Error saving Payment details:', error);
     res.status(500).json({ message: 'There was an error saving the Payment details.' });
   }      
+}
+
+export const getPayment = async(req,res) => {
+console.log('get payment');
+
+   try {
+      const userId = req.user._id;
+      console.log('USERID FOUND');
+  
+      // Find the shipping details for the logged-in user
+      const paymentDetails = await PaymentDetail.find({ user: userId });
+  
+      if (!paymentDetails || paymentDetails.length === 0) {
+        return res.status(404).json({ message: 'No payment details found for this user' });
+      }
+  
+      // Return the shipping details in the response
+      res.status(200).json({ paymentDetails });
+      console.log('PAYMENTDETAIL' , paymentDetails);
+    } catch (error) {
+      console.error('Error retrieving payment details:', error);
+      res.status(500).json({ message: 'There was an error retrieving the payment details.' });
+    }
 }

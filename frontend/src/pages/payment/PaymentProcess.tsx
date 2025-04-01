@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
+
+interface PaymentDetail {
+  _id: string;
+  user: string;
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 
 const PaymentForm = () => {
   const [cardNumber, setCardNumber] = useState('');
@@ -8,41 +20,60 @@ const PaymentForm = () => {
   const [cvv, setCvv] = useState('');
   const [isCardValid, setIsCardValid] = useState(true);
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
-  const [shippingDetails, setShippingDetails] = useState(null);  // Track existing shipping details
+  const [shippingDetails, setShippingDetails] = useState(null);
+  const [savedPayments, setSavedPayments] = useState<PaymentDetail[]>([]);
   const navigate = useNavigate();
 
-  // Fetch existing shipping details (if any)
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      alert('You need to be logged in to make a payment.');
-      navigate('/login');  // Redirect to login if no token
-      return;
-    }
-
-    const fetchShippingDetails = async () => {
+    const fetchDetails = async () => {
+      const user = getAuth().currentUser;
+      if (!user) {
+        window.location.href = '/login';
+        return;
+      }
+      
+      const idToken = await user.getIdToken();
       try {
-        const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        // Fetch shipping details
+        const shippingResponse = await axios.get(
+          `${import.meta.env.REACT_APP_API_URL}/shipitems/details`,
+          {
+            headers: { Authorization: `Bearer ${idToken}` }
+          }
+        );
 
-        if (response.status === 200) {
-          setShippingDetails(response.data);
-        } else {
-          alert('Shipping details not found. Please update your shipping information.');
+        if (shippingResponse.status === 200) {
+          setShippingDetails(shippingResponse.data);
         }
+
+        // Fetch saved payment details
+        const paymentResponse = await axios.get(
+          `${import.meta.env.REACT_APP_API_URL}/paymentprocess/details`,
+          {
+            headers: { Authorization: `Bearer ${idToken}` }
+          }
+        );
+        console.log('payment detail' , paymentResponse.data);
+
+        if (paymentResponse.status === 200 && paymentResponse.data.paymentdetails?.length > 0) {
+          setSavedPayments(paymentResponse.data); // Set array of payment details
+        }
+        console.log("this",savedPayments);
       } catch (error) {
-        console.error('Error fetching shipping details:', error);
-        alert('Failed to fetch shipping details.');
+        if (axios.isAxiosError(error)) {
+          console.error('Error fetching details:', error.response?.data);
+          if (error.response?.status === 401) {
+            navigate('/login');
+          }
+        } else {
+          console.error('Unexpected error:', error);
+        }
       }
     };
 
-    fetchShippingDetails();
+    fetchDetails();
   }, [navigate]);
 
-  // Handle form submission for payment
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -55,29 +86,48 @@ const PaymentForm = () => {
       cardNumber,
       expiryDate,
       cvv,
-      shippingDetails, // Attach shipping details to payment
+      shippingDetails,
     };
 
     try {
-      const token = localStorage.getItem('authToken');  // Assuming token is stored in localStorage
-      if (!token) {
+      const user = getAuth().currentUser;
+      if (!user) {
         alert('You need to be logged in to make a payment.');
         return;
       }
 
-      const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/paymentprocess/add`, paymentData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const idToken = await user.getIdToken();
+      
+      const response = await axios.post(
+        `${import.meta.env.REACT_APP_API_URL}/paymentprocess/add`,
+        paymentData,
+        {
+          headers: { Authorization: `Bearer ${idToken}` }
+        }
+      );
 
       if (response.status === 200) {
         alert('Payment done successfully!');
         setIsPaymentSuccessful(true);
+        // Refresh the payment details after successful submission
+        const paymentResponse = await axios.get(
+          `${import.meta.env.REACT_APP_API_URL}/paymentprocess/details`,
+          {
+            headers: { Authorization: `Bearer ${idToken}` }
+          }
+        );
+        if (paymentResponse.status === 200 && Array.isArray(paymentResponse.data)) {
+          setSavedPayments(paymentResponse.data);
+        }
       }
     } catch (error) {
-      console.error('Error in payment process:', error);
-      alert('There was an error in the payment process.');
+      if (axios.isAxiosError(error)) {
+        console.error('Payment error:', error.response?.data);
+        alert(error.response?.data?.message || 'Payment failed. Please try again.');
+      } else {
+        console.error('Unexpected error:', error);
+        alert('There was an unexpected error in the payment process.');
+      }
     }
   };
 
@@ -85,14 +135,31 @@ const PaymentForm = () => {
     <div className="h-screen">
       <h2 className="text-center">Payment Form</h2>
 
-      {/* Update Shipping Details Button */}
+      {/* Display saved payment details */}
+      {savedPayments.length > 0 ? (
+        <div className="saved-card-info">
+          <h2>Your Saved Payment Methods</h2>
+          {savedPayments.map((payment, index) => (
+            <div key={payment._id} className="mb-2">
+              <h6>Card {index + 1}: **** **** **** {payment.cardNumber.slice(-4)}</h6>
+              <p>Expires: {payment.expiryDate}</p>
+              <p>Added: {new Date(payment.createdAt).toLocaleDateString()}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>No saved cards found</p>
+      )}
+
+      {/* Rest of your existing JSX remains exactly the same */}
+      <h2>Add shipping form</h2>
+
       <Link to='/shippingform' state={{ isUpdate: !!shippingDetails }}>
         <button className='absolute right-0 cursor-pointer'>
           {shippingDetails ? 'Update Shipping Detail' : 'Add Shipping Detail'}
         </button>
       </Link>
 
-      {/* Payment form */}
       {isPaymentSuccessful ? (
         <div className="payment-success">
           <h3>Payment Successful!</h3>
