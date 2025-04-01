@@ -22,6 +22,11 @@ const Setting = ({ user }: HeaderProps) => {
     navigate('/');
   }
 
+  const handleSignIn = async () => {
+    setSignedIn(true);
+    navigate('/login');
+  }
+ 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     setSelectedLanguage(lang); // Update the selected language
@@ -77,9 +82,17 @@ const Setting = ({ user }: HeaderProps) => {
            
         </div>
 
-        <button onClick={handleSignOut}>
-            Sign out
+        {signedIn ? (
+          <button onClick={handleSignOut}>
+          Sign out
+      </button>
+        ): (
+          <button onClick={handleSignIn}>
+            Sign In
         </button>
+        )}
+
+        
     </div>
   )
 }

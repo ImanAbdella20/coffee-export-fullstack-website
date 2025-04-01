@@ -24,6 +24,7 @@ import ShippingAddress from './pages/setting/ShippingAddress';
 import Subscription from './pages/products/Subscription';
 import FeaturedCoffee from './pages/featuredcoffee/featuredCoffee';
 import OurCoffees from './pages/products/OurCoffees';
+import EachItemPayment from './pages/payment/EachItemPayment';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -95,6 +96,7 @@ function App() {
                 <Route path="/contacts" element={<Contact/>} />
                 <Route path="/subscription" element={<Subscription user={user}/>} />
                 <Route path="/featuredcoffee" element={<FeaturedCoffee/>} />
+                <Route path="/itempayment" element={<EachItemPayment/>} />
               </Routes>
             </main>
           </>

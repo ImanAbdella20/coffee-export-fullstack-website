@@ -105,22 +105,7 @@ const ShippingForm = () => {
   
       if (response.status === 200) {
         alert('Shipping details saved successfully!');
-        
-        // After saving shipping info, send order details (cart items + shipping) to order history
-        const orderDetails = {
-          userId: user.uid,  // User ID from Firebase auth
-          shippingDetails: shippingData,
-          cartItems: JSON.parse(localStorage.getItem('cart') || '[]'),  // Cart data from localStorage
-      
-        };
-  
-        await axios.post(`${import.meta.env.REACT_APP_API_URL}/orderhistory/create`, orderDetails, {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          }
-        });
-  
-        navigate('/paymentprocess');
+
       }
     } catch (error) {
       console.error('Error saving shipping details:', error);

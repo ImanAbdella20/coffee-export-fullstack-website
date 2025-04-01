@@ -113,7 +113,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       const hasShippingDetails = response.data.shippingdetails?.length > 0;
 
       if (hasShippingDetails) {
-        navigate('/paymentprocess');
+        navigate('/itempayment');
       } else {
         navigate('/shippingform');
       }

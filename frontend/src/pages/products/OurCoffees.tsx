@@ -136,7 +136,7 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
       const hasShippingDetails = response.data.shippingdetails?.length > 0;
 
       if (hasShippingDetails) {
-        navigate('/paymentprocess');
+        navigate('/itempayment');
       } else {
         navigate(user ? '/shippingform' : '/login', { state: { redirectTo: '/shippingform' } });
       }

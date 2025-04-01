@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const OrderHistory = () => {
+
+  const [ orderHistory , setOrderHistory] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+   const fetchOrderHistory = async () => {
+    try {
+      
+    } catch (err) {
+      console.error('Error fetching shipping details:', err);
+      setError('There was an error fetching your shipping details.');
+    } finally {
+      setLoading(false);
+    }
+   }
+   fetchOrderHistory();
+    },[])
   const orders = [
     {
       id: '12345',
@@ -15,6 +33,7 @@ const OrderHistory = () => {
     },
     // Add more orders here
   ];
+
 
   return (
     <div className="h-screen p-4">

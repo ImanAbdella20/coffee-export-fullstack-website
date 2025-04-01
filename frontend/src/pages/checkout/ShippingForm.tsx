@@ -158,7 +158,7 @@ const ShippingForm = () => {
 
       if (response.status === 200) {
         alert(isUpdating ? 'Shipping details updated successfully!' : 'Shipping details saved successfully!');
-        navigate('/paymentprocess');
+        navigate('/itempayment');
       }
     } catch (error) {
       console.error('Error saving shipping details:', error);

@@ -53,12 +53,14 @@ const PaymentForm = () => {
             headers: { Authorization: `Bearer ${idToken}` }
           }
         );
-        console.log('payment detail' , paymentResponse.data);
 
-        if (paymentResponse.status === 200 && paymentResponse.data.paymentdetails?.length > 0) {
-          setSavedPayments(paymentResponse.data); // Set array of payment details
-        }
-        console.log("this",savedPayments);
+        // Handle both array response and object with paymentDetails property
+        const paymentData = Array.isArray(paymentResponse.data) 
+          ? paymentResponse.data 
+          : paymentResponse.data?.paymentDetails || [];
+
+        setSavedPayments(paymentData);
+        
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error('Error fetching details:', error.response?.data);
@@ -107,7 +109,7 @@ const PaymentForm = () => {
       );
 
       if (response.status === 200) {
-        alert('Payment done successfully!');
+        alert('Payment done successfully!')
         setIsPaymentSuccessful(true);
         // Refresh the payment details after successful submission
         const paymentResponse = await axios.get(
@@ -116,9 +118,12 @@ const PaymentForm = () => {
             headers: { Authorization: `Bearer ${idToken}` }
           }
         );
-        if (paymentResponse.status === 200 && Array.isArray(paymentResponse.data)) {
-          setSavedPayments(paymentResponse.data);
-        }
+        
+        // Fix: Update saved payments with new data
+        const updatedPaymentData = Array.isArray(paymentResponse.data) 
+          ? paymentResponse.data 
+          : paymentResponse.data?.paymentDetails || [];
+        setSavedPayments(updatedPaymentData);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -131,6 +136,13 @@ const PaymentForm = () => {
     }
   };
 
+  // Helper function to use saved card
+  const useSavedCard = (payment: PaymentDetail) => {
+    setCardNumber(payment.cardNumber);
+    setExpiryDate(payment.expiryDate);
+    setCvv(payment.cvv);
+  };
+
   return (
     <div className="h-screen">
       <h2 className="text-center">Payment Form</h2>
@@ -138,12 +150,15 @@ const PaymentForm = () => {
       {/* Display saved payment details */}
       {savedPayments.length > 0 ? (
         <div className="saved-card-info">
-          <h2>Your Saved Payment Methods</h2>
+          <h2>Your Saved Payment Methods:</h2>
           {savedPayments.map((payment, index) => (
             <div key={payment._id} className="mb-2">
-              <h6>Card {index + 1}: **** **** **** {payment.cardNumber.slice(-4)}</h6>
-              <p>Expires: {payment.expiryDate}</p>
-              <p>Added: {new Date(payment.createdAt).toLocaleDateString()}</p>
+
+                <h6>Card {index + 1}: **** **** **** {payment.cardNumber.slice(-4)}</h6>
+                <button 
+                className='bg-amber-800 cursor-pointer'
+                > pay now</button>
+            
             </div>
           ))}
         </div>
@@ -151,7 +166,6 @@ const PaymentForm = () => {
         <p>No saved cards found</p>
       )}
 
-      {/* Rest of your existing JSX remains exactly the same */}
       <h2>Add shipping form</h2>
 
       <Link to='/shippingform' state={{ isUpdate: !!shippingDetails }}>
