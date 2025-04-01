@@ -86,6 +86,8 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
   }, [setCartCount]);
 
   const handleAddToCartDirectly = (product: Product) => {
+    const existingProduct = cart.find(item => item._id === product._id);
+    setQuantity(existingProduct ? existingProduct.quantity : 1);
     setSelectedProduct(product);
     setShowQuantityPopup(true);
   };
@@ -97,9 +99,15 @@ const OurCoffees = ({ user, setCartCount }: CoffeesProp) => {
 
       if (existingProductIndex > -1) {
         updatedCart = [...prevCart];
-        updatedCart[existingProductIndex].quantity += quantity;
+        updatedCart[existingProductIndex] = {
+          ...updatedCart[existingProductIndex],
+          quantity: quantity
+        };
       } else {
-        updatedCart = [...prevCart, { ...product, quantity }];
+        updatedCart = [...prevCart, { 
+          ...product, 
+          quantity: quantity
+        }];
       }
 
       localStorage.setItem('cart', JSON.stringify(updatedCart));

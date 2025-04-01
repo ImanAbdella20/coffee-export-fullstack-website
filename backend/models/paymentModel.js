@@ -17,6 +17,10 @@ const paymentSchema = new mongoose.Schema({
     cvv: { 
         type: String, 
         required: true 
+    },
+    isPayed: { 
+        type: Boolean, 
+        required: true 
     }
   }, { 
     timestamps: true 

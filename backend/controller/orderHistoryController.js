@@ -11,7 +11,6 @@ export const createOrderHistory = async (req, res) => {
       shippingDetails,
       totalPrice,
     });
-
     const savedOrder = await newOrder.save();
     res.status(201).json(savedOrder);
   } catch (error) {
@@ -19,7 +18,6 @@ export const createOrderHistory = async (req, res) => {
     res.status(500).json({ message: "Failed to create order." });
   }
 };
-
 
 export const getOrderHistory = async (req, res) => {
     try {

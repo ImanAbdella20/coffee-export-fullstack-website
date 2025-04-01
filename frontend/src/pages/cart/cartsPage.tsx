@@ -86,7 +86,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       .toFixed(2);
   };
 
-  // Checkout handler
+  // Updated checkout handler
   const handleCheckOut = async () => {
     if (selectedItems.size === 0) {
       alert('Please select the items you want to checkout!');
@@ -112,11 +112,16 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
 
       const hasShippingDetails = response.data.shippingdetails?.length > 0;
 
-      if (hasShippingDetails) {
-        navigate('/itempayment');
-      } else {
-        navigate('/shippingform');
-      }
+      // Get selected items for payment
+      const itemsToPay = cart.filter(item => selectedItems.has(item._id));
+      
+      // Navigate to EachItemPayment with the selected items
+      navigate('/itempayment', { 
+        state: { 
+          selectedItems: itemsToPay,
+          hasShippingDetails 
+        } 
+      });
 
     } catch (error) {
       console.error('Error checking shipping details:', error);
