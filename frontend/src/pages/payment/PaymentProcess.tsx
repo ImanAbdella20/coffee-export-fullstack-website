@@ -88,6 +88,7 @@ const PaymentForm = () => {
       cardNumber,
       expiryDate,
       cvv,
+      isSavedCard: false,
       shippingDetails,
     };
 
@@ -136,6 +137,54 @@ const PaymentForm = () => {
     }
   };
 
+  const handleSavedCardPayment = async (payment: PaymentDetail) => {
+    try {
+      const user = getAuth().currentUser;
+      if (!user) {
+        alert('You need to be logged in to make a payment.');
+        return;
+      }
+  
+      const idToken = await user.getIdToken();
+      
+      const paymentData = {
+        cardNumber: payment.cardNumber,
+        expiryDate: payment.expiryDate,
+        cvv: payment.cvv,
+        isSavedCard: true, // Flag this as a saved card payment
+        shippingDetails,
+      };
+  
+      // Use a separate endpoint for payment processing
+      const response = await axios.post(
+        `${import.meta.env.REACT_APP_API_URL}/paymentprocess/process`,
+        paymentData,
+        {
+          headers: { Authorization: `Bearer ${idToken}` }
+        }
+      );
+  
+      if (response.data.success) {
+        alert('Payment completed successfully!');
+        setIsPaymentSuccessful(true);
+        
+        // Update the UI without refetching all data
+        setSavedPayments(prev => prev.map(p => 
+          p._id === payment._id ? { ...p, lastUsed: new Date().toISOString() } : p
+        ));
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Payment error:', error.response?.data);
+        alert(error.response?.data?.message || 'Payment failed. Please try again.');
+      } else {
+        console.error('Unexpected error:', error);
+        alert('There was an unexpected error in the payment process.');
+      }
+    }
+  };
+
+
   // Helper function to use saved card
   const useSavedCard = (payment: PaymentDetail) => {
     setCardNumber(payment.cardNumber);
@@ -147,18 +196,26 @@ const PaymentForm = () => {
     <div className="h-screen">
       <h2 className="text-center">Payment Form</h2>
 
+      {isPaymentSuccessful && (
+        <div className="payment-success">
+          <h3>Payment Successful!</h3>
+          <p>Your payment has been processed successfully. Thank you for your purchase!</p>
+        </div>
+      )}
+
       {/* Display saved payment details */}
       {savedPayments.length > 0 ? (
         <div className="saved-card-info">
           <h2>Your Saved Payment Methods:</h2>
           {savedPayments.map((payment, index) => (
             <div key={payment._id} className="mb-2">
-
                 <h6>Card {index + 1}: **** **** **** {payment.cardNumber.slice(-4)}</h6>
                 <button 
-                className='bg-amber-800 cursor-pointer'
-                > pay now</button>
-            
+                  className='bg-amber-800 cursor-pointer'
+                  onClick={() => handleSavedCardPayment(payment)}
+                >
+                  pay now
+                </button>
             </div>
           ))}
         </div>
@@ -174,12 +231,7 @@ const PaymentForm = () => {
         </button>
       </Link>
 
-      {isPaymentSuccessful ? (
-        <div className="payment-success">
-          <h3>Payment Successful!</h3>
-          <p>Your payment has been processed successfully. Thank you for your purchase!</p>
-        </div>
-      ) : (
+      {!isPaymentSuccessful && (
         <form className="payment-form flex flex-col" onSubmit={handleSubmit}>
           <label htmlFor="cardNumber">Card Number:</label>
           <input
@@ -214,7 +266,11 @@ const PaymentForm = () => {
             required
           />
 
-          <button type="submit" className="submit-btn">
+          <button 
+          type="submit" 
+          className="submit-btn"
+          onClick={handleSubmit}
+          >
             Submit Payment
           </button>
         </form>

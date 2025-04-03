@@ -57,7 +57,7 @@ const FeaturedCoffee = () => {
                   </ul>
                   <div className="flex justify-center space-x-3">
                     <a
-                      href="/product/ethiopian-yirgacheffe"
+                      href="/products"
                       className="featuredbutton inline-block py-1 px-4 bg-brown-900 text-white rounded-lg text-sm hover:bg-brown-800 transition-colors duration-300"
                     >
                       {t('featured.shopNow')}
