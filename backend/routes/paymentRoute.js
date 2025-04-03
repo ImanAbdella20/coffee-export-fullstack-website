@@ -6,6 +6,6 @@ const paymentRoute = express.Router();
 
 paymentRoute.post('/add' ,validateFirebaseToken, addPaymentInfo);
 paymentRoute.get('/details' ,validateFirebaseToken, getPayment);
-paymentRoute.get('/process' ,validateFirebaseToken, processPayment);
+paymentRoute.post('/process' ,validateFirebaseToken, processPayment);
 
 export default paymentRoute;

@@ -8,16 +8,14 @@ export const addPaymentInfo = async (req, res) => {
   }
 
   try {
-    // For saved cards, we don't need to create a new record
     if (isSavedCard) {
-      // Process payment with existing card
       return res.status(200).json({
+        success: true,
         message: "Payment completed successfully!",
         isSavedCard: true
       });
     }
 
-    // For new cards, save the payment details
     const paymentDetail = new PaymentDetail({
       cardNumber,
       expiryDate,
@@ -27,12 +25,17 @@ export const addPaymentInfo = async (req, res) => {
 
     await paymentDetail.save();
     res.status(200).json({
+      success: true,
       message: "Payment completed successfully!",
       paymentDetail
     });
   } catch (error) {
     console.error("Error processing payment:", error);
-    res.status(500).json({ message: "There was an error processing the payment." });
+    res.status(500).json({ 
+      success: false,
+      message: "There was an error processing the payment.",
+      error: error.message 
+    });
   }
 };
 
@@ -40,7 +43,6 @@ export const processPayment = async (req, res) => {
   const { cardNumber, expiryDate, cvv, isSavedCard } = req.body;
 
   try {
-
     if (isSavedCard) {
       const existingCard = await PaymentDetail.findOne({
         cardNumber,
@@ -48,30 +50,50 @@ export const processPayment = async (req, res) => {
       });
       
       if (!existingCard) {
-        return res.status(404).json({ message: "Saved card not found" });
+        return res.status(404).json({ 
+          success: false,
+          message: "Saved card not found" 
+        });
       }
     }
+    
     res.status(200).json({
       success: true,
       message: "Payment processed successfully",
       isSavedCard: isSavedCard || false
-    })
-    
+    });
   } catch (error) {
     console.error("Payment processing error:", error);
-    res.status(500).json({ message: "Payment processing failed" });
+    res.status(500).json({ 
+      success: false,
+      message: "Payment processing failed",
+      error: error.message 
+    });
   }
 };
-
 
 export const getPayment = async (req, res) => {
   try {
     const userId = req.user._id;
     const paymentDetails = await PaymentDetail.find({ user: userId });
 
-    res.status(200).json({ paymentDetails: paymentDetails || [] });
+    if (!paymentDetails || paymentDetails.length === 0) {
+      return res.status(200).json({ 
+        success: true,
+        paymentDetails: [] 
+      });
+    }
+
+    res.status(200).json({ 
+      success: true,
+      paymentDetails 
+    });
   } catch (error) {
     console.error("Error retrieving payment details:", error);
-    res.status(500).json({ message: "Error retrieving payment details" });
+    res.status(500).json({ 
+      success: false,
+      message: "Error retrieving payment details",
+      error: error.message 
+    });
   }
 };

@@ -14,6 +14,10 @@ interface PaymentDetail {
   __v: number;
 }
 
+interface ShippingDetails {
+  [key: string]: any;
+}
+
 const PaymentForm = () => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -34,27 +38,20 @@ const PaymentForm = () => {
       
       const idToken = await user.getIdToken();
       try {
-        // Fetch shipping details
         const shippingResponse = await axios.get(
           `${import.meta.env.REACT_APP_API_URL}/shipitems/details`,
-          {
-            headers: { Authorization: `Bearer ${idToken}` }
-          }
+          { headers: { Authorization: `Bearer ${idToken}` } }
         );
 
         if (shippingResponse.status === 200) {
           setShippingDetails(shippingResponse.data);
         }
 
-        // Fetch saved payment details
         const paymentResponse = await axios.get(
           `${import.meta.env.REACT_APP_API_URL}/paymentprocess/details`,
-          {
-            headers: { Authorization: `Bearer ${idToken}` }
-          }
+          { headers: { Authorization: `Bearer ${idToken}` } }
         );
 
-        // Handle both array response and object with paymentDetails property
         const paymentData = Array.isArray(paymentResponse.data) 
           ? paymentResponse.data 
           : paymentResponse.data?.paymentDetails || [];
@@ -104,23 +101,18 @@ const PaymentForm = () => {
       const response = await axios.post(
         `${import.meta.env.REACT_APP_API_URL}/paymentprocess/add`,
         paymentData,
-        {
-          headers: { Authorization: `Bearer ${idToken}` }
-        }
+        { headers: { Authorization: `Bearer ${idToken}` } }
       );
 
       if (response.status === 200) {
         alert('Payment done successfully!')
         setIsPaymentSuccessful(true);
-        // Refresh the payment details after successful submission
+
         const paymentResponse = await axios.get(
           `${import.meta.env.REACT_APP_API_URL}/paymentprocess/details`,
-          {
-            headers: { Authorization: `Bearer ${idToken}` }
-          }
+          { headers: { Authorization: `Bearer ${idToken}` } }
         );
         
-        // Fix: Update saved payments with new data
         const updatedPaymentData = Array.isArray(paymentResponse.data) 
           ? paymentResponse.data 
           : paymentResponse.data?.paymentDetails || [];
@@ -151,24 +143,20 @@ const PaymentForm = () => {
         cardNumber: payment.cardNumber,
         expiryDate: payment.expiryDate,
         cvv: payment.cvv,
-        isSavedCard: true, // Flag this as a saved card payment
+        isSavedCard: true,
         shippingDetails,
       };
   
-      // Use a separate endpoint for payment processing
       const response = await axios.post(
         `${import.meta.env.REACT_APP_API_URL}/paymentprocess/process`,
         paymentData,
-        {
-          headers: { Authorization: `Bearer ${idToken}` }
-        }
+        { headers: { Authorization: `Bearer ${idToken}` } }
       );
   
       if (response.data.success) {
         alert('Payment completed successfully!');
         setIsPaymentSuccessful(true);
         
-        // Update the UI without refetching all data
         setSavedPayments(prev => prev.map(p => 
           p._id === payment._id ? { ...p, lastUsed: new Date().toISOString() } : p
         ));
@@ -184,26 +172,36 @@ const PaymentForm = () => {
     }
   };
 
-
-  // Helper function to use saved card
   const useSavedCard = (payment: PaymentDetail) => {
     setCardNumber(payment.cardNumber);
     setExpiryDate(payment.expiryDate);
     setCvv(payment.cvv);
   };
 
+  const successMessage = () => {
+    setIsPaymentSuccessful(false);
+    navigate('/itempayment');
+  };
+
+  const getPaidItemName = () => {
+    const item = localStorage.getItem('currentPaymentItem');
+    return item ? JSON.parse(item).name : 'your item';
+  };
+
+  if (isPaymentSuccessful) {
+    return (
+      <div className="container">
+        <h2>Payment Successful!</h2>
+        <p>Your payment has been processed successfully for {getPaidItemName()}.</p>
+        <button onClick={successMessage}>Make another payment</button>
+      </div>
+    );
+  }
+
   return (
     <div className="h-screen">
       <h2 className="text-center">Payment Form</h2>
 
-      {isPaymentSuccessful && (
-        <div className="payment-success">
-          <h3>Payment Successful!</h3>
-          <p>Your payment has been processed successfully. Thank you for your purchase!</p>
-        </div>
-      )}
-
-      {/* Display saved payment details */}
       {savedPayments.length > 0 ? (
         <div className="saved-card-info">
           <h2>Your Saved Payment Methods:</h2>
@@ -214,7 +212,7 @@ const PaymentForm = () => {
                   className='bg-amber-800 cursor-pointer'
                   onClick={() => handleSavedCardPayment(payment)}
                 >
-                  pay now
+                  pay with this card
                 </button>
             </div>
           ))}
@@ -231,50 +229,48 @@ const PaymentForm = () => {
         </button>
       </Link>
 
-      {!isPaymentSuccessful && (
-        <form className="payment-form flex flex-col" onSubmit={handleSubmit}>
-          <label htmlFor="cardNumber">Card Number:</label>
-          <input
-            type="text"
-            id="cardNumber"
-            name="cardNumber"
-            placeholder="Enter your card number"
-            value={cardNumber}
-            onChange={(e) => setCardNumber(e.target.value)}
-            required
-          />
+      <form className="payment-form flex flex-col" onSubmit={handleSubmit}>
+        <label htmlFor="cardNumber">Card Number:</label>
+        <input
+          type="text"
+          id="cardNumber"
+          name="cardNumber"
+          placeholder="Enter your card number"
+          value={cardNumber}
+          onChange={(e) => setCardNumber(e.target.value)}
+          required
+        />
 
-          <label htmlFor="expiryDate">Expiry Date:</label>
-          <input
-            type="text"
-            id="expiryDate"
-            name="expiryDate"
-            placeholder="MM/YY"
-            value={expiryDate}
-            onChange={(e) => setExpiryDate(e.target.value)}
-            required
-          />
+        <label htmlFor="expiryDate">Expiry Date:</label>
+        <input
+          type="text"
+          id="expiryDate"
+          name="expiryDate"
+          placeholder="MM/YY"
+          value={expiryDate}
+          onChange={(e) => setExpiryDate(e.target.value)}
+          required
+        />
 
-          <label htmlFor="cvv">CVV:</label>
-          <input
-            type="text"
-            id="cvv"
-            name="cvv"
-            placeholder="Enter CVV"
-            value={cvv}
-            onChange={(e) => setCvv(e.target.value)}
-            required
-          />
+        <label htmlFor="cvv">CVV:</label>
+        <input
+          type="text"
+          id="cvv"
+          name="cvv"
+          placeholder="Enter CVV"
+          value={cvv}
+          onChange={(e) => setCvv(e.target.value)}
+          required
+        />
 
-          <button 
+        <button 
           type="submit" 
           className="submit-btn"
           onClick={handleSubmit}
-          >
-            Submit Payment
-          </button>
-        </form>
-      )}
+        >
+          Submit Payment
+        </button>
+      </form>
     </div>
   );
 };
