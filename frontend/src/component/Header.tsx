@@ -272,25 +272,25 @@ const Header = ({ user }: HeaderProps) => {
               <div className="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg z-50 text-black ">
                 <button 
                   onClick={() => changeLanguage('en')}
-                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'en' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'en' ? 'lang' : 'text-gray-800 hover:bg-gray-100'}`}
                 >
                   English
                 </button>
                 <button 
                   onClick={() => changeLanguage('es')}
-                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'es' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'es' ? 'lang' : 'text-gray-800 hover:bg-gray-100'}`}
                 >
                   Español
                 </button>
                 <button 
                   onClick={() => changeLanguage('tr')}
-                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'tr' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'tr' ? 'lang' : 'text-gray-800 hover:bg-gray-100'}`}
                 >
                   Türkçe
                 </button>
                 <button 
                   onClick={() => changeLanguage('ar')}
-                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'ar' ? 'bg-[#AD7C59] text-white' : 'text-gray-800 hover:bg-gray-100'}`}
+                  className={`cursor-pointer block w-full text-left px-4 py-2 text-sm ${selectedLanguage === 'ar' ? 'lang' : 'text-gray-800 hover:bg-gray-100'}`}
                 >
                   العربية
                 </button>

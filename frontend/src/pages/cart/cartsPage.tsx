@@ -103,6 +103,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       if (!authToken) {
         throw new Error('No auth token found');
       }
+      console.log('get ship items')
 
       const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details`, {
         headers: {
@@ -136,7 +137,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
         {cart.length > 0 ? (
           <div className="bg-white rounded-lg shadow-md overflow-hidden relative pb-20 ">
             {/* Cart Header */}
-            <div className="grid grid-cols-12 gap-4 bg-gray-100 p-4 font-medium border-b ">
+            <div className=" cartHeader grid grid-cols-12 gap-4 bg-gray-100 p-4 font-medium border-b ">
               <div className="col-span-1 flex items-center">
                 <input
                   type="checkbox"
@@ -152,7 +153,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
             </div>
             
             {/* Cart Items */}
-            <div className="divide-y divide-gray-200 ">
+            <div className=" cartItems divide-y divide-gray-200 ">
               {cart.map((item: CartItem) => (
                 <div key={item._id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50 ">
                   {/* Checkbox */}
@@ -211,7 +212,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
             </div>
             
             {/* Sticky Cart Footer */}
-            <div className="sticky bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg">
+            <div className="cartFooter sticky bottom-0 left-0 right-0 ">
               <div className="flex flex-wrap justify-between items-center">
                 <button
                   onClick={removeSelectedItems}
@@ -222,7 +223,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
                 </button>
                 
                 <div className="flex items-center ">
-                  <div className="text-xl font-semibold">
+                  <div className="totalAmount text-xl font-semibold">
                     Total: {calculateTotal()}
                   </div>
                   <button

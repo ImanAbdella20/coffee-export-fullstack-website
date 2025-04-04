@@ -32,7 +32,7 @@ const OrderHistory = () => {
       shippingAddress: '123 Coffee Lane, Addis Ababa, Ethiopia',
     },
     // Add more orders here
-  ];
+  ]
 
 
   return (

@@ -583,3 +583,91 @@ font-size: 25px;
 .cartitems{
   padding: 90px auto;
 }
+
+.lang{
+  background-color: #AD7C59;
+  color: white;
+}
+
+.cartFooter{
+  margin: 70px 30px 15px;
+}
+
+.cartHeader{
+  margin: 20px 30px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.cartItems{
+  margin: 20px 30px;
+}
+
+.totalAmount{
+margin-right: 10px;
+}
+
+.loginHeaderH2{
+font-weight: bold;
+font-size: 25px;
+}
+
+.loginContainer{
+  width: 40%;
+
+}
+
+.loginContainerdiv{
+  margin: 20px auto;
+}
+
+.loginBtn{
+  margin:20px 40% 20px auto;
+  padding: 10px 20px;
+  background-color: #AD7C59;
+width: 20%;
+text-align: center;
+color: white;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.loginBtn:hover{
+background-color: #7b563b;
+}
+
+.loginForm{
+  
+}
+
+.loginInput{
+  margin: 10px auto 10px;
+}
+
+.continue{
+}
+
+.signupHeaderH2{
+  font-weight: bold;
+font-size: 25px;
+margin-bottom: 20px;
+}
+
+.signupBtn{
+  margin:20px 40% 20px auto;
+  padding: 10px 20px;
+  background-color: #AD7C59;
+width: 30%;
+text-align: center;
+color: white;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.signupBtn:hover{
+background-color: #7b563b;
+}
+
+.signupForm{
+  padding: 17px;
+}
