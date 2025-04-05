@@ -615,6 +615,7 @@ font-size: 25px;
 .loginContainer{
   width: 40%;
 
+
 }
 
 .loginContainerdiv{
@@ -622,8 +623,7 @@ font-size: 25px;
 }
 
 .loginBtn{
-  margin:20px 40% 20px auto;
-  padding: 10px 20px;
+
   background-color: #AD7C59;
 width: 20%;
 text-align: center;
@@ -670,4 +670,77 @@ background-color: #7b563b;
 
 .signupForm{
   padding: 17px;
+}
+
+.allMission{
+  margin-bottom: 15px;
+}
+
+.missionDiv{
+  height: 2vh;
+}
+.missionHeader{
+  font-size: 25px;
+  font-weight: bold;
+  margin: 15px auto;
+}
+
+.eachMission{
+  padding: 15px;
+}
+
+.eachVision{
+  padding: 15px;
+
+}
+.missionIcon{
+  margin-left: 15px;
+}
+
+.eachItemDiv{
+  margin: 55px;
+}
+
+.eachItemH2{
+  font-size: 23px;
+}
+
+.payNow{
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.payNow:hover{
+  color: #61300D;
+}
+
+.itemTitle{
+  margin: 15px auto;
+  font-size:18px ;
+}
+
+.items{
+  margin: 10px auto;
+}
+
+.payH1{
+  font-size: 23px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.payDiv{
+  border: 2px solid #AD7C59;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 15px;
+}
+
+.paymentForm{
+  margin: 15px auto;
+}
+
+.paymentForm h2{
+  font-size: 18px;
+  font-weight: bold;
 }

@@ -12,10 +12,16 @@ interface CartItem {
 const EachItemPayment = () => {
   const [selectedItems, setSelectedItems] = useState<CartItem[]>([]);
   const [hasShippingDetails, setHasShippingDetails] = useState(false);
+  const [fromPayment, setFromPayment] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+
+     // Check if coming from payment page
+     if (location.state?.fromPayment) {
+      setFromPayment(true);
+    }
     // First check for items in navigation state
     if (location.state?.selectedItems) {
       setSelectedItems(location.state.selectedItems);
@@ -33,10 +39,15 @@ const EachItemPayment = () => {
   const handlePayNowClick = (item: CartItem) => {
     // Store the single item being paid for and shipping status
     localStorage.setItem('currentPaymentItem', JSON.stringify(item));
-    
-    if (hasShippingDetails) {
+
+    if (fromPayment) {
+      // If coming from payment page, go directly to payment process
+      navigate('/paymentprocess', { state: { fromPayment: true } });
+    } else if (hasShippingDetails) {
+      // If has shipping details and not from payment page
       navigate('/paymentprocess');
     } else {
+      // No shipping details and not from payment page
       navigate('/shippingform', { 
         state: { 
           itemToPay: item,
@@ -53,11 +64,11 @@ const EachItemPayment = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl font-bold text-center mb-8">Selected Items for Payment</h2>
+        <h2 className="eachItemH2 text-2xl font-bold text-center mb-8 relative top-[40px]">Selected Items for Payment</h2>
         
         {selectedItems.length > 0 ? (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="grid grid-cols-12 gap-4 bg-gray-100 p-4 font-medium border-b">
+          <div className="eachItemDiv overflow-hidden">
+            <div className="itemTitle grid grid-cols-12 gap-4 bg-gray-100 p-4  border-b">
               <div className="col-span-5">Product</div>
               <div className="col-span-2 text-center">Price</div>
               <div className="col-span-2 text-center">Quantity</div>
@@ -65,9 +76,9 @@ const EachItemPayment = () => {
               <div className="col-span-1 text-right">Action</div>
             </div>
             
-            <div className="divide-y divide-gray-200">
+            <div className=" divide-y divide-gray-200">
               {selectedItems.map((item) => (
-                <div key={item._id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50">
+                <div key={item._id} className="items grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50">
                   <div className="col-span-5 flex items-center">
                     <img 
                       src={item.image} 
@@ -92,7 +103,7 @@ const EachItemPayment = () => {
                   <div className="col-span-1 text-right">
                     <button
                       onClick={() => handlePayNowClick(item)}
-                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                      className="payNow text-bold px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 "
                     >
                       Pay Now
                     </button>
@@ -102,7 +113,7 @@ const EachItemPayment = () => {
             </div>
           </div>
         ) : (
-          <div className="text-center py-12 bg-white rounded-lg shadow">
+          <div className="text-center py-12 ">
             <p className="text-gray-500 text-lg">No items selected for payment.</p>
             <button
               onClick={() => navigate('/cart')}

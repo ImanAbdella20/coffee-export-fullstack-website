@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getAuth } from 'firebase/auth';
 import Flag from 'react-world-flags';
 
@@ -29,13 +29,14 @@ const Profile = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const user = getAuth().currentUser;
         if (!user) {
-          navigate('/login');
+          navigate('/login', { state: { from: location.pathname  } });
           return;
         }
 

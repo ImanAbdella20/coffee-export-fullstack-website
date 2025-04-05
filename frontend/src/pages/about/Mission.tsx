@@ -20,7 +20,7 @@ const Mission = () => {
   };
 
   return (
-    <div className="h-[2vh] bg-gradient-to-b py-20 px-4 sm:px-6 lg:px-8">
+    <div className="missionDiv  bg-gradient-to-b py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -29,7 +29,7 @@ const Mission = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
-          <h2 className="text-4xl font-bold text-amber-900 font-serif">
+          <h2 className="missionHeader font-bold text-amber-900 font-serif">
             The Soul of Ethiopian Coffee
           </h2>
           <div className="mt-4 h-1 w-24 bg-amber-700 mx-auto rounded-full"></div>
@@ -41,15 +41,15 @@ const Mission = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-12"
+          className=" grid md:grid-cols-2 gap-12"
         >
           {/* Mission Card */}
           <motion.div 
             variants={item}
-            className="relative bg-white rounded-3xl shadow-2xl overflow-hidden group"
+            className="allMission relative bg-white rounded-3xl shadow-2xl overflow-hidden group"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-amber-700 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-            <div className="p-10">
+            <div className=" absolute inset-0 bg-[#AD7C59] opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+            <div className="eachMission p-10">
               <div className="flex items-center mb-8">
                 <div className="bg-amber-100 p-4 rounded-full shadow-inner">
                   <FaSeedling className="text-amber-700 text-3xl" />
@@ -77,10 +77,10 @@ const Mission = () => {
           {/* Vision Card */}
           <motion.div 
             variants={item}
-            className="relative bg-white rounded-3xl shadow-2xl overflow-hidden group"
+            className="allMission relative bg-white rounded-3xl shadow-2xl overflow-hidden group"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-500 to-amber-700 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
-            <div className="p-10">
+            <div className=" absolute inset-0 bg-gradient-to-br bg-[#AD7C59]  opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+            <div className="eachVision p-10">
               <div className="flex items-center mb-8">
                 <div className="bg-amber-100 p-4 rounded-full shadow-inner">
                   <FaGlobeAfrica className="text-amber-700 text-3xl" />
@@ -114,14 +114,14 @@ const Mission = () => {
           viewport={{ once: true }}
           className="mt-28"
         >
-          <h3 className="text-3xl font-bold text-amber-900 text-center mb-16 font-serif">
+          <h3 className="missionHeader text-3xl font-bold text-amber-900 text-center mb-16 font-serif">
             Pillars of Our Practice
           </h3>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="eachMission grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { 
-                icon: <FaHandshake className="text-amber-700 text-3xl" />,
+                icon: <FaHandshake className= "missionIcon text-amber-700 text-3xl" />,
                 title: "Fair Partnerships",
                 desc: "Direct trade relationships that honor farmers' expertise and labor"
               },
@@ -153,29 +153,6 @@ const Mission = () => {
                 <p className="text-gray-700 mt-auto">{value.desc}</p>
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Ethiopian Heritage Section */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-28 bg-amber-900 rounded-3xl overflow-hidden shadow-2xl"
-        >
-          <div className="p-12 text-center text-white">
-            <h3 className="text-3xl font-bold mb-6 font-serif">From the Birthplace of Coffee</h3>
-            <div className="max-w-3xl mx-auto">
-              <p className="text-amber-100 text-lg mb-6">
-                Ethiopia is where coffee was first discovered in the 9th century. Our work honors 
-                this legacy by maintaining the ancient practices that create coffee unlike any other 
-                in the world.
-              </p>
-              <div className="inline-block bg-amber-800 rounded-full px-6 py-3 text-amber-100 font-medium shadow-lg">
-                Taste the Original Coffee
-              </div>
-            </div>
           </div>
         </motion.div>
       </div>

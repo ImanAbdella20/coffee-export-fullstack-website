@@ -94,7 +94,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
     }
     
     if (!user) {
-      navigate('/login');
+      navigate('/login', { state: { from: location.pathname  } });
       return;
     }
 
