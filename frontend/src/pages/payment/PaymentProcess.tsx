@@ -241,7 +241,7 @@ const PaymentForm = () => {
   }
 
   return (
-    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center relative bottom-20">
+    <div className="min-h-screen  py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center relative bottom-10">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="payH1 text-3xl font-extrabold text-gray-900">Secure Payment</h1>
@@ -301,7 +301,7 @@ const PaymentForm = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="cardNumber" className="label block text-sm font-medium text-gray-700 mb-1">
                   Card Number
                 </label>
                 <div className={`relative rounded-md shadow-sm ${!isCardValid && cardNumber ? 'border-red-300' : ''}`}>
@@ -312,7 +312,7 @@ const PaymentForm = () => {
                     placeholder="1234 5678 9012 3456"
                     value={cardNumber}
                     onChange={handleCardNumberChange}
-                    className={`block w-full px-4 py-3 rounded-md border ${!isCardValid && cardNumber ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500'} shadow-sm`}
+                    className={`label block w-full px-4 py-3 rounded-md border ${!isCardValid && cardNumber ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500'} shadow-sm`}
                     required
                     maxLength={19}
                   />
@@ -329,7 +329,7 @@ const PaymentForm = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="expiryDate" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="expiryDate" className="label block text-sm font-medium text-gray-700 mb-1">
                     Expiry Date
                   </label>
                   <input
@@ -339,13 +339,13 @@ const PaymentForm = () => {
                     placeholder="MM/YY"
                     value={expiryDate}
                     onChange={handleExpiryDateChange}
-                    className="block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    className="label block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                     required
                     maxLength={5}
                   />
                 </div>
                 <div>
-                  <label htmlFor="cvv" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="cvv" className="label block text-sm font-medium text-gray-700 mb-1">
                     CVV
                   </label>
                   <input
@@ -355,7 +355,7 @@ const PaymentForm = () => {
                     placeholder="123"
                     value={cvv}
                     onChange={(e) => setCvv(e.target.value.replace(/[^0-9]/g, ''))}
-                    className="block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    className="label block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                     required
                     maxLength={4}
                   />
@@ -365,7 +365,7 @@ const PaymentForm = () => {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center"
+                  className="payBtn w-full font-medium py-3 px-4  flex items-center justify-center"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>

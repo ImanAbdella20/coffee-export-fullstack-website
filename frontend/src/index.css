@@ -744,3 +744,21 @@ background-color: #7b563b;
   font-size: 18px;
   font-weight: bold;
 }
+
+.label{
+  margin: 10px auto;
+}
+
+.payBtn{
+  margin: 20px auto;
+  background-color: #AD7C59;
+width: 50%;
+text-align: center;
+color: white;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.payBtn:hover{
+  background-color: #7b563b;
+}

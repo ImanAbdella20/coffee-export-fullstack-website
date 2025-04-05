@@ -63,6 +63,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       updatedSelectedItems.add(productId);
     }
     setSelectedItems(updatedSelectedItems);
+    setSelectAll(updatedSelectedItems.size === cart.length && cart.length > 0);
   };
 
   // Handle select all toggle
@@ -86,15 +87,16 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       .toFixed(2);
   };
 
-  // Updated checkout handler
+  // Updated checkout handler with fixed alert
   const handleCheckOut = async () => {
+    // First check if any items are selected
     if (selectedItems.size === 0) {
-      alert('Please select the items you want to checkout!');
+      alert('Please select at least one item to checkout!');
       return;
     }
     
     if (!user) {
-      navigate('/login', { state: { from: location.pathname  } });
+      navigate('/login', { state: { from: location.pathname } });
       return;
     }
 
@@ -103,7 +105,6 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       if (!authToken) {
         throw new Error('No auth token found');
       }
-      console.log('get ship items')
 
       const response = await axios.get(`${import.meta.env.REACT_APP_API_URL}/shipitems/details`, {
         headers: {
@@ -112,11 +113,8 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
       });
 
       const hasShippingDetails = response.data.shippingdetails?.length > 0;
-
-      // Get selected items for payment
       const itemsToPay = cart.filter(item => selectedItems.has(item._id));
       
-      // Navigate to EachItemPayment with the selected items
       navigate('/itempayment', { 
         state: { 
           selectedItems: itemsToPay,
@@ -126,6 +124,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
 
     } catch (error) {
       console.error('Error checking shipping details:', error);
+      alert('Failed to process checkout. Please try again.');
     }
   };
 
@@ -135,9 +134,9 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
         <h2 className="carth2 text-2xl font-bold text-center mb-8">Your Cart</h2>
         
         {cart.length > 0 ? (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden relative pb-20 ">
+          <div className="bg-white rounded-lg shadow-md overflow-hidden relative pb-20">
             {/* Cart Header */}
-            <div className=" cartHeader grid grid-cols-12 gap-4 bg-gray-100 p-4 font-medium border-b ">
+            <div className="cartHeader grid grid-cols-12 gap-4 bg-gray-100 p-4 font-medium border-b">
               <div className="col-span-1 flex items-center">
                 <input
                   type="checkbox"
@@ -153,9 +152,9 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
             </div>
             
             {/* Cart Items */}
-            <div className=" cartItems divide-y divide-gray-200 ">
+            <div className="cartItems divide-y divide-gray-200">
               {cart.map((item: CartItem) => (
-                <div key={item._id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50 ">
+                <div key={item._id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-gray-50">
                   {/* Checkbox */}
                   <div className="cartitems col-span-1 flex items-center">
                     <input
@@ -212,7 +211,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
             </div>
             
             {/* Sticky Cart Footer */}
-            <div className="cartFooter sticky bottom-0 left-0 right-0 ">
+            <div className="cartFooter sticky bottom-0 left-0 right-0">
               <div className="flex flex-wrap justify-between items-center">
                 <button
                   onClick={removeSelectedItems}
@@ -222,7 +221,7 @@ const CartsPage = ({ user, setCartCount }: CartsPageProps) => {
                   Remove Selected
                 </button>
                 
-                <div className="flex items-center ">
+                <div className="flex items-center">
                   <div className="totalAmount text-xl font-semibold">
                     Total: {calculateTotal()}
                   </div>
